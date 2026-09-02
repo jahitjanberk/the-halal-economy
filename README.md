@@ -89,7 +89,7 @@ a figure was checked against a named source that was actually retrieved, on a
 recorded date. Unchecked is the default — the point of the flag is to surface
 what nobody has looked at.
 
-As of September 2026, **66 of 212 figures are confirmed** (19%).
+As of September 2026, **66 of 212 figures are confirmed** (31%).
 
 ### How it fits together
 
@@ -146,7 +146,7 @@ only thing stopping an edited figure from carrying an old confirmation forward.
 | Certifier directory | 0 / 15 |
 
 The GIEI *scores* — as opposed to the rankings, which are confirmed — sit behind
-Salaam Gateway's paywall, which is why the rank table shows 1 / 23.
+Salaam Gateway's paywall, which is why the rank table shows 2 / 24.
 
 ## Layout
 
@@ -286,8 +286,8 @@ Three things turn a dashboard into something people link to and cite.
 **Every source is followable.** `src/data/sources.js` carries a URL for all nine
 citations, and a `reached` field recording what a request to it actually
 returned — `ok` for a 200, `blocked` where the publisher refuses automated
-requests (Pew and the IMF both 403 anything that is not a browser), which is not
-the same as a dead link but is not a confirmation either. The Sources section
+requests (the IMF 403s anything that is not a browser), which is not the same as
+a dead link but is not a confirmation either. The Sources section
 renders the list, states what each source is cited for and how much of it has
 been checked, and clicking any provenance marker on the page jumps to its
 citation.
@@ -304,7 +304,7 @@ screenshot that goes stale. It also shows the live verified-figure count, so the
 card cannot overstate what has been checked.
 
 **A data index can read the page.** `npm run metadata` regenerates a
-`schema.org/Dataset` block from the data — 39 places, 10 measures, 3
+`schema.org/Dataset` block from the data — 39 places, 10 measures, 4
 distributions and all 9 citations. This is the route by which Google Dataset
 Search and similar indexes find data resources, and it has to be static in the
 HTML because those crawlers do not reliably run JavaScript. `npm test` fails if
@@ -316,13 +316,21 @@ npm run images     # og-image.png + apple-touch-icon.png
 npm run metadata   # regenerate the JSON-LD Dataset block
 ```
 
-The canonical origin appears in exactly two places — the `<head>` of index.html
-and `BASE` in `scripts/build-metadata.mjs`. Moving the site means changing those.
+The canonical origin is written into five files — the `<head>` of index.html,
+`BASE` in `scripts/build-metadata.mjs`, `sitemap.xml`, `robots.txt` and the
+citation line in `DATA-LICENSE.md`. Moving the site means changing all five and
+re-running `npm run metadata`, which rewrites the JSON-LD block from `BASE`.
+Nothing in the suite checks that the origin resolves, only that the page agrees
+with itself, so a wrong origin passes every test while 404ing every link.
 
-**No licence is declared**, deliberately. `schema.org/Dataset` supports a
-`license` property and indexes weight it, but inventing terms for figures
-compiled from someone else's reporting would be a claim this project cannot
-make. Decide the terms and the structured data should carry them.
+**The licence splits the compilation from the figures.** `schema.org/Dataset`
+supports a `license` property and indexes weight it, but claiming terms over
+figures compiled from someone else's reporting is not this project's to make.
+So CC BY 4.0 covers what is genuinely ours — the structuring, the derived
+values, the written analysis and the record of what has been checked — while
+the underlying figures stay with the publishers cited. `license` carries the CC
+BY URL, `usageInfo` points at [DATA-LICENSE.md](DATA-LICENSE.md), and the
+citation block and footer say the same thing in prose.
 
 ## Typography
 

@@ -8,9 +8,9 @@
  * of a reference. Each was requested before being added here.
  *
  * `reached` records what that request returned: 'ok' for a 200, 'blocked' where
- * the publisher refuses automated requests (Pew and the IMF both return 403 to
- * anything that isn't a browser), which is not the same as a dead link but is
- * not a confirmation either. Deep links rot; where a specific page could not be
+ * the publisher refuses automated requests (the IMF returns 403 to anything
+ * that isn't a browser), which is not the same as a dead link but is not a
+ * confirmation either. Deep links rot; where a specific page could not be
  * confirmed the entry points at the publisher's stable topic index instead.
  */
 export const sources = {
@@ -36,7 +36,7 @@ export const sources = {
   },
   pew:{
     name:'Pew Research Center global religious demographics, rounded', date:'2020 base',
-    url:'https://www.pewresearch.org/religion/', reached:'blocked',
+    url:'https://www.pewresearch.org/religion/', reached:'ok',
   },
   imf:{
     name:'IMF World Economic Outlook, nominal GDP 2024, rounded', date:'2024',

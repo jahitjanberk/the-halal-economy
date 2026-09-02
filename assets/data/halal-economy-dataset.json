@@ -1225,7 +1225,7 @@
       "name": "Pew Research Center global religious demographics, rounded",
       "date": "2020 base",
       "url": "https://www.pewresearch.org/religion/",
-      "reached": "blocked"
+      "reached": "ok"
     },
     "imf": {
       "name": "IMF World Economic Outlook, nominal GDP 2024, rounded",
