@@ -25,6 +25,7 @@ import { buildStoryChart } from '../charts/story-chart.js';
 const AUDIENCE_LABELS = { public: 'General public', investor: 'Investor', policy: 'Policymaker', business: 'Business owner' };
 
 let storyMap = null;
+let storyMapFailed = false;
 let storyBuilt = false;
 let storyObserver = null;
 let storyChartApi = null;
@@ -139,7 +140,10 @@ export function setStory(key, atStep = 0){
   document.getElementById('siKicker').textContent = s.kicker;
   document.getElementById('siTitle').textContent = s.title;
   document.getElementById('siBody').textContent = s.body;
-  document.getElementById('storyMap').style.display = s.graphic === 'map' ? '' : 'none';
+  /* If the outlines never loaded, the fallback stands in for the map. */
+  const wantsMap = s.graphic === 'map';
+  document.getElementById('storyMap').style.display = wantsMap && !storyMapFailed ? '' : 'none';
+  document.getElementById('storyMapFallback').style.display = wantsMap && storyMapFailed ? 'block' : 'none';
   document.getElementById('storyChart').style.display = s.graphic === 'chart' ? '' : 'none';
 
   const wrap = document.getElementById('steps');
@@ -241,8 +245,11 @@ export function initStory(){
       toast(`${c.label} pinned — it will be selected on the dashboard.`);
     },
     onFail: () => {
-      document.getElementById('storyMap').outerHTML =
-        '<div class="map-fallback" style="display:block">The map outlines couldn\'t load here; the story still works with the figures below.</div>';
+      /* Replacing the <svg> here would drop its id and break every later setStory. */
+      storyMapFailed = true;
+      document.getElementById('storyMap').style.display = 'none';
+      if(currentStory().graphic === 'map')
+        document.getElementById('storyMapFallback').style.display = 'block';
     },
   });
 
