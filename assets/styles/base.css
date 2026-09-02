@@ -37,6 +37,8 @@ button,input,select{font-family:inherit;}
 /* Offscreen until focused, so the keyboard route past the nav is one Tab away. */
 .skip-link{position:absolute;left:12px;top:-60px;z-index:100;background:var(--ink);color:#fff;padding:10px 16px;border-radius:0 0 10px 10px;font-size:13.5px;font-weight:600;text-decoration:none;transition:top .12s;}
 .skip-link:focus{top:0;}
+.nojs{margin:0;padding:14px 28px;background:var(--warn-pale);border-bottom:1px solid var(--warn-soft);color:var(--warn);font-size:var(--t-sm);line-height:1.55;}
+.nojs a{color:var(--warn);}
 main:focus{outline:none;}
 h1,h2,h3,h4,.flag,.kpi .num,.story-stat .n,.cmp-num{font-family:var(--serif);font-optical-sizing:auto;letter-spacing:var(--track-display);}
 .num,.kpi .num,.bar-val,td.num,.fact .v,.story-stat .n,.axis text,.rk,.cmp-num{font-variant-numeric:tabular-nums lining-nums;}

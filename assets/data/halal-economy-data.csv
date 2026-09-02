@@ -1,0 +1,57 @@
+dataset,item,year,value,unit,note
+sector_spend,Halal food & beverages,2024,1530,USD billions,
+sector_spend,Halal food & beverages,2029,2058,USD billions,forecast
+sector_cagr,Halal food & beverages,2024-2029,6.1,percent,
+sector_spend,Modest fashion,2024,347,USD billions,
+sector_spend,Modest fashion,2029,444,USD billions,forecast
+sector_cagr,Modest fashion,2024-2029,5.1,percent,
+sector_spend,Media & recreation,2024,276,USD billions,
+sector_spend,Media & recreation,2029,364,USD billions,forecast
+sector_cagr,Media & recreation,2024-2029,5.7,percent,
+sector_spend,Muslim-friendly travel,2024,249,USD billions,
+sector_spend,Muslim-friendly travel,2029,424,USD billions,forecast
+sector_cagr,Muslim-friendly travel,2024-2029,11.2,percent,
+sector_spend,Pharmaceuticals,2024,112,USD billions,
+sector_spend,Pharmaceuticals,2029,146,USD billions,forecast
+sector_cagr,Pharmaceuticals,2024-2029,5.5,percent,
+sector_spend,Cosmetics,2024,92,USD billions,
+sector_spend,Cosmetics,2029,124,USD billions,forecast
+sector_cagr,Cosmetics,2024-2029,6.2,percent,
+consumer_spend_total,Six sectors,2018,2.2,USD trillions,
+consumer_spend_total,Six sectors,2022,2.29,USD trillions,
+consumer_spend_total,Six sectors,2023,2.43,USD trillions,
+consumer_spend_total,Six sectors,2024,2.6,USD trillions,
+consumer_spend_total,Six sectors,2029,3.56,USD trillions,forecast
+islamic_finance_assets,Total,2021,3.96,USD trillions,
+islamic_finance_assets,Total,2023,4.93,USD trillions,
+islamic_finance_assets,Total,2024,5.99,USD trillions,
+islamic_finance_assets,Total,2029,9.72,USD trillions,forecast
+finance_composition,Islamic banking,2024,71.6,percent of assets,
+finance_composition,Sukuk outstanding,2024,23.3,percent of assets,
+finance_composition,Funds & takaful,2024,5.1,percent of assets,
+finance_segment_growth,Sukuk issuance,2024,25.6,percent yoy,
+finance_segment_growth,Islamic banking,2024,17.1,percent yoy,
+finance_segment_growth,Takaful (insurance),2024,16.9,percent yoy,
+finance_share_by_country,Saudi Arabia,2024,27,percent (approx),
+finance_share_by_country,Iran,2024,27,percent (approx),
+finance_share_by_country,Malaysia,2024,12,percent (approx),
+finance_share_by_country,UAE,2024,10,percent (approx),
+finance_share_by_country,Kuwait,2024,5.5,percent (approx),
+finance_share_by_country,Qatar,2024,5.5,percent (approx),
+finance_share_by_country,Türkiye,2024,3.5,percent (approx),
+finance_share_by_country,Bahrain,2024,3.5,percent (approx),
+finance_share_by_country,Indonesia,2024,2,percent (approx),
+finance_share_by_country,Pakistan,2024,2,percent (approx),
+oic_halal_imports,OIC,2022,359,USD billions,
+oic_halal_imports,OIC,2023,407.8,USD billions,
+oic_halal_imports,OIC,2024,421.5,USD billions,
+oic_halal_imports,OIC,2028,608.4,USD billions,forecast
+hajj_pilgrims,Total,2012,3.16,millions,
+hajj_pilgrims,Total,2019,2.49,millions,
+hajj_pilgrims,Total,2020,0.01,millions,
+hajj_pilgrims,Total,2021,0.06,millions,
+hajj_pilgrims,Total,2022,0.93,millions,
+hajj_pilgrims,Total,2023,1.85,millions,
+hajj_pilgrims,Total,2024,1.83,millions,
+hajj_pilgrims,Total,2025,1.67,millions,
+hajj_pilgrims,Total,2026,1.71,millions,

@@ -9,7 +9,7 @@ export const islamicFinance = [{y:2021,v:3.96},{y:2023,v:4.93},{y:2024,v:5.99,ve
 /* Islamic finance breakdowns, % of assets and % year-on-year. */
 export const finComposition = [{name:'Islamic banking',v:71.6},{name:'Sukuk outstanding',v:23.3},{name:'Funds & takaful',v:5.1}];
 export const finGrowth = [{name:'Sukuk issuance',v:25.6,verified:true},{name:'Islamic banking',v:17.1,verified:true},{name:'Takaful (insurance)',v:16.9,verified:true}];
-export const finShareCountries = [{name:'Saudi Arabia',v:27},{name:'Iran',v:27},{name:'Malaysia',v:12},{name:'UAE',v:10},{name:'Kuwait',v:5.5},{name:'Qatar',v:5.5},{name:'Türkiye',v:3.5},{name:'Bahrain',v:3.5},{name:'Indonesia',v:2},{name:'Pakistan',v:2}];
+export const finShareCountries = [{name:'Saudi Arabia',v:27},{name:'Iran',v:27},{name:'Malaysia',v:12,verified:true},{name:'UAE',v:10,verified:true},{name:'Kuwait',v:5.5,verified:true},{name:'Qatar',v:5.5,verified:true},{name:'Türkiye',v:3.5,verified:true},{name:'Bahrain',v:3.5,verified:true},{name:'Indonesia',v:2,verified:true},{name:'Pakistan',v:2,verified:true}];
 
 /* Trade and pilgrimage. Imports in USD billions, pilgrims in millions. */
 export const oicImports = [{y:2022,v:359},{y:2023,v:407.8},{y:2024,v:421.5,verified:true},{y:2028,v:608.4,proj:true,verified:true}];

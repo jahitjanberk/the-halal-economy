@@ -106,6 +106,7 @@ td.num{text-align:right;}
 .result .r p{margin:4px 0 0;font-size:13.5px;color:var(--ink-2);}
 
 /* Showing the working: the score, the bar, and the points behind each factor. */
+.helper-prov{margin:0 0 8px;font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:2px;flex-wrap:wrap;}
 .fit-intro{margin:0 0 4px;font-size:12.5px;color:var(--muted);line-height:1.5;}
 .fit-note{margin:8px 0 0;padding:8px 10px;border-radius:8px;background:#FBF3DE;border:1px solid var(--gold-soft);color:#8A6C21;font-size:12.5px;line-height:1.45;}
 .f-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;}
@@ -133,6 +134,35 @@ td.num{text-align:right;}
 .btn{border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:100px;padding:10px 18px;font-size:var(--t-sm);font-weight:600;cursor:pointer;}
 .btn.ghost{background:transparent;color:var(--ink);}
 
+/* Method, citation and references. */
+.method{display:grid;grid-template-columns:1fr 1.2fr;gap:28px;margin:0 0 30px;padding:22px;background:#fff;border:1px solid var(--hair);border-radius:14px;}
+.method h3{font-family:var(--serif);font-weight:500;font-size:var(--t-xl);margin:0 0 8px;}
+.method-note{font-size:13px;color:var(--muted);margin:0 0 12px;line-height:1.55;}
+.method-list{margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-2);line-height:1.6;}
+.method-list li{margin-bottom:7px;}
+.method-list b{color:var(--ink);}
+.cite{margin:0 0 10px;padding:12px 14px;background:var(--panel);border-radius:10px;font-family:var(--sans);font-size:12.5px;line-height:1.6;white-space:pre-wrap;color:var(--ink-2);}
+.linkish{background:none;border:none;padding:0;font:inherit;color:var(--emerald);text-decoration:underline;cursor:pointer;}
+.ref-heading{font-family:var(--serif);font-weight:500;font-size:var(--t-xl);margin:0 0 14px;}
+.lic-h{font-family:var(--serif);font-weight:500;font-size:var(--t-lg);margin:20px 0 6px;}
+.lic{font-size:13px;color:var(--ink-2);line-height:1.55;margin:0 0 8px;}
+.lic b{color:var(--ink);}
+/* Sources and references. */
+.ref-list{list-style:none;counter-reset:ref;margin:0;padding:0;display:grid;gap:14px;}
+.ref{counter-increment:ref;position:relative;padding:16px 18px 16px 46px;background:#fff;border:1px solid var(--hair);border-radius:12px;}
+.ref::before{content:counter(ref);position:absolute;left:16px;top:16px;font-family:var(--serif);font-weight:600;color:var(--gold);font-variant-numeric:tabular-nums;}
+.ref a{font-weight:600;color:var(--emerald);text-decoration:none;border-bottom:1px solid transparent;}
+.ref a:hover{border-bottom-color:var(--emerald);}
+.ref-date{display:block;font-size:var(--t-xs);color:var(--muted);margin-top:2px;letter-spacing:var(--track-label);}
+.ref-use{margin:8px 0 0;font-size:13px;color:var(--ink-2);}
+.ref-v{margin:6px 0 0;font-size:12.5px;font-weight:600;}
+.ref-v.v-ok{color:var(--verified-ink);}
+.ref-v.v-part{color:#8A6C21;}
+.ref-v.v-no{color:var(--warn);}
+.ref-note{margin:6px 0 0;font-size:12px;color:var(--muted);font-style:italic;}
+@keyframes refflash{from{background:var(--gold-soft);border-color:var(--gold);}to{background:#fff;border-color:var(--hair);}}
+.ref.flash{animation:refflash 1.6s ease-out;}
+.src{cursor:pointer;}
 footer{padding:50px 0 80px;color:var(--muted);font-size:var(--t-xs);line-height:1.7;}
 footer .wrap{max-width:760px;}
 footer p{margin:0 0 10px;}

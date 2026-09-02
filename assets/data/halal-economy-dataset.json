@@ -1,0 +1,2501 @@
+{
+  "compiled": "2026-09-02",
+  "verifiedOn": "September 2026",
+  "verification": {
+    "confirmed": 66,
+    "total": 197,
+    "note": "A figure is \"confirmed\" when it was checked against a named source that was actually retrieved. It is not a claim that the figure is true.",
+    "figures": [
+      {
+        "id": "consumerSpend.2018.v",
+        "value": 2.2,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "consumerSpend.2022.v",
+        "value": 2.29,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "consumerSpend.2023.v",
+        "value": 2.43,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "consumerSpend.2024.v",
+        "value": 2.6,
+        "confirmed": true,
+        "check": "sgie2526"
+      },
+      {
+        "id": "consumerSpend.2029.v",
+        "value": 3.56,
+        "confirmed": true,
+        "check": "sgie2526"
+      },
+      {
+        "id": "countryFinance.Bahrain.bank",
+        "value": 16.1,
+        "confirmed": true,
+        "check": "gfmag"
+      },
+      {
+        "id": "countryFinance.Bahrain.fin",
+        "value": 3.5,
+        "confirmed": true,
+        "check": "gfmag"
+      },
+      {
+        "id": "countryFinance.Bangladesh.bank",
+        "value": 8.2,
+        "confirmed": false,
+        "check": "gfmag"
+      },
+      {
+        "id": "countryFinance.Brunei.bank",
+        "value": 29.6,
+        "confirmed": false,
+        "check": "gfmag"
+      },
+      {
+        "id": "countryFinance.Egypt.bank",
+        "value": 13.7,
+        "confirmed": false,
+        "check": "gfmag"
+      },
+      {
+        "id": "countryFinance.Indonesia.bank",
+        "value": 5.5,
+        "confirmed": false,
+        "check": "gfmag"
+      },
+      {
+        "id": "countryFinance.Indonesia.fin",
+        "value": 2,
+        "confirmed": true,
+        "check": "gfmag"
+      },
+      {
+        "id": "countryFinance.Iran.bank",
+        "value": 100,
+        "confirmed": false,
+        "check": "gfmag"
+      },
+      {
+        "id": "countryFinance.Iran.fin",
+        "value": 27,
+        "confirmed": false,
+        "check": "gfmag"
+      },
+      {
+        "id": "countryFinance.Jordan.bank",
+        "value": 17.8,
+        "confirmed": true,
+        "check": "gfmag"
+      },
+      {
+        "id": "countryFinance.Kuwait.bank",
+        "value": 51,
+        "confirmed": true,
+        "check": "gfmag"
+      },
+      {
+        "id": "countryFinance.Kuwait.fin",
+        "value": 5.5,
+        "confirmed": true,
+        "check": "gfmag"
+      },
+      {
+        "id": "countryFinance.Malaysia.bank",
+        "value": 20.1,
+        "confirmed": false,
+        "check": "gfmag"
+      },
+      {
+        "id": "countryFinance.Malaysia.fin",
+        "value": 12,
+        "confirmed": true,
+        "check": "gfmag"
+      },
+      {
+        "id": "countryFinance.Oman.bank",
+        "value": 16.6,
+        "confirmed": true,
+        "check": "gfmag"
+      },
+      {
+        "id": "countryFinance.Pakistan.fin",
+        "value": 2,
+        "confirmed": true,
+        "check": "gfmag"
+      },
+      {
+        "id": "countryFinance.Qatar.bank",
+        "value": 28.6,
+        "confirmed": true,
+        "check": "gfmag"
+      },
+      {
+        "id": "countryFinance.Qatar.fin",
+        "value": 5.5,
+        "confirmed": true,
+        "check": "gfmag"
+      },
+      {
+        "id": "countryFinance.Saudi-Arabia.bank",
+        "value": 74.9,
+        "confirmed": true,
+        "check": "gfmag"
+      },
+      {
+        "id": "countryFinance.Saudi-Arabia.fin",
+        "value": 27,
+        "confirmed": false,
+        "check": "gfmag"
+      },
+      {
+        "id": "countryFinance.Sudan.bank",
+        "value": 100,
+        "confirmed": true,
+        "check": "gfmag"
+      },
+      {
+        "id": "countryFinance.Türkiye.fin",
+        "value": 3.5,
+        "confirmed": true,
+        "check": "gfmag"
+      },
+      {
+        "id": "countryFinance.United-Arab-Emirates.bank",
+        "value": 22.7,
+        "confirmed": true,
+        "check": "gfmag"
+      },
+      {
+        "id": "countryFinance.United-Arab-Emirates.fin",
+        "value": 10,
+        "confirmed": true,
+        "check": "gfmag"
+      },
+      {
+        "id": "countryGiei.Bahrain.giei",
+        "value": 81.9,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryGiei.Bahrain.rank",
+        "value": 5,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryGiei.Indonesia.giei",
+        "value": 99.9,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryGiei.Indonesia.rank",
+        "value": 3,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryGiei.Jordan.giei",
+        "value": 71.4,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryGiei.Jordan.rank",
+        "value": 6,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryGiei.Kuwait.giei",
+        "value": 67,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryGiei.Kuwait.rank",
+        "value": 7,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryGiei.Malaysia.giei",
+        "value": 165.1,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryGiei.Malaysia.giei2526",
+        "value": 186.1,
+        "confirmed": true,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryGiei.Malaysia.rank",
+        "value": 1,
+        "confirmed": true,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryGiei.Pakistan.giei",
+        "value": 64.1,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryGiei.Pakistan.rank",
+        "value": 8,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryGiei.Qatar.giei",
+        "value": 60.4,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryGiei.Qatar.rank",
+        "value": 10,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryGiei.Saudi-Arabia.giei",
+        "value": 100.9,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryGiei.Saudi-Arabia.rank",
+        "value": 2,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryGiei.Senegal.rank",
+        "value": 25,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryGiei.Singapore.rank",
+        "value": 15,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryGiei.Türkiye.giei",
+        "value": 64,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryGiei.Türkiye.rank",
+        "value": 9,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryGiei.United-Arab-Emirates.giei",
+        "value": 95.8,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryGiei.United-Arab-Emirates.rank",
+        "value": 4,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryGiei.United-Kingdom.rank",
+        "value": 14,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Afghanistan.pop",
+        "value": 38,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Algeria.pop",
+        "value": 43,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Australia.pop",
+        "value": 0.8,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Bahrain.pop",
+        "value": 1.2,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Bangladesh.pop",
+        "value": 151,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Brazil.pop",
+        "value": 0.2,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Brunei.pop",
+        "value": 0.4,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.China.pop",
+        "value": 25,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Egypt.pop",
+        "value": 90,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Ethiopia.pop",
+        "value": 38,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.France.pop",
+        "value": 6,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Germany.pop",
+        "value": 5,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.India.pop",
+        "value": 200,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Indonesia.pop",
+        "value": 236,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Iran.pop",
+        "value": 83,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Iraq.pop",
+        "value": 40,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Jordan.pop",
+        "value": 10,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Kuwait.pop",
+        "value": 3.5,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Malaysia.pop",
+        "value": 21,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Mali.pop",
+        "value": 20,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Morocco.pop",
+        "value": 37,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Niger.pop",
+        "value": 24,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Nigeria.pop",
+        "value": 99,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Oman.pop",
+        "value": 4,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Pakistan.pop",
+        "value": 231,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Qatar.pop",
+        "value": 2,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Russia.pop",
+        "value": 20,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Saudi-Arabia.pop",
+        "value": 34,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Senegal.pop",
+        "value": 17,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Singapore.pop",
+        "value": 0.9,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Sudan.pop",
+        "value": 42,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Syria.pop",
+        "value": 19,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Tanzania.pop",
+        "value": 22,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Türkiye.pop",
+        "value": 81,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.United-Arab-Emirates.pop",
+        "value": 7,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.United-Kingdom.pop",
+        "value": 4,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.United-States.pop",
+        "value": 4,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Uzbekistan.pop",
+        "value": 30,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryPop.Yemen.pop",
+        "value": 30,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "countryTrade.Malaysia.imports",
+        "value": 30.6,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "deals.2024/25/Country/Indonesia.n",
+        "value": 40,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "deals.2024/25/Country/Indonesia.v",
+        "value": 1.6,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "deals.2024/25/Country/United-Arab-Emirates.n",
+        "value": 50,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "deals.2024/25/Country/United-Arab-Emirates.v",
+        "value": 1.53,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "deals.2024/25/Global/All-Islamic-economy-sectors.n",
+        "value": 225,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "deals.2024/25/Global/All-Islamic-economy-sectors.v",
+        "value": 5.8,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "deals.2024/25/Halal-food-by-country/Indonesia.v",
+        "value": 0.115,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "deals.2024/25/Halal-food-by-country/Morocco.v",
+        "value": 0.61,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "deals.2024/25/Halal-food-by-country/Nigeria.v",
+        "value": 0.016,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "deals.2024/25/Halal-food-by-country/Saudi-Arabia.v",
+        "value": 0.144,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "deals.2024/25/Halal-food-by-country/United-Arab-Emirates.v",
+        "value": 0.398,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "deals.2024/25/Sector/Halal-food.n",
+        "value": 29,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "deals.2024/25/Sector/Halal-food.v",
+        "value": 1.3,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "deals.2025/26/Global/All-Islamic-economy-sectors.n",
+        "value": 346,
+        "confirmed": true,
+        "check": "sgie2526"
+      },
+      {
+        "id": "deals.2025/26/Global/All-Islamic-economy-sectors.v",
+        "value": 13.11,
+        "confirmed": true,
+        "check": "sgie2526"
+      },
+      {
+        "id": "finComposition.Funds-&-takaful.v",
+        "value": 5.1,
+        "confirmed": false,
+        "check": "ifsb2025"
+      },
+      {
+        "id": "finComposition.Islamic-banking.v",
+        "value": 71.6,
+        "confirmed": false,
+        "check": "ifsb2025"
+      },
+      {
+        "id": "finComposition.Sukuk-outstanding.v",
+        "value": 23.3,
+        "confirmed": false,
+        "check": "ifsb2025"
+      },
+      {
+        "id": "finGrowth.Islamic-banking.v",
+        "value": 17.1,
+        "confirmed": true,
+        "check": "ifsb2025"
+      },
+      {
+        "id": "finGrowth.Sukuk-issuance.v",
+        "value": 25.6,
+        "confirmed": true,
+        "check": "ifsb2025"
+      },
+      {
+        "id": "finGrowth.Takaful-(insurance).v",
+        "value": 16.9,
+        "confirmed": true,
+        "check": "ifsb2025"
+      },
+      {
+        "id": "finShareCountries.Bahrain.v",
+        "value": 3.5,
+        "confirmed": true,
+        "check": "gfmag"
+      },
+      {
+        "id": "finShareCountries.Indonesia.v",
+        "value": 2,
+        "confirmed": true,
+        "check": "gfmag"
+      },
+      {
+        "id": "finShareCountries.Iran.v",
+        "value": 27,
+        "confirmed": false,
+        "check": "gfmag"
+      },
+      {
+        "id": "finShareCountries.Kuwait.v",
+        "value": 5.5,
+        "confirmed": true,
+        "check": "gfmag"
+      },
+      {
+        "id": "finShareCountries.Malaysia.v",
+        "value": 12,
+        "confirmed": true,
+        "check": "gfmag"
+      },
+      {
+        "id": "finShareCountries.Pakistan.v",
+        "value": 2,
+        "confirmed": true,
+        "check": "gfmag"
+      },
+      {
+        "id": "finShareCountries.Qatar.v",
+        "value": 5.5,
+        "confirmed": true,
+        "check": "gfmag"
+      },
+      {
+        "id": "finShareCountries.Saudi-Arabia.v",
+        "value": 27,
+        "confirmed": false,
+        "check": "gfmag"
+      },
+      {
+        "id": "finShareCountries.Türkiye.v",
+        "value": 3.5,
+        "confirmed": true,
+        "check": "gfmag"
+      },
+      {
+        "id": "finShareCountries.UAE.v",
+        "value": 10,
+        "confirmed": true,
+        "check": "gfmag"
+      },
+      {
+        "id": "hajj.2012.v",
+        "value": 3.16,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "hajj.2019.v",
+        "value": 2.49,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "hajj.2020.v",
+        "value": 0.01,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "hajj.2021.v",
+        "value": 0.06,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "hajj.2022.v",
+        "value": 0.93,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "hajj.2023.v",
+        "value": 1.85,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "hajj.2024.v",
+        "value": 1.83,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "hajj.2025.v",
+        "value": 1.67,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "hajj.2026.v",
+        "value": 1.71,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "islamicFinance.2021.v",
+        "value": 3.96,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "islamicFinance.2023.v",
+        "value": 4.93,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "islamicFinance.2024.v",
+        "value": 5.99,
+        "confirmed": true,
+        "check": "sgie2526"
+      },
+      {
+        "id": "islamicFinance.2029.v",
+        "value": 9.72,
+        "confirmed": true,
+        "check": "sgie2526"
+      },
+      {
+        "id": "oicImports.2022.v",
+        "value": 359,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "oicImports.2023.v",
+        "value": 407.8,
+        "confirmed": false,
+        "check": "sgie2526"
+      },
+      {
+        "id": "oicImports.2024.v",
+        "value": 421.5,
+        "confirmed": true,
+        "check": "sgie2526"
+      },
+      {
+        "id": "oicImports.2028.v",
+        "value": 608.4,
+        "confirmed": true,
+        "check": "sgie2526"
+      },
+      {
+        "id": "rankHistory.Bahrain.2019/20",
+        "value": 3,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "rankHistory.Bahrain.2023/24",
+        "value": 5,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "rankHistory.Bahrain.2024/25",
+        "value": 5,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "rankHistory.Bahrain.2025/26",
+        "value": 5,
+        "confirmed": true,
+        "check": "sgiePress"
+      },
+      {
+        "id": "rankHistory.Indonesia.2019/20",
+        "value": 5,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "rankHistory.Indonesia.2023/24",
+        "value": 3,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "rankHistory.Indonesia.2024/25",
+        "value": 3,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "rankHistory.Indonesia.2025/26",
+        "value": 4,
+        "confirmed": true,
+        "check": "sgiePress"
+      },
+      {
+        "id": "rankHistory.Malaysia.2019/20",
+        "value": 1,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "rankHistory.Malaysia.2023/24",
+        "value": 1,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "rankHistory.Malaysia.2024/25",
+        "value": 1,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "rankHistory.Malaysia.2025/26",
+        "value": 1,
+        "confirmed": true,
+        "check": "sgiePress"
+      },
+      {
+        "id": "rankHistory.Saudi-Arabia.2019/20",
+        "value": 4,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "rankHistory.Saudi-Arabia.2023/24",
+        "value": 2,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "rankHistory.Saudi-Arabia.2024/25",
+        "value": 2,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "rankHistory.Saudi-Arabia.2025/26",
+        "value": 3,
+        "confirmed": true,
+        "check": "sgiePress"
+      },
+      {
+        "id": "rankHistory.United-Arab-Emirates.2019/20",
+        "value": 2,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "rankHistory.United-Arab-Emirates.2023/24",
+        "value": 4,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "rankHistory.United-Arab-Emirates.2024/25",
+        "value": 4,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "rankHistory.United-Arab-Emirates.2025/26",
+        "value": 2,
+        "confirmed": true,
+        "check": "sgiePress"
+      },
+      {
+        "id": "sectorRanks.Bahrain.fin",
+        "value": 4,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "sectorRanks.Indonesia.fashion",
+        "value": 1,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "sectorRanks.Indonesia.pharma",
+        "value": 2,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "sectorRanks.Indonesia.travel",
+        "value": 2,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "sectorRanks.Malaysia.fashion",
+        "value": 4,
+        "confirmed": true,
+        "check": "sgiePress"
+      },
+      {
+        "id": "sectorRanks.Malaysia.fin",
+        "value": 1,
+        "confirmed": true,
+        "check": "sgiePress"
+      },
+      {
+        "id": "sectorRanks.Malaysia.food",
+        "value": 1,
+        "confirmed": true,
+        "check": "sgiePress"
+      },
+      {
+        "id": "sectorRanks.Malaysia.media",
+        "value": 2,
+        "confirmed": true,
+        "check": "sgiePress"
+      },
+      {
+        "id": "sectorRanks.Malaysia.pharma",
+        "value": 1,
+        "confirmed": true,
+        "check": "sgiePress"
+      },
+      {
+        "id": "sectorRanks.Malaysia.travel",
+        "value": 4,
+        "confirmed": true,
+        "check": "sgiePress"
+      },
+      {
+        "id": "sectorRanks.Saudi-Arabia.fin",
+        "value": 2,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "sectorRanks.Türkiye.fashion",
+        "value": 2,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "sectorRanks.United-Arab-Emirates.fashion",
+        "value": 2,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "sectorRanks.United-Arab-Emirates.fin",
+        "value": 3,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "sectorRanks.United-Arab-Emirates.food",
+        "value": 2,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "sectorRanks.United-Arab-Emirates.media",
+        "value": 1,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "sectorRanks.United-Arab-Emirates.pharma",
+        "value": 2,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "sectorRanks.United-Arab-Emirates.travel",
+        "value": 2,
+        "confirmed": false,
+        "check": "sgiePress"
+      },
+      {
+        "id": "sectors.cosm.cagr",
+        "value": 6.2,
+        "confirmed": true,
+        "check": "derived"
+      },
+      {
+        "id": "sectors.cosm.v2024",
+        "value": 92,
+        "confirmed": true,
+        "check": "sgie2526"
+      },
+      {
+        "id": "sectors.cosm.v2029",
+        "value": 124,
+        "confirmed": true,
+        "check": "sgie2526"
+      },
+      {
+        "id": "sectors.fashion.cagr",
+        "value": 5.1,
+        "confirmed": true,
+        "check": "derived"
+      },
+      {
+        "id": "sectors.fashion.v2024",
+        "value": 347,
+        "confirmed": true,
+        "check": "sgie2526"
+      },
+      {
+        "id": "sectors.fashion.v2029",
+        "value": 444,
+        "confirmed": true,
+        "check": "sgie2526"
+      },
+      {
+        "id": "sectors.food.cagr",
+        "value": 6.1,
+        "confirmed": true,
+        "check": "derived"
+      },
+      {
+        "id": "sectors.food.v2024",
+        "value": 1530,
+        "confirmed": true,
+        "check": "sgie2526"
+      },
+      {
+        "id": "sectors.food.v2029",
+        "value": 2058,
+        "confirmed": true,
+        "check": "sgie2526"
+      },
+      {
+        "id": "sectors.media.cagr",
+        "value": 5.7,
+        "confirmed": true,
+        "check": "derived"
+      },
+      {
+        "id": "sectors.media.v2024",
+        "value": 276,
+        "confirmed": true,
+        "check": "sgie2526"
+      },
+      {
+        "id": "sectors.media.v2029",
+        "value": 364,
+        "confirmed": true,
+        "check": "sgie2526"
+      },
+      {
+        "id": "sectors.pharma.cagr",
+        "value": 5.5,
+        "confirmed": true,
+        "check": "derived"
+      },
+      {
+        "id": "sectors.pharma.v2024",
+        "value": 112,
+        "confirmed": true,
+        "check": "sgie2526"
+      },
+      {
+        "id": "sectors.pharma.v2029",
+        "value": 146,
+        "confirmed": true,
+        "check": "sgie2526"
+      },
+      {
+        "id": "sectors.travel.cagr",
+        "value": 11.2,
+        "confirmed": true,
+        "check": "derived"
+      },
+      {
+        "id": "sectors.travel.v2024",
+        "value": 249,
+        "confirmed": true,
+        "check": "sgie2526"
+      },
+      {
+        "id": "sectors.travel.v2029",
+        "value": 424,
+        "confirmed": true,
+        "check": "sgie2526"
+      }
+    ]
+  },
+  "sources": {
+    "sgie2526": {
+      "name": "DinarStandard, State of the Global Islamic Economy Report 2025/26",
+      "date": "June 2026",
+      "url": "https://www.dinarstandard.com/insights/state-of-the-global-islamic-economy-report-2025-26",
+      "reached": "ok"
+    },
+    "sgie2425": {
+      "name": "DinarStandard, State of the Global Islamic Economy Report 2024/25",
+      "date": "July 2025",
+      "url": "https://www.dinarstandard.com/insights/sgier-2024-25",
+      "reached": "ok"
+    },
+    "sgie-multi": {
+      "name": "DinarStandard SGIE reports, 2019/20 – 2025/26 editions",
+      "date": "2019–2026",
+      "url": "https://salaamgateway.com/specialcoverage/SGIE25-26",
+      "reached": "ok"
+    },
+    "ifsb": {
+      "name": "IFSB Islamic Financial Services Industry Stability Report 2025",
+      "date": "May 2025",
+      "url": "https://www.ifsb.org/wp-content/uploads/2025/05/IFSI-Stability-Report-2025.pdf",
+      "reached": "ok"
+    },
+    "gf": {
+      "name": "Global Finance Magazine / LSEG-ICD IFDI, rounded shares",
+      "date": "2024",
+      "url": "https://gfmag.com/banking/islamic-finance-just-muslim-majority-nations/",
+      "reached": "ok"
+    },
+    "pew": {
+      "name": "Pew Research Center global religious demographics, rounded",
+      "date": "2020 base",
+      "url": "https://www.pewresearch.org/religion/",
+      "reached": "blocked"
+    },
+    "imf": {
+      "name": "IMF World Economic Outlook, nominal GDP 2024, rounded",
+      "date": "2024",
+      "url": "https://www.imf.org/en/Publications/WEO",
+      "reached": "blocked"
+    },
+    "gastat": {
+      "name": "Saudi General Authority for Statistics (GASTAT)",
+      "date": "2012–2026",
+      "url": "https://www.stats.gov.sa/en/statistics-tabs/-/categories/1051",
+      "reached": "ok"
+    },
+    "cert": {
+      "name": "Certifier and accreditation-body websites; SMIIC",
+      "date": "Reference list",
+      "url": "https://smiic.org/en/standards",
+      "reached": "ok"
+    }
+  },
+  "sectors": [
+    {
+      "key": "food",
+      "name": "Halal food & beverages",
+      "v2024": 1530,
+      "v2029": 2058,
+      "cagr": 6.1,
+      "verified": true
+    },
+    {
+      "key": "fashion",
+      "name": "Modest fashion",
+      "v2024": 347,
+      "v2029": 444,
+      "cagr": 5.1,
+      "verified": true
+    },
+    {
+      "key": "media",
+      "name": "Media & recreation",
+      "v2024": 276,
+      "v2029": 364,
+      "cagr": 5.7,
+      "verified": true
+    },
+    {
+      "key": "travel",
+      "name": "Muslim-friendly travel",
+      "v2024": 249,
+      "v2029": 424,
+      "cagr": 11.2,
+      "verified": true
+    },
+    {
+      "key": "pharma",
+      "name": "Pharmaceuticals",
+      "v2024": 112,
+      "v2029": 146,
+      "cagr": 5.5,
+      "verified": true
+    },
+    {
+      "key": "cosm",
+      "name": "Cosmetics",
+      "v2024": 92,
+      "v2029": 124,
+      "cagr": 6.2,
+      "verified": true
+    }
+  ],
+  "sectorRanks": {
+    "Malaysia": {
+      "food": [
+        1,
+        "25/26"
+      ],
+      "fin": [
+        1,
+        "25/26"
+      ],
+      "pharma": [
+        1,
+        "25/26"
+      ],
+      "media": [
+        2,
+        "25/26"
+      ],
+      "travel": [
+        4,
+        "25/26"
+      ],
+      "fashion": [
+        4,
+        "25/26"
+      ],
+      "verified": [
+        "food",
+        "fin",
+        "pharma",
+        "media",
+        "travel",
+        "fashion"
+      ]
+    },
+    "United Arab Emirates": {
+      "media": [
+        1,
+        "25/26"
+      ],
+      "food": [
+        2,
+        "25/26"
+      ],
+      "travel": [
+        2,
+        "25/26"
+      ],
+      "fashion": [
+        2,
+        "25/26"
+      ],
+      "pharma": [
+        2,
+        "25/26"
+      ],
+      "fin": [
+        3,
+        "25/26"
+      ]
+    },
+    "Indonesia": {
+      "fashion": [
+        1,
+        "24/25"
+      ],
+      "travel": [
+        2,
+        "24/25"
+      ],
+      "pharma": [
+        2,
+        "24/25"
+      ]
+    },
+    "Saudi Arabia": {
+      "fin": [
+        2,
+        "24/25"
+      ]
+    },
+    "Türkiye": {
+      "fashion": [
+        2,
+        "24/25"
+      ]
+    },
+    "Bahrain": {
+      "fin": [
+        4,
+        "24/25"
+      ]
+    }
+  },
+  "consumerSpend": [
+    {
+      "y": 2018,
+      "v": 2.2
+    },
+    {
+      "y": 2022,
+      "v": 2.29
+    },
+    {
+      "y": 2023,
+      "v": 2.43
+    },
+    {
+      "y": 2024,
+      "v": 2.6,
+      "verified": true
+    },
+    {
+      "y": 2029,
+      "v": 3.56,
+      "proj": true,
+      "verified": true
+    }
+  ],
+  "islamicFinance": [
+    {
+      "y": 2021,
+      "v": 3.96
+    },
+    {
+      "y": 2023,
+      "v": 4.93
+    },
+    {
+      "y": 2024,
+      "v": 5.99,
+      "verified": true
+    },
+    {
+      "y": 2029,
+      "v": 9.72,
+      "proj": true,
+      "verified": true
+    }
+  ],
+  "finComposition": [
+    {
+      "name": "Islamic banking",
+      "v": 71.6
+    },
+    {
+      "name": "Sukuk outstanding",
+      "v": 23.3
+    },
+    {
+      "name": "Funds & takaful",
+      "v": 5.1
+    }
+  ],
+  "finGrowth": [
+    {
+      "name": "Sukuk issuance",
+      "v": 25.6,
+      "verified": true
+    },
+    {
+      "name": "Islamic banking",
+      "v": 17.1,
+      "verified": true
+    },
+    {
+      "name": "Takaful (insurance)",
+      "v": 16.9,
+      "verified": true
+    }
+  ],
+  "finShareCountries": [
+    {
+      "name": "Saudi Arabia",
+      "v": 27
+    },
+    {
+      "name": "Iran",
+      "v": 27
+    },
+    {
+      "name": "Malaysia",
+      "v": 12,
+      "verified": true
+    },
+    {
+      "name": "UAE",
+      "v": 10,
+      "verified": true
+    },
+    {
+      "name": "Kuwait",
+      "v": 5.5,
+      "verified": true
+    },
+    {
+      "name": "Qatar",
+      "v": 5.5,
+      "verified": true
+    },
+    {
+      "name": "Türkiye",
+      "v": 3.5,
+      "verified": true
+    },
+    {
+      "name": "Bahrain",
+      "v": 3.5,
+      "verified": true
+    },
+    {
+      "name": "Indonesia",
+      "v": 2,
+      "verified": true
+    },
+    {
+      "name": "Pakistan",
+      "v": 2,
+      "verified": true
+    }
+  ],
+  "oicImports": [
+    {
+      "y": 2022,
+      "v": 359
+    },
+    {
+      "y": 2023,
+      "v": 407.8
+    },
+    {
+      "y": 2024,
+      "v": 421.5,
+      "verified": true
+    },
+    {
+      "y": 2028,
+      "v": 608.4,
+      "proj": true,
+      "verified": true
+    }
+  ],
+  "hajj": [
+    {
+      "y": 2012,
+      "v": 3.16
+    },
+    {
+      "y": 2019,
+      "v": 2.49
+    },
+    {
+      "y": 2020,
+      "v": 0.01
+    },
+    {
+      "y": 2021,
+      "v": 0.06
+    },
+    {
+      "y": 2022,
+      "v": 0.93
+    },
+    {
+      "y": 2023,
+      "v": 1.85
+    },
+    {
+      "y": 2024,
+      "v": 1.83
+    },
+    {
+      "y": 2025,
+      "v": 1.67
+    },
+    {
+      "y": 2026,
+      "v": 1.71
+    }
+  ],
+  "countries": [
+    {
+      "atlas": "Malaysia",
+      "label": "Malaysia",
+      "pop": 21,
+      "giei": 165.1,
+      "giei2526": 186.1,
+      "rank": 1,
+      "verified": [
+        "rank",
+        "giei2526",
+        "fin"
+      ],
+      "fin": 12,
+      "bank": 20.1,
+      "imports": 30.6,
+      "lon": 102,
+      "lat": 4,
+      "region": "asia",
+      "oic": true,
+      "note": "Top-ranked in halal food, Islamic finance and pharma/cosmetics for the twelfth year. Halal imports grew 12.4% to $30.6B in 2024."
+    },
+    {
+      "atlas": "Saudi Arabia",
+      "label": "Saudi Arabia",
+      "verified": [
+        "bank"
+      ],
+      "pop": 34,
+      "giei": 100.9,
+      "rank": 2,
+      "fin": 27,
+      "bank": 74.9,
+      "lon": 45,
+      "lat": 24,
+      "region": "mena",
+      "oic": true,
+      "note": "Largest holder of Islamic finance assets alongside Iran; Islamic banks are roughly three-quarters of domestic banking. Largest OIC halal importer.",
+      "giei2526": null,
+      "imports": null
+    },
+    {
+      "atlas": "Indonesia",
+      "label": "Indonesia",
+      "verified": [
+        "fin"
+      ],
+      "pop": 236,
+      "giei": 99.9,
+      "rank": 3,
+      "fin": 2,
+      "bank": 5.5,
+      "lon": 118,
+      "lat": -2,
+      "region": "asia",
+      "oic": true,
+      "note": "World's largest Muslim population and largest halal food market. #1 in modest fashion. Top destination for Islamic-economy investment (~$1.6B across 40 deals).",
+      "giei2526": null,
+      "imports": null
+    },
+    {
+      "atlas": "United Arab Emirates",
+      "label": "United Arab Emirates",
+      "verified": [
+        "fin",
+        "bank"
+      ],
+      "pop": 7,
+      "giei": 95.8,
+      "rank": 4,
+      "fin": 10,
+      "bank": 22.7,
+      "lon": 54,
+      "lat": 24,
+      "small": true,
+      "region": "mena",
+      "oic": true,
+      "note": "Moved to #2 in the 2025/26 ranking; top three in every sector and #1 in media & recreation. ~$1.5B in deals across 50 transactions.",
+      "giei2526": null,
+      "imports": null
+    },
+    {
+      "atlas": "Bahrain",
+      "label": "Bahrain",
+      "verified": [
+        "fin",
+        "bank"
+      ],
+      "pop": 1.2,
+      "giei": 81.9,
+      "rank": 5,
+      "fin": 3.5,
+      "bank": 16.1,
+      "lon": 50.5,
+      "lat": 26,
+      "small": true,
+      "region": "mena",
+      "oic": true,
+      "note": "Long-standing Islamic finance hub and a leading sukuk issuer.",
+      "giei2526": null,
+      "imports": null
+    },
+    {
+      "atlas": "Jordan",
+      "label": "Jordan",
+      "verified": [
+        "bank"
+      ],
+      "pop": 10,
+      "giei": 71.4,
+      "rank": 6,
+      "fin": null,
+      "bank": 17.8,
+      "lon": 36.5,
+      "lat": 31,
+      "region": "mena",
+      "oic": true,
+      "note": "Islamic banks hold about 18% of domestic banking assets.",
+      "giei2526": null,
+      "imports": null
+    },
+    {
+      "atlas": "Kuwait",
+      "label": "Kuwait",
+      "verified": [
+        "fin",
+        "bank"
+      ],
+      "pop": 3.5,
+      "giei": 67,
+      "rank": 7,
+      "fin": 5.5,
+      "bank": 51,
+      "lon": 47.5,
+      "lat": 29.4,
+      "small": true,
+      "region": "mena",
+      "oic": true,
+      "note": "Islamic banks hold about half of the domestic banking market.",
+      "giei2526": null,
+      "imports": null
+    },
+    {
+      "atlas": "Pakistan",
+      "label": "Pakistan",
+      "verified": [
+        "fin"
+      ],
+      "pop": 231,
+      "giei": 64.1,
+      "rank": 8,
+      "fin": 2,
+      "bank": null,
+      "lon": 69,
+      "lat": 30,
+      "region": "asia",
+      "oic": true,
+      "note": "Entered the GIEI top ten for the first time in 2024/25.",
+      "giei2526": null,
+      "imports": null
+    },
+    {
+      "atlas": "Turkey",
+      "label": "Türkiye",
+      "verified": [
+        "fin"
+      ],
+      "pop": 81,
+      "giei": 64,
+      "rank": 9,
+      "fin": 3.5,
+      "bank": null,
+      "lon": 35,
+      "lat": 39,
+      "region": "mena",
+      "oic": true,
+      "note": "Among the five largest OIC halal importers and a major exporter into OIC markets; #2 in modest fashion (2024/25).",
+      "giei2526": null,
+      "imports": null
+    },
+    {
+      "atlas": "Qatar",
+      "label": "Qatar",
+      "verified": [
+        "fin",
+        "bank"
+      ],
+      "pop": 2,
+      "giei": 60.4,
+      "rank": 10,
+      "fin": 5.5,
+      "bank": 28.6,
+      "lon": 51.2,
+      "lat": 25.3,
+      "small": true,
+      "region": "mena",
+      "oic": true,
+      "note": "Islamic banks hold about 29% of domestic banking assets.",
+      "giei2526": null,
+      "imports": null
+    },
+    {
+      "atlas": "United Kingdom",
+      "label": "United Kingdom",
+      "pop": 4,
+      "giei": null,
+      "rank": 14,
+      "fin": null,
+      "bank": null,
+      "lon": -2,
+      "lat": 54,
+      "region": "west",
+      "oic": false,
+      "note": "Ranked 14th, up one place. The leading Western hub for Islamic finance and sukuk listings.",
+      "giei2526": null,
+      "imports": null
+    },
+    {
+      "atlas": "Singapore",
+      "label": "Singapore",
+      "pop": 0.9,
+      "giei": null,
+      "rank": 15,
+      "fin": null,
+      "bank": null,
+      "lon": 103.8,
+      "lat": 1.35,
+      "small": true,
+      "region": "asia",
+      "oic": false,
+      "note": "Inside the GIEI top 15; MUIS certification is widely recognised across Southeast Asia.",
+      "giei2526": null,
+      "imports": null
+    },
+    {
+      "atlas": "Iran",
+      "label": "Iran",
+      "pop": 83,
+      "giei": null,
+      "rank": null,
+      "fin": 27,
+      "bank": 100,
+      "lon": 53,
+      "lat": 32,
+      "region": "mena",
+      "oic": true,
+      "note": "Fully Sharia-compliant banking system; roughly a quarter of global Islamic finance assets. Largest modest-fashion market by spend.",
+      "giei2526": null,
+      "imports": null
+    },
+    {
+      "atlas": "India",
+      "label": "India",
+      "pop": 200,
+      "giei": null,
+      "rank": null,
+      "fin": null,
+      "bank": null,
+      "lon": 78,
+      "lat": 22,
+      "region": "asia",
+      "oic": false,
+      "note": "Third-largest Muslim population; a leading supplier of halal meat into OIC markets.",
+      "giei2526": null,
+      "imports": null
+    },
+    {
+      "atlas": "Bangladesh",
+      "label": "Bangladesh",
+      "pop": 151,
+      "giei": null,
+      "rank": null,
+      "fin": null,
+      "bank": 8.2,
+      "lon": 90,
+      "lat": 24,
+      "region": "asia",
+      "oic": true,
+      "note": "Second-largest national halal food market by spend after Indonesia.",
+      "giei2526": null,
+      "imports": null
+    },
+    {
+      "atlas": "Nigeria",
+      "label": "Nigeria",
+      "pop": 99,
+      "giei": null,
+      "rank": null,
+      "fin": null,
+      "bank": null,
+      "lon": 8,
+      "lat": 9,
+      "region": "mena",
+      "oic": true,
+      "note": "Eighth-largest domestic halal market. Africa is the fastest-growing halal region at ~9.6% a year.",
+      "giei2526": null,
+      "imports": null
+    },
+    {
+      "atlas": "Egypt",
+      "label": "Egypt",
+      "pop": 90,
+      "giei": null,
+      "rank": null,
+      "fin": null,
+      "bank": 13.7,
+      "lon": 30,
+      "lat": 27,
+      "region": "mena",
+      "oic": true,
+      "note": "Third-largest national halal food market by spend.",
+      "giei2526": null,
+      "imports": null
+    },
+    {
+      "atlas": "Algeria",
+      "label": "Algeria",
+      "pop": 43,
+      "lon": 3,
+      "lat": 28,
+      "region": "mena",
+      "oic": true,
+      "giei": null,
+      "giei2526": null,
+      "rank": null,
+      "fin": null,
+      "bank": null,
+      "imports": null
+    },
+    {
+      "atlas": "Sudan",
+      "label": "Sudan",
+      "verified": [
+        "bank"
+      ],
+      "pop": 42,
+      "bank": 100,
+      "lon": 30,
+      "lat": 15,
+      "region": "mena",
+      "oic": true,
+      "note": "Banking system is entirely Islamic.",
+      "giei": null,
+      "giei2526": null,
+      "rank": null,
+      "fin": null,
+      "imports": null
+    },
+    {
+      "atlas": "Iraq",
+      "label": "Iraq",
+      "pop": 40,
+      "lon": 44,
+      "lat": 33,
+      "region": "mena",
+      "oic": true,
+      "giei": null,
+      "giei2526": null,
+      "rank": null,
+      "fin": null,
+      "bank": null,
+      "imports": null
+    },
+    {
+      "atlas": "Afghanistan",
+      "label": "Afghanistan",
+      "pop": 38,
+      "lon": 66,
+      "lat": 34,
+      "region": "asia",
+      "oic": true,
+      "giei": null,
+      "giei2526": null,
+      "rank": null,
+      "fin": null,
+      "bank": null,
+      "imports": null
+    },
+    {
+      "atlas": "Ethiopia",
+      "label": "Ethiopia",
+      "pop": 38,
+      "lon": 39,
+      "lat": 9,
+      "region": "mena",
+      "oic": false,
+      "giei": null,
+      "giei2526": null,
+      "rank": null,
+      "fin": null,
+      "bank": null,
+      "imports": null
+    },
+    {
+      "atlas": "Morocco",
+      "label": "Morocco",
+      "pop": 37,
+      "lon": -6,
+      "lat": 32,
+      "region": "mena",
+      "oic": true,
+      "note": "Topped halal-food deal value in 2023/24 with a $610M sugar acquisition.",
+      "giei": null,
+      "giei2526": null,
+      "rank": null,
+      "fin": null,
+      "bank": null,
+      "imports": null
+    },
+    {
+      "atlas": "Uzbekistan",
+      "label": "Uzbekistan",
+      "pop": 30,
+      "lon": 64,
+      "lat": 41,
+      "region": "asia",
+      "oic": true,
+      "giei": null,
+      "giei2526": null,
+      "rank": null,
+      "fin": null,
+      "bank": null,
+      "imports": null
+    },
+    {
+      "atlas": "Yemen",
+      "label": "Yemen",
+      "pop": 30,
+      "lon": 48,
+      "lat": 15,
+      "region": "mena",
+      "oic": true,
+      "giei": null,
+      "giei2526": null,
+      "rank": null,
+      "fin": null,
+      "bank": null,
+      "imports": null
+    },
+    {
+      "atlas": "China",
+      "label": "China",
+      "pop": 25,
+      "lon": 104,
+      "lat": 35,
+      "region": "asia",
+      "oic": false,
+      "giei": null,
+      "giei2526": null,
+      "rank": null,
+      "fin": null,
+      "bank": null,
+      "imports": null
+    },
+    {
+      "atlas": "Niger",
+      "label": "Niger",
+      "pop": 24,
+      "lon": 9,
+      "lat": 17,
+      "region": "mena",
+      "oic": true,
+      "giei": null,
+      "giei2526": null,
+      "rank": null,
+      "fin": null,
+      "bank": null,
+      "imports": null
+    },
+    {
+      "atlas": "Tanzania",
+      "label": "Tanzania",
+      "pop": 22,
+      "lon": 35,
+      "lat": -6,
+      "region": "mena",
+      "oic": false,
+      "giei": null,
+      "giei2526": null,
+      "rank": null,
+      "fin": null,
+      "bank": null,
+      "imports": null
+    },
+    {
+      "atlas": "Russia",
+      "label": "Russia",
+      "pop": 20,
+      "lon": 60,
+      "lat": 58,
+      "region": "west",
+      "oic": false,
+      "note": "A top-five supplier of halal-related goods into OIC markets.",
+      "giei": null,
+      "giei2526": null,
+      "rank": null,
+      "fin": null,
+      "bank": null,
+      "imports": null
+    },
+    {
+      "atlas": "Mali",
+      "label": "Mali",
+      "pop": 20,
+      "lon": -3,
+      "lat": 17,
+      "region": "mena",
+      "oic": true,
+      "giei": null,
+      "giei2526": null,
+      "rank": null,
+      "fin": null,
+      "bank": null,
+      "imports": null
+    },
+    {
+      "atlas": "Syria",
+      "label": "Syria",
+      "pop": 19,
+      "lon": 38,
+      "lat": 35,
+      "region": "mena",
+      "oic": true,
+      "giei": null,
+      "giei2526": null,
+      "rank": null,
+      "fin": null,
+      "bank": null,
+      "imports": null
+    },
+    {
+      "atlas": "Senegal",
+      "label": "Senegal",
+      "pop": 17,
+      "rank": 25,
+      "lon": -14,
+      "lat": 14,
+      "region": "mena",
+      "oic": true,
+      "note": "Rose 18 places to 25th in the 2024/25 ranking.",
+      "giei": null,
+      "giei2526": null,
+      "fin": null,
+      "bank": null,
+      "imports": null
+    },
+    {
+      "atlas": "Oman",
+      "label": "Oman",
+      "verified": [
+        "bank"
+      ],
+      "pop": 4,
+      "bank": 16.6,
+      "lon": 57,
+      "lat": 21,
+      "region": "mena",
+      "oic": true,
+      "giei": null,
+      "giei2526": null,
+      "rank": null,
+      "fin": null,
+      "imports": null
+    },
+    {
+      "atlas": "Brunei",
+      "label": "Brunei",
+      "pop": 0.4,
+      "bank": 29.6,
+      "lon": 114.7,
+      "lat": 4.5,
+      "small": true,
+      "region": "asia",
+      "oic": true,
+      "note": "Islamic banking is ~30% of the domestic banking system.",
+      "giei": null,
+      "giei2526": null,
+      "rank": null,
+      "fin": null,
+      "imports": null
+    },
+    {
+      "atlas": "France",
+      "label": "France",
+      "pop": 6,
+      "lon": 2,
+      "lat": 46,
+      "region": "west",
+      "oic": false,
+      "giei": null,
+      "giei2526": null,
+      "rank": null,
+      "fin": null,
+      "bank": null,
+      "imports": null
+    },
+    {
+      "atlas": "Germany",
+      "label": "Germany",
+      "pop": 5,
+      "lon": 10,
+      "lat": 51,
+      "region": "west",
+      "oic": false,
+      "giei": null,
+      "giei2526": null,
+      "rank": null,
+      "fin": null,
+      "bank": null,
+      "imports": null
+    },
+    {
+      "atlas": "United States of America",
+      "label": "United States",
+      "pop": 4,
+      "lon": -98,
+      "lat": 39,
+      "region": "west",
+      "oic": false,
+      "note": "A top-five supplier of halal-related goods into OIC markets.",
+      "giei": null,
+      "giei2526": null,
+      "rank": null,
+      "fin": null,
+      "bank": null,
+      "imports": null
+    },
+    {
+      "atlas": "Brazil",
+      "label": "Brazil",
+      "pop": 0.2,
+      "lon": -52,
+      "lat": -10,
+      "region": "west",
+      "oic": false,
+      "note": "The largest exporter of halal meat to OIC countries, despite a tiny Muslim population.",
+      "giei": null,
+      "giei2526": null,
+      "rank": null,
+      "fin": null,
+      "bank": null,
+      "imports": null
+    },
+    {
+      "atlas": "Australia",
+      "label": "Australia",
+      "pop": 0.8,
+      "lon": 134,
+      "lat": -25,
+      "region": "asia",
+      "oic": false,
+      "note": "Major halal meat exporter to the Gulf and Southeast Asia.",
+      "giei": null,
+      "giei2526": null,
+      "rank": null,
+      "fin": null,
+      "bank": null,
+      "imports": null
+    }
+  ],
+  "rankHistory": {
+    "editions": [
+      "2019/20",
+      "2023/24",
+      "2024/25",
+      "2025/26"
+    ],
+    "rows": [
+      {
+        "c": "Malaysia",
+        "r": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "verified": [
+          "2025/26"
+        ]
+      },
+      {
+        "c": "Saudi Arabia",
+        "r": [
+          4,
+          2,
+          2,
+          3
+        ],
+        "verified": [
+          "2025/26"
+        ]
+      },
+      {
+        "c": "Indonesia",
+        "r": [
+          5,
+          3,
+          3,
+          4
+        ],
+        "verified": [
+          "2025/26"
+        ]
+      },
+      {
+        "c": "United Arab Emirates",
+        "r": [
+          2,
+          4,
+          4,
+          2
+        ],
+        "verified": [
+          "2025/26"
+        ]
+      },
+      {
+        "c": "Bahrain",
+        "r": [
+          3,
+          5,
+          5,
+          5
+        ],
+        "verified": [
+          "2025/26"
+        ]
+      }
+    ]
+  },
+  "deals": [
+    {
+      "ed": "2025/26",
+      "scope": "Global",
+      "item": "All Islamic-economy sectors",
+      "n": 346,
+      "v": 13.11,
+      "verified": true,
+      "note": "Disclosed value; \"accelerated\" vs prior year"
+    },
+    {
+      "ed": "2024/25",
+      "scope": "Global",
+      "item": "All Islamic-economy sectors",
+      "n": 225,
+      "v": 5.8,
+      "note": "2023/24 activity"
+    },
+    {
+      "ed": "2024/25",
+      "scope": "Country",
+      "item": "Indonesia",
+      "n": 40,
+      "v": 1.6,
+      "note": "Top destination by value; food, cosmetics, pharma, halal tech"
+    },
+    {
+      "ed": "2024/25",
+      "scope": "Country",
+      "item": "United Arab Emirates",
+      "n": 50,
+      "v": 1.53,
+      "note": "Top destination by count; fintech and media"
+    },
+    {
+      "ed": "2024/25",
+      "scope": "Country",
+      "item": "Saudi Arabia",
+      "n": null,
+      "v": null,
+      "note": "Significant activity; values not broken out"
+    },
+    {
+      "ed": "2024/25",
+      "scope": "Country",
+      "item": "Türkiye",
+      "n": null,
+      "v": null,
+      "note": "Significant activity; values not broken out"
+    },
+    {
+      "ed": "2024/25",
+      "scope": "Sector",
+      "item": "Islamic finance",
+      "n": null,
+      "v": null,
+      "note": "Highest capital attracted"
+    },
+    {
+      "ed": "2024/25",
+      "scope": "Sector",
+      "item": "Media & recreation",
+      "n": null,
+      "v": null,
+      "note": "Most transactions"
+    },
+    {
+      "ed": "2024/25",
+      "scope": "Sector",
+      "item": "Halal food",
+      "n": 29,
+      "v": 1.3,
+      "note": "Focus on capacity expansion"
+    },
+    {
+      "ed": "2024/25",
+      "scope": "Halal food by country",
+      "item": "Morocco",
+      "n": null,
+      "v": 0.61,
+      "note": "Single sugar acquisition"
+    },
+    {
+      "ed": "2024/25",
+      "scope": "Halal food by country",
+      "item": "United Arab Emirates",
+      "n": null,
+      "v": 0.398,
+      "note": "Incl. vertical-farming investment"
+    },
+    {
+      "ed": "2024/25",
+      "scope": "Halal food by country",
+      "item": "Saudi Arabia",
+      "n": null,
+      "v": 0.144,
+      "note": "Incl. JBS $50M processing plant"
+    },
+    {
+      "ed": "2024/25",
+      "scope": "Halal food by country",
+      "item": "Indonesia",
+      "n": null,
+      "v": 0.115,
+      "note": ""
+    },
+    {
+      "ed": "2024/25",
+      "scope": "Halal food by country",
+      "item": "Nigeria",
+      "n": null,
+      "v": 0.016,
+      "note": ""
+    }
+  ],
+  "certBodies": [
+    {
+      "c": "Malaysia",
+      "b": "JAKIM",
+      "n": "Government certifier; the most widely recognised halal mark internationally."
+    },
+    {
+      "c": "Indonesia",
+      "b": "BPJPH (with MUI fatwa)",
+      "n": "Mandatory certification phasing in since 2019; further categories through 2026."
+    },
+    {
+      "c": "United Arab Emirates",
+      "b": "MoIAT / EIAC-accredited bodies",
+      "n": "National halal mark; EIAC accredits foreign certifiers."
+    },
+    {
+      "c": "Saudi Arabia",
+      "b": "SFDA / Saudi Halal Center",
+      "n": "Required for imported food; recognises accredited foreign certifiers."
+    },
+    {
+      "c": "GCC (regional)",
+      "b": "GAC (GCC Accreditation Center)",
+      "n": "Accredits halal certifiers for all Gulf states."
+    },
+    {
+      "c": "Türkiye",
+      "b": "HAK (Halal Accreditation Agency)",
+      "n": "Accreditation body; aligned with SMIIC standards."
+    },
+    {
+      "c": "Singapore",
+      "b": "MUIS",
+      "n": "Widely recognised across Southeast Asia and the Gulf."
+    },
+    {
+      "c": "Pakistan",
+      "b": "Pakistan Halal Authority",
+      "n": "Federal regulator under the Ministry of Science & Technology."
+    },
+    {
+      "c": "Egypt",
+      "b": "IS EG Halal",
+      "n": "Sole authorised certifier for imports since 2020."
+    },
+    {
+      "c": "United Kingdom",
+      "b": "HMC · HFA",
+      "n": "Two main private certifiers with differing slaughter standards."
+    },
+    {
+      "c": "United States",
+      "b": "IFANCA · ISNA Halal · ISWA",
+      "n": "IFANCA is the SGIE report's strategic partner and is recognised by JAKIM, MUIS and GAC."
+    },
+    {
+      "c": "Brazil",
+      "b": "CDIAL Halal · FAMBRAS Halal",
+      "n": "Certify the bulk of Brazil's poultry and beef exports to the OIC."
+    },
+    {
+      "c": "Australia",
+      "b": "AFIC · HCAA · SICHMA",
+      "n": "Approved Islamic organisations under the government AGSMHP scheme."
+    },
+    {
+      "c": "India",
+      "b": "Halal India · Jamiat Ulama-i-Hind Halal Trust",
+      "n": "Private certifiers; export focus."
+    },
+    {
+      "c": "Multilateral",
+      "b": "SMIIC (OIC)",
+      "n": "Publishes OIC/SMIIC 1 halal food standard; 40+ member states."
+    }
+  ]
+}

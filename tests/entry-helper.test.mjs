@@ -158,6 +158,22 @@ check('changing where you are based always changes something', () => {
   return unchanged === 0 || `${unchanged} of ${pairs} adjacent pairs were identical`;
 });
 
+check('choosing an option announces itself to assistive tech', () => {
+  pick('sector', 'travel');
+  const group = doc.querySelector('.opts[data-q=sector]');
+  const buttons = [...group.querySelectorAll('button')];
+  const checked = buttons.filter(b => b.getAttribute('aria-checked') === 'true');
+  return buttons.every(b => b.getAttribute('role') === 'radio')
+    && checked.length === 1 && checked[0].dataset.v === 'travel'
+    || 'roles or aria-checked missing';
+});
+
+check('the group is one tab stop, with arrows moving inside it', () => {
+  const buttons = [...doc.querySelectorAll('.opts[data-q=sector] button')];
+  const tabbable = buttons.filter(b => b.tabIndex === 0);
+  return tabbable.length === 1 && tabbable[0].getAttribute('aria-checked') === 'true';
+});
+
 check('the shortlist still offers the compare and map bridges', () => {
   pick('sector', 'travel'); pick('model', 'export'); pick('home', 'mena');
   return doc.querySelectorAll('#helperOut [data-act="compare"]').length > 0

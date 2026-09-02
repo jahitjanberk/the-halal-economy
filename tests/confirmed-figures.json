@@ -8,6 +8,70 @@
     "value": 3.56
   },
   {
+    "id": "countryFinance.Bahrain.bank",
+    "value": 16.1
+  },
+  {
+    "id": "countryFinance.Bahrain.fin",
+    "value": 3.5
+  },
+  {
+    "id": "countryFinance.Indonesia.fin",
+    "value": 2
+  },
+  {
+    "id": "countryFinance.Jordan.bank",
+    "value": 17.8
+  },
+  {
+    "id": "countryFinance.Kuwait.bank",
+    "value": 51
+  },
+  {
+    "id": "countryFinance.Kuwait.fin",
+    "value": 5.5
+  },
+  {
+    "id": "countryFinance.Malaysia.fin",
+    "value": 12
+  },
+  {
+    "id": "countryFinance.Oman.bank",
+    "value": 16.6
+  },
+  {
+    "id": "countryFinance.Pakistan.fin",
+    "value": 2
+  },
+  {
+    "id": "countryFinance.Qatar.bank",
+    "value": 28.6
+  },
+  {
+    "id": "countryFinance.Qatar.fin",
+    "value": 5.5
+  },
+  {
+    "id": "countryFinance.Saudi-Arabia.bank",
+    "value": 74.9
+  },
+  {
+    "id": "countryFinance.Sudan.bank",
+    "value": 100
+  },
+  {
+    "id": "countryFinance.Türkiye.fin",
+    "value": 3.5
+  },
+  {
+    "id": "countryFinance.United-Arab-Emirates.bank",
+    "value": 22.7
+  },
+  {
+    "id": "countryFinance.United-Arab-Emirates.fin",
+    "value": 10
+  },
+  {
     "id": "countryGiei.Malaysia.giei2526",
     "value": 186.1
   },
@@ -34,6 +98,38 @@
   {
     "id": "finGrowth.Takaful-(insurance).v",
     "value": 16.9
+  },
+  {
+    "id": "finShareCountries.Bahrain.v",
+    "value": 3.5
+  },
+  {
+    "id": "finShareCountries.Indonesia.v",
+    "value": 2
+  },
+  {
+    "id": "finShareCountries.Kuwait.v",
+    "value": 5.5
+  },
+  {
+    "id": "finShareCountries.Malaysia.v",
+    "value": 12
+  },
+  {
+    "id": "finShareCountries.Pakistan.v",
+    "value": 2
+  },
+  {
+    "id": "finShareCountries.Qatar.v",
+    "value": 5.5
+  },
+  {
+    "id": "finShareCountries.Türkiye.v",
+    "value": 3.5
+  },
+  {
+    "id": "finShareCountries.UAE.v",
+    "value": 10
   },
   {
     "id": "islamicFinance.2024.v",

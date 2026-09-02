@@ -14,7 +14,7 @@ export const sectors = [
 
 /** Sector names trimmed to fit a chart label; the full name is in `sectors`. */
 export const shortName = n => n
-  .replace('Muslim-friendly ', '')
+  .replace('Muslim-friendly travel', 'Travel')
   .replace(' & beverages', '')
   .replace('Media & recreation', 'Media')
   .replace('Pharmaceuticals', 'Pharma');

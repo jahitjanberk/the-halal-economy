@@ -17,7 +17,7 @@
 
 @media (max-width:900px){
   .kpis{grid-template-columns:1fr 1fr;}
-  .grid-2,.grid-3,.grid-map,.takeaways,.helper,.compare-row,.dir{grid-template-columns:1fr;}
+  .grid-2,.grid-3,.grid-map,.takeaways,.helper,.compare-row,.dir,.method{grid-template-columns:1fr;}
   .hero-pattern{display:none;}
   .side{min-height:0;}
   .scrolly{grid-template-columns:1fr;gap:0;}

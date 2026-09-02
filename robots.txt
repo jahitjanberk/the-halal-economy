@@ -1,0 +1,5 @@
+# The Halal Economy — a public reference. Crawl it.
+User-agent: *
+Allow: /
+
+Sitemap: https://jahitjanberk.github.io/halal-economy/sitemap.xml

@@ -13,6 +13,8 @@ import { state, readURL, writeURL, enableURLWrites, initCopyLink } from './core/
 import { captureDefaults, setLang, initLanguageSwitcher } from './core/i18n.js';
 
 import { initProvenance } from './features/provenance.js';
+import { initReferences } from './features/references.js';
+import { initCite } from './features/cite.js';
 import { initAudience, applyAudience } from './features/audience.js';
 import { initKpiCounters } from './features/kpi.js';
 import { initMapPanel, setMainLayer, pinCountry } from './features/map-panel.js';
@@ -69,6 +71,8 @@ function wire(){
   captureDefaults();          /* must precede any setLang call */
   initLanguageSwitcher();
   initProvenance();
+  initReferences();
+  initCite();
   initAudience();
   initKpiCounters();
 

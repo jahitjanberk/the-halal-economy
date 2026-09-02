@@ -203,11 +203,40 @@ export function runHelper(){
     ).join('');
 }
 
+/**
+ * The option groups are radio groups: a screen reader has to hear that these are
+ * a choice, and which one is taken. Plain buttons announce neither.
+ */
+function choose(button){
+  const group = button.closest('.opts');
+  helper[group.dataset.q] = button.dataset.v;
+  group.querySelectorAll('button').forEach(x => {
+    const on = x === button;
+    x.classList.toggle('active', on);
+    x.setAttribute('aria-checked', String(on));
+    x.tabIndex = on ? 0 : -1;          /* the group is one tab stop, arrows move within it */
+  });
+  runHelper();
+}
+
 export function initEntryHelper(){
-  document.querySelectorAll('.opts[data-q] button').forEach(b => b.addEventListener('click', () => {
-    const q = b.closest('.opts').dataset.q;
-    helper[q] = b.dataset.v;
-    b.closest('.opts').querySelectorAll('button').forEach(x => x.classList.toggle('active', x === b));
-    runHelper();
-  }));
+  document.querySelectorAll('.opts[data-q]').forEach(group => {
+    const buttons = [...group.querySelectorAll('button')];
+    buttons.forEach((b, i) => {
+      b.setAttribute('role', 'radio');
+      b.setAttribute('aria-checked', 'false');
+      b.tabIndex = i === 0 ? 0 : -1;
+      b.addEventListener('click', () => choose(b));
+    });
+
+    group.addEventListener('keydown', ev => {
+      const dir = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[ev.key];
+      if(!dir) return;
+      ev.preventDefault();
+      const at = buttons.indexOf(document.activeElement);
+      const next = buttons[(at + dir + buttons.length) % buttons.length];
+      next.focus();
+      choose(next);
+    });
+  });
 }

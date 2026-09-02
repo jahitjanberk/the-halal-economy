@@ -89,7 +89,7 @@ a figure was checked against a named source that was actually retrieved, on a
 recorded date. Unchecked is the default — the point of the flag is to surface
 what nobody has looked at.
 
-As of September 2026, **42 of 212 figures are confirmed** (19%).
+As of September 2026, **66 of 212 figures are confirmed** (19%).
 
 ### How it fits together
 
@@ -128,20 +128,22 @@ only thing stopping an edited figure from carrying an old confirmation forward.
 
 | Dataset | Confirmed |
 |---|---|
-| Sector spend — all six sectors, both years, plus CAGRs | 18 / 18 |
+| Sector spend | 18 / 18 |
 | Islamic finance segment growth | 3 / 3 |
-| Sector ranks by country | 6 / 18 |
-| GIEI position history | 5 / 20 |
-| Consumer spend trajectory | 2 / 5 |
+| Country share of assets | 8 / 10 |
+| Islamic finance by country | 16 / 24 |
 | Islamic finance assets | 2 / 4 |
 | OIC halal imports | 2 / 4 |
+| Consumer spend trajectory | 2 / 5 |
+| Sector ranks by country | 6 / 18 |
+| GIEI position history | 5 / 20 |
 | Investment deals | 2 / 15 |
-| GIEI scores and ranks | 1 / 23 |
+| GIEI scores and ranks | 2 / 24 |
 | Islamic finance composition | 0 / 3 |
-| Country share of assets | 0 / 10 |
 | Hajj pilgrim counts | 0 / 9 |
+| Muslim population by country | 0 / 39 |
+| Halal imports by country | 0 / 1 |
 | Certifier directory | 0 / 15 |
-| Country population and finance | 0 / 64 |
 
 The GIEI *scores* — as opposed to the rankings, which are confirmed — sit behind
 Salaam Gateway's paywall, which is why the rank table shows 1 / 23.
@@ -150,7 +152,7 @@ Salaam Gateway's paywall, which is why the rank table shows 1 / 23.
 
 ```
 index.html               markup only — no inline CSS or JS
-assets/styles/           six stylesheets, loaded in cascade order
+assets/                  stylesheets, icons, generated share card and data files
 src/
   main.js                entry point: wires listeners, then boots from the URL
   core/                  state, DOM helpers, i18n
@@ -158,8 +160,9 @@ src/
   content/               prose: narrative, story scripts and their derived stats
   charts/                one module per chart, each exporting a draw function
   features/              interactive behaviour, one module per feature
-tests/                   smoke, interaction, verification, navigation, story and helper tests
-scripts/                 pin-figures.mjs, regenerates the confirmed-figure pins
+tests/                   seven suites: smoke, interaction, verification, navigation,
+                         story, entry-helper and discoverability
+scripts/                 pin-figures, build-data, build-images, build-metadata
 archive/                 the original single-file build, superseded
 ```
 
@@ -213,6 +216,113 @@ features meet.
 Story mode is built lazily on first entry, and `view.js` receives its initialiser
 through `registerStoryInit` rather than importing `story.js` — which would create
 a cycle, since `story.js` calls `setView`.
+
+## Licence
+
+Two licences, because most of the data is not ours to give away.
+
+| What | Licence |
+|---|---|
+| Source code | **MIT** — see [LICENSE](LICENSE) |
+| The compilation: structuring, derived values, written analysis, and the record of what has been checked | **CC BY 4.0** |
+| The underlying figures | **Not licensed here.** They belong to DinarStandard, IFSB, Global Finance, Pew, the IMF, GASTAT and SMIIC |
+
+Individual facts are generally not copyrightable, but the selection and
+arrangement of a compilation can be, and the UK and EU recognise a separate
+database right over substantial investment in assembling data. The split above
+follows that line: the compilation and the verification work are ours to
+license, the facts are not. Full terms in [DATA-LICENSE.md](DATA-LICENSE.md).
+
+The licence appears in four places and is asserted in all of them: the two
+files, the `license` property of the JSON-LD Dataset, the Sources section, and
+the citation the page offers.
+
+## Using the data
+
+The dataset is written to `assets/data/` as static files, so it can be fetched
+without running the page's JavaScript — by a crawler, by someone else's script,
+or from the `<noscript>` fallback:
+
+| File | Contents |
+|---|---|
+| `halal-economy-data.csv` | all series, long format |
+| `halal-economy-countries.csv` | country reference table |
+| `halal-economy-verification.csv` | one row per figure: value, confirmed, checked against what |
+| `halal-economy-dataset.json` | everything, with full provenance |
+
+`src/data/bundle.js` is the single builder behind both these files and the
+in-page download buttons, so what a crawler fetches and what a reader downloads
+cannot diverge. A test rebuilds them and fails if the checked-in files are stale.
+
+```bash
+npm run data       # rewrite assets/data/
+npm run metadata   # regenerate the JSON-LD Dataset block
+npm run images     # og-image.png + apple-touch-icon.png
+npm run pin-figures
+```
+
+`robots.txt` and `sitemap.xml` sit at the root; the sitemap declares the
+dashboard and both story deep links.
+
+## How to cite, and what the method claims
+
+The Sources section carries a ready-made citation with the reader's own access
+date and a copy button, alongside a short method note that states plainly:
+
+- Nothing here is original research — every figure is transcribed and attributed.
+- "Confirmed" means someone looked, not that the figure is true.
+- Derived figures are marked derived.
+- **Ranges are not point figures.** Where a source gives a range the page may
+  show a midpoint, and that midpoint is *not* marked confirmed — Saudi Arabia
+  and Iran at 27% of Islamic finance assets are the live example, because the
+  source says 25–30%.
+- Blank means unpublished, not zero, and unpublished figures are not counted
+  against the verified total either.
+
+## Being citable and findable
+
+Three things turn a dashboard into something people link to and cite.
+
+**Every source is followable.** `src/data/sources.js` carries a URL for all nine
+citations, and a `reached` field recording what a request to it actually
+returned — `ok` for a 200, `blocked` where the publisher refuses automated
+requests (Pew and the IMF both 403 anything that is not a browser), which is not
+the same as a dead link but is not a confirmation either. The Sources section
+renders the list, states what each source is cited for and how much of it has
+been checked, and clicking any provenance marker on the page jumps to its
+citation.
+
+The "cited for" line is derived from the markers in the markup plus the story's
+own stats, never written by hand, so a source cannot claim to back a chart it
+does not — and a source that stops being cited shows up as unused rather than
+lingering.
+
+**Shared links render as a card.** Open Graph and Twitter tags, with a 1200×630
+image generated by `npm run images`: authored as SVG in the page's palette and
+rasterised in the real brand fonts, so it tracks the design instead of being a
+screenshot that goes stale. It also shows the live verified-figure count, so the
+card cannot overstate what has been checked.
+
+**A data index can read the page.** `npm run metadata` regenerates a
+`schema.org/Dataset` block from the data — 39 places, 10 measures, 3
+distributions and all 9 citations. This is the route by which Google Dataset
+Search and similar indexes find data resources, and it has to be static in the
+HTML because those crawlers do not reliably run JavaScript. `npm test` fails if
+the block is not what the script would produce, so editing the data without
+regenerating cannot ship.
+
+```bash
+npm run images     # og-image.png + apple-touch-icon.png
+npm run metadata   # regenerate the JSON-LD Dataset block
+```
+
+The canonical origin appears in exactly two places — the `<head>` of index.html
+and `BASE` in `scripts/build-metadata.mjs`. Moving the site means changing those.
+
+**No licence is declared**, deliberately. `schema.org/Dataset` supports a
+`license` property and indexes weight it, but inventing terms for figures
+compiled from someone else's reporting would be a claim this project cannot
+make. Decide the terms and the structured data should carry them.
 
 ## Typography
 

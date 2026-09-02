@@ -44,6 +44,11 @@ export const checks = {
     url: 'https://www.businesstoday.com.my/2026/06/03/malaysia-ranks-top-in-global-islamic-economy-25-26-report/',
     on: '2026-09-02',
   },
+  gfmag: {
+    label: 'Global Finance Magazine',
+    url: 'https://gfmag.com/banking/islamic-finance-just-muslim-majority-nations/',
+    on: '2026-09-02',
+  },
   derived: {
     label: 'arithmetic from those figures',
     url: null,
@@ -72,7 +77,7 @@ export const datasets = {
   islamicFinance:    { label: 'Islamic finance assets',         records: () => islamicFinance,    figures: ['v'], check: 'sgie2526' },
   finComposition:    { label: 'Islamic finance composition',    records: () => finComposition,    figures: ['v'], check: 'ifsb2025' },
   finGrowth:         { label: 'Islamic finance segment growth', records: () => finGrowth,         figures: ['v'], check: 'ifsb2025' },
-  finShareCountries: { label: 'country share of assets',        records: () => finShareCountries, figures: ['v'], check: 'ifsb2025' },
+  finShareCountries: { label: 'country share of assets',        records: () => finShareCountries, figures: ['v'], check: 'gfmag' },
   oicImports:        { label: 'OIC halal imports',              records: () => oicImports,        figures: ['v'], check: 'sgie2526' },
   hajj:              { label: 'Hajj pilgrim counts',            records: () => hajj,              figures: ['v'], check: 'sgie2526' },
   /*
@@ -82,7 +87,7 @@ export const datasets = {
    */
   countryGiei:       { label: 'GIEI scores and ranks',          records: () => countries,         figures: ['giei', 'giei2526', 'rank'], check: 'sgiePress' },
   countryPop:        { label: 'Muslim population by country',   records: () => countries,         figures: ['pop'],          check: 'sgiePress' },
-  countryFinance:    { label: 'Islamic finance by country',     records: () => countries,         figures: ['fin', 'bank'],  check: 'sgiePress' },
+  countryFinance:    { label: 'Islamic finance by country',     records: () => countries,         figures: ['fin', 'bank'],  check: 'gfmag' },
   countryTrade:      { label: 'halal imports by country',       records: () => countries,         figures: ['imports'],      check: 'sgiePress' },
   deals:             { label: 'investment deals',               records: () => deals,             figures: ['n', 'v'], check: 'sgie2526' },
   certBodies:        { label: 'certifier directory',            records: () => certBodies,        figures: null,  check: 'sgie2526' },

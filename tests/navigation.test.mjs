@@ -145,6 +145,35 @@ check('no markup character falls outside the body face', () => {
     || 'outside Scoutie coverage: ' + outside.map(c => `${c} (U+${c.codePointAt(0).toString(16).toUpperCase()})`).join(', ');
 });
 
+/* ---- Method, citation and scriptless fallback ---- */
+
+check('the page explains itself when scripts do not run', () => {
+  const ns = doc.querySelector('noscript');
+  return !!ns && /JavaScript/i.test(ns.textContent) && /Sources/i.test(ns.textContent);
+});
+
+check('a ready-made citation is offered with an access date', () => {
+  const cite = doc.getElementById('citeText');
+  return !!cite && !!doc.getElementById('citeDate') && !!doc.getElementById('copyCite')
+    && /Halal Economy/.test(cite.textContent);
+});
+
+check('the method notes state what confirmed does and does not mean', () => {
+  const method = doc.querySelector('.method');
+  if(!method) return 'no method block';
+  const text = method.textContent;
+  return /means someone looked/i.test(text) && /not that the figure is true/i.test(text)
+    && /range/i.test(text);
+});
+
+check('the compare table and entry helper carry provenance', () =>
+  !!doc.querySelector('#compare .src[data-d]') && !!doc.querySelector('#business .src[data-d]'));
+
+check('the helper option groups are radio groups', () => {
+  const groups = [...doc.querySelectorAll('.opts[data-q]')];
+  return groups.length === 3 && groups.every(g => g.getAttribute('role') === 'radiogroup' && g.getAttribute('aria-label'));
+});
+
 /* ---- Footer credit ---- */
 
 check('the credit is the last thing in the footer', () => {

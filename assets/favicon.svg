@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" role="img" aria-label="The Halal Economy">
+  <rect width="72" height="72" rx="15" fill="#1F7A63"/>
+  <!-- The eight-point khatim star from the hero's girih tiling. -->
+  <path d="M72 36L61.46 46.54L61.46 61.46L46.54 61.46L36 72L25.46 61.46L10.54 61.46L10.54 46.54L0 36L10.54 25.46L10.54 10.54L25.46 10.54L36 0L46.54 10.54L61.46 10.54L61.46 25.46Z"
+        fill="#FBFAF6" transform="translate(36 36) scale(.63) translate(-36 -36)"/>
+</svg>

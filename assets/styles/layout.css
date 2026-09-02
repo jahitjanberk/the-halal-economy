@@ -67,6 +67,10 @@ h2{font-weight:500;font-size:clamp(var(--t-2xl),3.2vw,var(--t-3xl));margin:0 0 8
 .card h3{font-weight:500;font-size:var(--t-xl);margin:0 0 4px;line-height:1.25;padding-right:var(--exports-clear);}
 html[dir=rtl] .card h3{padding-right:0;padding-left:var(--exports-clear);}
 .card .sub{font-size:var(--t-sm);color:var(--muted);margin:0 0 16px;}
+/* A grid item will not shrink below its content minimum unless told to, so a
+   card holding a wide table or chart would stretch the page instead of letting
+   the table scroll inside it. */
+.grid-2>*,.grid-3>*,.grid-map>*,.kpis>*,.takeaways>*,.compare-row>*,.helper>*,.dir>*,.scrolly>*,.movers>*{min-width:0;}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
 .grid-map{display:grid;grid-template-columns:1fr 320px;gap:20px;}
