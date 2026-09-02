@@ -108,8 +108,16 @@ check('the Dataset names its coverage and variables', () =>
 /* An index needs something it can fetch, not an anchor on the page. */
 check('every declared distribution is a file that exists', () => {
   const missing = [];
+  /*
+   * Derive the repo path by removing the page's own canonical base, rather
+   * than pattern-matching the origin's shape. The old expression assumed the
+   * site lived one path segment deep — true on project Pages, false at a
+   * domain root — which made this a sixth place the origin was written down.
+   */
+  const base = meta('link[rel="canonical"]', 'href');
   for(const d of ld.distribution){
-    const path = d.contentUrl.replace(/^https:\/\/[^/]+\/[^/]+\//, '');
+    if(!d.contentUrl.startsWith(base)){ missing.push(d.contentUrl + ' (not under the canonical base ' + base + ')'); continue; }
+    const path = d.contentUrl.slice(base.length);
     if(!/^assets\/data\//.test(path)){ missing.push(d.contentUrl + ' (not a file)'); continue; }
     try { readFileSync(new URL(path, ROOT)); } catch { missing.push(path); }
   }

@@ -18,7 +18,7 @@ import { datasets, statusFor, VERIFIED_ON } from '../src/data/verification.js';
 import { countries } from '../src/data/countries.js';
 import { sectors } from '../src/data/sectors.js';
 
-const BASE = 'https://jahitjanberk.github.io/the-halal-economy/';
+const BASE = 'https://halal-economy.com/';
 const START = '<!-- BEGIN generated dataset metadata -->';
 const END = '<!-- END generated dataset metadata -->';
 

@@ -2,4 +2,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://jahitjanberk.github.io/the-halal-economy/sitemap.xml
+Sitemap: https://halal-economy.com/sitemap.xml

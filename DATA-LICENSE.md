@@ -42,7 +42,7 @@ terms.** Nothing in this file grants rights over them, and it cannot.
 
 > jahit (2026). *The Halal Economy*. Compiled from DinarStandard SGIE 2025/26,
 > IFSB 2025, Global Finance and GASTAT. CC BY 4.0.
-> https://jahitjanberk.github.io/the-halal-economy/
+> https://halal-economy.com/
 
 ## A caveat worth reading
 
