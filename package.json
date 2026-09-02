@@ -1,0 +1,17 @@
+{
+  "name": "halal-economy-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "An interactive dashboard mapping the $9 trillion halal economy: consumer spend, Islamic finance, trade, deals and certification.",
+  "type": "module",
+  "scripts": {
+    "start": "npx --yes serve . --listen 5173",
+    "test": "node tests/smoke.test.mjs && node tests/interactions.test.mjs && node tests/verification.test.mjs && node tests/navigation.test.mjs && node tests/story.test.mjs && node tests/entry-helper.test.mjs",
+    "pin-figures": "node scripts/pin-figures.mjs"
+  },
+  "devDependencies": {
+    "d3": "^7.9.0",
+    "jsdom": "^30.0.1",
+    "topojson-client": "^3.1.0"
+  }
+}

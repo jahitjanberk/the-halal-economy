@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Halal Economy Dashboard</title>
+<meta name="description" content="The $9 trillion halal economy mapped sector by sector and country by country: consumer spend, Islamic finance, trade, deals and certification.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Scoutie+Sans:ital,wght@0,400..700;1,400..700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Stylesheets load in cascade order; responsive.css must stay last. -->
+<link rel="stylesheet" href="assets/styles/base.css">
+<link rel="stylesheet" href="assets/styles/layout.css">
+<link rel="stylesheet" href="assets/styles/components.css">
+<link rel="stylesheet" href="assets/styles/story.css">
+<link rel="stylesheet" href="assets/styles/overlays.css">
+<link rel="stylesheet" href="assets/styles/responsive.css">
+
+<!-- D3 and TopoJSON are globals the chart modules rely on, so they load first. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script type="module" src="src/main.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="brand" data-i18n="brand">Halal Economy</div>
+    <div class="nav-links">
+      <a href="#map-section" data-i18n="nav.map">Map</a>
+      <a href="#sectors" data-i18n="nav.sectors">Sectors</a>
+      <a href="#growth" data-i18n="nav.growth">Growth</a>
+      <a href="#finance" data-i18n="nav.finance">Finance</a>
+      <a href="#countries" data-i18n="nav.countries">Countries</a>
+      <a href="#compare" data-i18n="nav.compare">Compare</a>
+      <a href="#trade" data-i18n="nav.trade">Trade</a>
+      <a href="#invest" data-i18n="nav.invest">Deals</a>
+      <a href="#business" data-i18n="nav.business">Entry</a>
+      <a href="#takeaways" data-i18n="nav.takeaways">Takeaways</a>
+    </div>
+    <div class="nav-right">
+      <select class="mini" id="audSel" aria-label="Perspective: reframes the commentary for your role" title="Reframes every commentary line and the closing takeaways for your role">
+        <option value="public">As: general public</option>
+        <option value="investor">As: investor</option>
+        <option value="policy">As: policymaker</option>
+        <option value="business">As: business owner</option>
+      </select>
+      <div class="viewseg" role="group" aria-label="View">
+        <button class="active" data-view="dashboard" title="Explore the figures yourself"><svg class="segicon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.4 2h4.1a.9.9 0 0 1 .9.9v10.2a.9.9 0 0 1-.9.9H2.4a.9.9 0 0 1-.9-.9V2.9A.9.9 0 0 1 2.4 2Zm7.1 0h4.1a.9.9 0 0 1 .9.9v3.3a.9.9 0 0 1-.9.9H9.5a.9.9 0 0 1-.9-.9V2.9A.9.9 0 0 1 9.5 2Zm0 6.3h4.1a.9.9 0 0 1 .9.9v3.9a.9.9 0 0 1-.9.9H9.5a.9.9 0 0 1-.9-.9V9.2a.9.9 0 0 1 .9-.9Z"/></svg><span data-i18n="view.dashboard">Dashboard</span></button>
+        <button data-view="story" title="Read the story: a narrative you scroll through, with the map and charts following along"><svg class="segicon" viewBox="0 0 16 16" aria-hidden="true"><path d="M7.4 5.1V13c-1.25-.95-3.05-1.5-5.1-1.5a.8.8 0 0 1-.8-.8V4.2a.8.8 0 0 1 .8-.8c2.05 0 3.85.55 5.1 1.7Zm1.2 0V13c1.25-.95 3.05-1.5 5.1-1.5a.8.8 0 0 0 .8-.8V4.2a.8.8 0 0 0-.8-.8c-2.05 0-3.85.55-5.1 1.7Z"/></svg><span data-i18n="view.story">Read the story</span></button>
+      </div>
+      <button class="tourbtn" id="tourStart" data-i18n="tour.start" title="A ten-step guided tour that drives the real dashboard controls">Guided tour</button>
+      <div class="navmenu">
+        <button class="mini navmenu-btn" id="moreBtn" aria-expanded="false" aria-controls="morePanel" aria-label="More options">More <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" focusable="false"><path d="M4 6 L8 10 L12 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="navmenu-panel" id="morePanel" hidden>
+          <label for="lang">Language</label>
+          <select class="mini" id="lang" aria-label="Language">
+            <option value="en">English</option><option value="ar">العربية</option><option value="id">Bahasa Indonesia</option><option value="ms">Bahasa Melayu</option>
+          </select>
+          <button class="mini" id="copyLink" data-i18n="copylink">Copy link to this view</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="lang-note" data-i18n="langnote">Interface translated; long-form analysis and story text remain in English for now.</div>
+
+<!-- ================= STORY VIEW ================= -->
+<main id="main" tabindex="-1">
+<div id="storyView">
+  <div class="wrap">
+    <div class="story-pick seg" role="group" aria-label="Choose a story">
+      <button class="active" data-story="gap">The gap</button>
+      <button data-story="hajj">The pilgrimage economy</button>
+    </div>
+    <div class="story-intro">
+      <p class="kicker" id="siKicker"></p>
+      <h1 id="siTitle"></h1>
+      <p id="siBody"></p>
+      <div class="scrollcue" aria-hidden="true"></div>
+    </div>
+    <div class="scrolly">
+      <div class="sticky">
+        <div class="story-nav">
+          <button class="mini" id="stepPrev" aria-label="Previous step"><svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <ol class="story-rail" id="storyRail" aria-label="Story steps"></ol>
+          <span class="story-count" id="storyCount"></span>
+          <button class="mini" id="stepNext" aria-label="Next step"><svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+        <div class="card">
+          <svg id="storyMap" viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Story map"></svg>
+          <svg id="storyChart" class="chart" viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Story chart" style="display:none"></svg>
+          <div class="story-layer" id="storyLayer"></div>
+          <div class="story-stat" aria-live="polite"><div class="n" id="storyN"></div><div class="l" id="storyL"></div><span class="prov"><button class="src" id="storySrc" data-s="sgie2526" data-k="reported">i</button></span></div>
+        </div>
+      </div>
+      <div class="steps" id="steps"></div>
+    </div>
+    <div class="story-end" id="storyEnd"></div>
+  </div>
+</div>
+
+<!-- ================= DASHBOARD VIEW ================= -->
+<div id="dashboardView">
+
+<header class="hero">
+  <svg class="hero-pattern" viewBox="0 0 560 460" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <!-- Girih tiling: octagons on the 4.8.8 grid, an eight-point khatim star in
+           each, the interstitial squares filling the corners. One 72px cell. -->
+      <pattern id="girih" width="72" height="72" patternUnits="userSpaceOnUse">
+        <g fill="none" stroke="#B8912F" stroke-linejoin="round">
+          <path d="M72 50.91L50.91 72L21.09 72L0 50.91L0 21.09L21.09 0L50.91 0L72 21.09Z" stroke-width=".6" opacity=".4"/>
+          <path d="M21.09 0L0 21.09L-21.09 0L0 -21.09ZM93.09 0L72 21.09L50.91 0L72 -21.09ZM21.09 72L0 93.09L-21.09 72L0 50.91ZM93.09 72L72 93.09L50.91 72L72 50.91Z" stroke-width=".7" opacity=".55"/>
+          <path d="M8 0L0 8L-8 0L0 -8ZM80 0L72 8L64 0L72 -8ZM8 72L0 80L-8 72L0 64ZM80 72L72 80L64 72L72 64Z" stroke-width=".55" opacity=".35"/>
+          <path d="M61.46 46.54L72 50.91M46.54 61.46L50.91 72M25.46 61.46L21.09 72M10.54 46.54L0 50.91M10.54 25.46L0 21.09M25.46 10.54L21.09 0M46.54 10.54L50.91 0M61.46 25.46L72 21.09" stroke-width=".55" opacity=".4"/>
+          <path d="M72 36L61.46 46.54L61.46 61.46L46.54 61.46L36 72L25.46 61.46L10.54 61.46L10.54 46.54L0 36L10.54 25.46L10.54 10.54L25.46 10.54L36 0L46.54 10.54L61.46 10.54L61.46 25.46Z" stroke-width="1.1"/>
+        </g>
+        <path d="M46.69 40.43L40.43 46.69L31.57 46.69L25.31 40.43L25.31 31.57L31.57 25.31L40.43 25.31L46.69 31.57Z" fill="#1F7A63" fill-opacity=".07" stroke="#1F7A63" stroke-width=".8" stroke-opacity=".5"/>
+        <circle cx="36" cy="36" r="1.7" fill="#B8912F" fill-opacity=".7"/>
+      </pattern>
+      <!-- Finer under-layer, so the field reads as woven rather than drawn once. -->
+      <pattern id="girihDots" width="24" height="24" patternUnits="userSpaceOnUse">
+        <circle cx="0" cy="0" r=".9" fill="#1F7A63" fill-opacity=".22"/>
+        <circle cx="24" cy="0" r=".9" fill="#1F7A63" fill-opacity=".22"/>
+        <circle cx="0" cy="24" r=".9" fill="#1F7A63" fill-opacity=".22"/>
+        <circle cx="24" cy="24" r=".9" fill="#1F7A63" fill-opacity=".22"/>
+        <circle cx="12" cy="12" r=".7" fill="#B8912F" fill-opacity=".3"/>
+      </pattern>
+      <radialGradient id="heroFade" cx="74%" cy="24%" r="82%">
+        <stop offset="0" stop-color="#fff" stop-opacity="1"/>
+        <stop offset=".5" stop-color="#fff" stop-opacity=".8"/>
+        <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+      </radialGradient>
+      <!-- Painted over the fade, so the copy side of the hero stays clear. -->
+      <linearGradient id="heroClear" x1="0" x2="1" y1="0" y2="0">
+        <stop offset="0" stop-color="#000" stop-opacity="1"/>
+        <stop offset=".42" stop-color="#000" stop-opacity="0"/>
+      </linearGradient>
+      <mask id="heroMask">
+        <rect width="560" height="460" fill="url(#heroFade)"/>
+        <rect width="560" height="460" fill="url(#heroClear)"/>
+      </mask>
+    </defs>
+    <g mask="url(#heroMask)">
+      <rect width="560" height="460" fill="url(#girihDots)"/>
+      <rect width="560" height="460" fill="url(#girih)"/>
+    </g>
+  </svg>
+  <div class="wrap">
+    <h1 data-i18n="hero.h1">A $9 trillion economy, mapped sector by sector and country by country.</h1>
+    <p class="lede" data-i18n="hero.lede">Muslim consumers spent $2.6 trillion in 2024 on halal food, fashion, travel, media, medicines and cosmetics. Islamic finance holds another $6 trillion in assets. This dashboard shows where that money sits, how fast each part is growing, and what it means depending on who you are.</p>
+    <div class="audience" role="group" aria-label="Choose your perspective">
+      <span data-i18n="aud.label">I'm looking at this as:</span>
+      <button class="chip active" data-aud="public" data-i18n="aud.public">General public</button>
+      <button class="chip" data-aud="investor" data-i18n="aud.investor">Investor</button>
+      <button class="chip" data-aud="policy" data-i18n="aud.policy">Policymaker</button>
+      <button class="chip" data-aud="business" data-i18n="aud.business">Business owner</button>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><div class="num" data-count="2.60" data-dec="2"><span class="unit">$</span>0.00<span class="unit">T</span></div><div class="lbl"><span data-i18n="kpi.spend">Muslim consumer spending across six halal sectors, 2024</span><button class="src" data-s="sgie2526" data-k="reported" data-d="consumerSpend" data-fig="consumerSpend.2024.v">i</button></div><div class="delta">On track for $3.56T by 2029</div></div>
+      <div class="kpi"><div class="num" data-count="5.99" data-dec="2"><span class="unit">$</span>0.00<span class="unit">T</span></div><div class="lbl"><span data-i18n="kpi.fin">Islamic finance assets, 2024</span><button class="src" data-s="sgie2526" data-k="reported" data-d="islamicFinance" data-fig="islamicFinance.2024.v">i</button></div><div class="delta">Forecast $9.72T by 2029</div></div>
+      <div class="kpi"><div class="num" data-count="6.5" data-dec="1">0.0<span class="unit">%</span></div><div class="lbl"><span data-i18n="kpi.growth">Projected annual growth in consumer spend, 2024–29</span><button class="src" data-s="sgie2526" data-k="derived" data-d="consumerSpend" data-fig="consumerSpend.2024.v consumerSpend.2029.v">i</button></div><div class="delta">Finance assets growing ~10% a year</div></div>
+      <div class="kpi"><div class="num" data-count="346" data-dec="0">0</div><div class="lbl"><span data-i18n="kpi.deals">Investment deals in the latest reporting year</span><button class="src" data-s="sgie2526" data-k="reported" data-d="deals" data-fig="deals.2025/26/Global/All-Islamic-economy-sectors.n">i</button></div><div class="delta">$13.1B disclosed value</div></div>
+    </div>
+    <div class="compare-row" id="howbig">
+      <div class="cmpbox"><b>$2.6T</b>Muslim consumer spend is larger than the annual GDP of Italy, Canada or Brazil — each around $2.2–2.4T in 2024.<button class="src" data-s="imf" data-k="approx">i</button></div>
+      <div class="cmpbox"><b>~$9T</b>Consumer spend plus Islamic finance assets is roughly twice the size of Japan's economy and about a third of the United States'.<button class="src" data-s="imf" data-k="approx">i</button></div>
+      <div class="cmpbox"><b>1 in 4</b>People on earth is Muslim. Two billion consumers, with a median age well below the global average.<button class="src" data-s="pew" data-k="approx">i</button></div>
+    </div>
+  </div>
+</header>
+<p class="stamp"><span id="stampText">Data as of the SGIE 2025/26 edition (published June 2026). Dashboard compiled 2 September 2026.</span> · <button id="changelog">Changelog</button></p>
+
+<!-- MAP -->
+<section id="map-section">
+  <div class="wrap">
+    <div class="forwho" data-for="public policy investor business"></div>
+    <h2 data-i18n="map.h2">Where the halal economy lives</h2>
+    <p class="section-note">Population tells you where demand is. Ecosystem scores tell you where the infrastructure, regulation and finance to serve it are strongest. The two rarely line up, and that gap is the story.</p>
+    <div class="card">
+      <div class="exports" data-svg="map" data-name="halal-economy-map"></div>
+      <div class="controls">
+        <span class="prov"><button class="src" id="mapSrc" data-s="pew" data-k="approx" data-d="countryPop">i</button></span>
+        <div class="seg" id="layerSeg" role="group" aria-label="Map layer">
+          <button class="active" data-layer="pop" data-i18n="layer.pop">Muslim population</button>
+          <button data-layer="giei" data-i18n="layer.giei">Ecosystem score</button>
+          <button data-layer="fin" data-i18n="layer.fin">Islamic finance share</button>
+        </div>
+        <div class="search"><input id="search" type="search" placeholder="Search a country…" aria-label="Search a country" autocomplete="off"><div class="search-list" id="searchList" role="listbox"></div></div>
+      </div>
+      <div class="grid-map">
+        <div>
+          <svg id="map" viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="World map of halal economy indicators"><title>World map. Use the search box or Tab through countries with data.</title></svg>
+          <div class="legend-bar"><span id="legMin">0</span><div class="ramp" id="ramp"></div><span id="legMax">240M</span><span id="layerHint" style="margin-left:auto"></span><label class="toggle-mini"><input type="checkbox" id="cb"> Colour-blind safe</label></div>
+          <div class="map-fallback" id="mapFallback">The map outlines couldn't load in this environment. Use the search box, the Countries table, or the country CSV instead.</div>
+        </div>
+        <aside class="side" id="side" aria-live="polite"></aside>
+      </div>
+      <div class="sowhat" id="sowhat-map"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTORS -->
+<section id="sectors">
+  <div class="wrap">
+    <div class="forwho" data-for="investor business public"></div>
+    <h2 data-i18n="sectors.h2">Six sectors, very different speeds</h2>
+    <p class="section-note">Food is the anchor at nearly 60% of consumer spend. But the growth is elsewhere: travel is compounding at over 11% a year, almost double the pace of food.</p>
+    <div class="grid-2">
+      <div class="card">
+        <div class="exports" data-svg="sectorBars" data-name="sector-spend" data-table="sectors"></div>
+        <div class="controls">
+          <div><h3>Consumer spend by sector</h3><p class="sub" style="margin:0">US$ billions <button class="src" data-s="sgie2526" data-k="reported" data-d="sectors">i</button></p></div>
+          <div class="seg" id="yearSeg"><button class="active" data-year="2024">2024</button><button data-year="2029">2029 forecast</button></div>
+        </div>
+        <svg class="chart" id="sectorBars" viewBox="0 0 520 300"></svg>
+        <div class="tablewrap" id="tbl-sectors"></div>
+        <div class="sowhat" id="sowhat-sectors"></div>
+      </div>
+      <div class="card">
+        <div class="exports" data-svg="growthScatter" data-name="growth-vs-gain"></div>
+        <h3>Growth rate vs. absolute gain</h3>
+        <p class="sub">Where is the fastest growth, and where is the most new money? Bubble size = 2024 spend. The upper-right is the attractive quadrant.</p>
+        <svg class="chart" id="growthScatter" viewBox="0 0 520 300"></svg>
+        <div class="legend"><span><i style="background:var(--emerald)"></i>Sector</span><span><i class="line" style="background:var(--gold)"></i>Six-sector average growth (6.5%)</span></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:20px">
+      <h3>Sector × country: who leads where</h3>
+      <p class="sub">Country rank within each sector's GIEI sub-indicator, from the latest edition where a rank has been published. Darker = higher rank. Blank cells are not yet published, not zero. <button class="src" data-s="sgie2526" data-k="reported" data-d="sectorRanks">i</button></p>
+      <div class="scrollx"><div class="heat" id="heat"></div></div>
+      <div class="legend" style="margin-top:14px"><span><i style="background:#1F7A63"></i>#1</span><span><i style="background:#5FA88F"></i>#2</span><span><i style="background:#A6D1C1"></i>#3–4</span><span><i style="background:#E6EEE9"></i>Top 10 / mentioned</span><span>Tag shows the edition (25/26 or 24/25)</span></div>
+      <div class="sowhat" id="sowhat-heat"><b>Read across a row to see a country's breadth; down a column to see who competes in a sector.</b> Malaysia and the UAE are the only two countries in the top three of nearly every sector. Indonesia leads modest fashion and is second in travel and pharma/cosmetics, but is well behind in Islamic finance.</div>
+    </div>
+  </div>
+</section>
+
+<!-- GROWTH -->
+<section id="growth">
+  <div class="wrap">
+    <div class="forwho" data-for="investor public policy"></div>
+    <h2>The trajectory</h2>
+    <p class="section-note">Consumer spending has grown through a pandemic and an inflation cycle. Islamic finance has grown faster still, adding a trillion dollars in a single year between 2023 and 2024.</p>
+    <div class="card">
+      <div class="exports" data-svg="lineChart" data-name="market-trajectory" data-table="trajectory"></div>
+      <h3>Market size over time</h3>
+      <p class="sub">US$ trillions. Dashed segments are industry forecasts. <button class="src" data-s="sgie-multi" data-k="reported" data-d="consumerSpend islamicFinance">i</button></p>
+      <svg class="chart" id="lineChart" viewBox="0 0 1060 340"></svg>
+      <div class="legend"><span><i class="line" style="background:var(--emerald)"></i>Six-sector consumer spend</span><span><i class="line" style="background:var(--gold)"></i>Islamic finance assets</span></div>
+      <div class="tablewrap" id="tbl-trajectory"></div>
+      <div class="sowhat" id="sowhat-growth"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINANCE -->
+<section id="finance">
+  <div class="wrap">
+    <div class="forwho" data-for="investor policy business"></div>
+    <h2>Inside Islamic finance</h2>
+    <p class="section-note">Three-quarters of the industry is still banking, but the fastest-moving parts are capital markets and insurance. Ten countries hold roughly 95% of all assets.</p>
+    <div class="grid-3">
+      <div class="card"><div class="exports" data-svg="donut" data-name="finance-composition"></div><h3>What the $6T is made of</h3><p class="sub">Share of global assets, 2024 <button class="src" data-s="ifsb" data-k="reported" data-d="finComposition">i</button></p><svg class="chart" id="donut" viewBox="0 0 320 260"></svg></div>
+      <div class="card"><div class="exports" data-svg="segGrowth" data-name="finance-segment-growth"></div><h3>How fast each part grew in 2024</h3><p class="sub">Year-on-year change <button class="src" data-s="ifsb" data-k="reported" data-d="finGrowth">i</button></p><svg class="chart" id="segGrowth" viewBox="0 0 320 260"></svg></div>
+      <div class="card"><div class="exports" data-svg="finShare" data-name="finance-share-by-country"></div><h3>Who holds the assets</h3><p class="sub">Approximate share of global <span class="gl" data-g="sharia">Sharia</span>-compliant assets <button class="src" data-s="gf" data-k="approx" data-d="finShareCountries">i</button></p><svg class="chart" id="finShare" viewBox="0 0 320 260"></svg></div>
+    </div>
+    <div class="sowhat" id="sowhat-finance" style="margin-top:20px"></div>
+  </div>
+</section>
+
+<!-- COUNTRIES -->
+<section id="countries">
+  <div class="wrap">
+    <div class="forwho" data-for="policy investor public"></div>
+    <h2>Who's leading, and who's moving</h2>
+    <p class="section-note">The <span class="gl" data-g="giei">Global Islamic Economy Indicator</span> scores 81 countries on 52 metrics across finance, governance, awareness, social impact and innovation. It measures ecosystem quality, not market size — which is why Malaysia, with 21 million Muslims, sits far above Indonesia's 236 million.</p>
+    <div class="grid-2">
+      <div class="card">
+        <div class="exports" data-table="rank"></div>
+        <h3>Ecosystem ranking</h3>
+        <p class="sub">GIEI score, 2024/25 edition, the latest with full scores published. <button class="src" data-s="sgie2425" data-k="reported" data-d="countryGiei">i</button></p>
+        <div class="scrollx"><table id="rankTable"><thead><tr><th>Rank</th><th>Country</th><th style="width:40%">Score</th><th style="text-align:right">Muslims</th></tr></thead><tbody></tbody></table></div>
+        <div class="tablewrap" id="tbl-rank"></div>
+        <p style="font-size:12.5px;color:var(--muted);margin:14px 0 0">In the 2025/26 edition Malaysia scored 186.1 and the UAE moved to second, ahead of Saudi Arabia, Indonesia and Bahrain. The UK ranks 14th and Singapore is in the top 15 — the only non-Muslim-majority countries to do so.</p>
+      </div>
+      <div class="card">
+        <div class="exports" data-svg="bump" data-name="rank-history"></div>
+        <h3>Top-five positions over time</h3>
+        <p class="sub">Editions with a published top five. Malaysia has been first in every edition since 2013. <button class="src" data-s="sgie-multi" data-k="reported" data-d="rankHistory">i</button></p>
+        <svg class="chart" id="bump" viewBox="0 0 520 300"></svg>
+        <div class="sowhat" id="sowhat-countries"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARE -->
+<section id="compare">
+  <div class="wrap">
+    <div class="forwho" data-for="policy investor business"></div>
+    <h2>Compare countries</h2>
+    <p class="section-note">Pick two or three countries. Green marks the strongest value in each row. Blank means not published, not zero.</p>
+    <div class="card">
+      <div class="exports" data-table="compare"></div>
+      <div class="cmp-pick">
+        <select id="c1"></select><select id="c2"></select><select id="c3"><option value="">+ third country</option></select>
+        <span style="font-size:12.5px;color:var(--muted)">Presets:</span>
+        <button class="mini" data-preset="Indonesia,Malaysia">Indonesia vs Malaysia</button>
+        <button class="mini" data-preset="Saudi Arabia,United Arab Emirates,Bahrain">Gulf hubs</button>
+        <button class="mini" data-preset="Pakistan,Türkiye,Senegal">Fast movers</button>
+        <button class="mini" data-preset="United Kingdom,Singapore,Malaysia">Non-majority vs leader</button>
+      </div>
+      <div class="scrollx"><div class="cmp-grid" id="cmpGrid"></div></div>
+      <div class="tablewrap" id="tbl-compare"></div>
+    </div>
+  </div>
+</section>
+
+<!-- TRADE & STANDARDS -->
+<section id="trade">
+  <div class="wrap">
+    <div class="forwho" data-for="policy business"></div>
+    <h2>Trade, imports and standards</h2>
+    <p class="section-note">Most halal food is produced outside the countries that eat it. Imports into <span class="gl" data-g="oic">OIC</span> economies are growing faster than consumption, and certification is the gate everything passes through.</p>
+    <div class="grid-2">
+      <div class="card">
+        <div class="exports" data-svg="imports" data-name="oic-imports" data-table="imports"></div>
+        <h3>OIC halal-related imports</h3>
+        <p class="sub">US$ billions. All halal-related goods; food is roughly 70% of the total. <button class="src" data-s="sgie-multi" data-k="reported" data-d="oicImports">i</button></p>
+        <svg class="chart" id="imports" viewBox="0 0 520 260"></svg>
+        <div class="tablewrap" id="tbl-imports"></div>
+        <div class="grid-2" style="margin-top:14px;gap:12px">
+          <div><div class="sub" style="margin-bottom:6px">Biggest OIC buyers</div><div style="font-size:13.5px">Saudi Arabia · Türkiye · Indonesia · Malaysia ($30.6B, +12.4%) · UAE</div></div>
+          <div><div class="sub" style="margin-bottom:6px">Biggest suppliers into OIC</div><div style="font-size:13.5px">Brazil · India · Russia · Türkiye · United States</div></div>
+        </div>
+        <div class="sowhat" id="sowhat-trade"></div>
+      </div>
+      <div class="card">
+        <h3>Certification bodies and recognition</h3>
+        <p class="sub">Principal certifiers and standards bodies by market. Recognition arrangements change; verify with the certifier before relying on this. <button class="src" data-s="cert" data-k="reference" data-d="certBodies">i</button></p>
+        <div class="filters"><input id="certFilter" placeholder="Filter by country or body…" aria-label="Filter certification bodies"></div>
+        <div class="dir" id="certDir"></div>
+        <p style="font-size:12.5px;color:var(--muted);margin:14px 0 0"><b>Cross-border frameworks:</b> SMIIC (the OIC's standards body) publishes the OIC/SMIIC 1 halal standard; the GCC Accreditation Center (GAC) accredits certifiers for Gulf markets; Indonesia, the UAE, Türkiye and Malaysia signed a mutual-recognition arrangement in 2024/25.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INVESTMENT -->
+<section id="invest">
+  <div class="wrap">
+    <div class="forwho" data-for="investor"></div>
+    <h2>Deal flow and listed exposure</h2>
+    <p class="section-note">DinarStandard tracks investment into Islamic-economy companies each edition. Deal-level data sits behind the full report; the aggregates below are what has been published.</p>
+    <div class="grid-2">
+      <div class="card">
+        <div class="exports" data-table="deals"></div>
+        <h3>Published deal aggregates</h3>
+        <p class="sub">Filter by edition, country or sector. Values are disclosed deal value; many deals are undisclosed. <button class="src" data-s="sgie-multi" data-k="reported" data-d="deals">i</button></p>
+        <div class="filters"><select id="dealEd"><option value="">All editions</option></select><select id="dealScope"><option value="">All scopes</option></select><input id="dealQ" placeholder="Search…" aria-label="Search deals"></div>
+        <div class="scrollx" style="max-height:360px;overflow:auto"><table id="dealTable"><thead><tr><th>Edition</th><th>Scope</th><th>Item</th><th style="text-align:right">Deals</th><th style="text-align:right">Value</th><th>Note</th></tr></thead><tbody></tbody></table></div>
+        <div class="tablewrap" id="tbl-deals"></div>
+        <div class="sowhat" id="sowhat-deals"><b>Two hubs, two profiles.</b> Indonesia attracts value through large halal food and consumer deals; the UAE attracts count through fintech and media. Islamic finance takes the most capital; media & recreation the most transactions.</div>
+      </div>
+      <div class="card">
+        <h3>Listed exposure, for reference</h3>
+        <p class="sub">Public instruments with material halal-economy or Islamic-finance revenue. This is a reference list, not a recommendation, and is not investment advice; check current holdings and listings before acting.</p>
+        <div class="scrollx"><table id="listedTable"><thead><tr><th>Name</th><th>Type</th><th>Exposure</th></tr></thead><tbody></tbody></table></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUSINESS -->
+<section id="business">
+  <div class="wrap">
+    <div class="forwho" data-for="business"></div>
+    <h2>Market entry helper</h2>
+    <p class="section-note">Three questions, then a shortlist built from the data on this page. It's a starting point for research, not a substitute for it.</p>
+    <div class="card">
+      <div class="helper">
+        <div>
+          <div class="q"><label>What do you sell?</label>
+            <div class="opts" data-q="sector">
+              <button data-v="food"><svg class="segicon" viewBox="0 0 16 16" aria-hidden="true"><path d="M1.4 6.9h13.2a6.6 6.6 0 0 1-13.2 0Zm2 7.1h9.2a.75.75 0 0 1 0 1.5H3.4a.75.75 0 0 1 0-1.5Zm2.1-12.4a.75.75 0 0 1 1.5 0v3.4a.75.75 0 0 1-1.5 0V1.6Zm3.5 0a.75.75 0 0 1 1.5 0v3.4a.75.75 0 0 1-1.5 0V1.6Z"/></svg>Food</button>
+              <button data-v="fashion"><svg class="segicon" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.9 1.3a2.35 2.35 0 0 0 4.2 0l3.75 1.95a1.05 1.05 0 0 1 .52 1.24l-.86 2.76a1.05 1.05 0 0 1-1.38.67l-1.03-.42v6.2a1.05 1.05 0 0 1-1.05 1.05H5.95A1.05 1.05 0 0 1 4.9 13.7V7.5l-1.03.42a1.05 1.05 0 0 1-1.38-.67L1.63 4.49a1.05 1.05 0 0 1 .52-1.24L5.9 1.3Z"/></svg>Fashion</button>
+              <button data-v="travel"><svg class="segicon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8.9 1.1a1.05 1.05 0 0 0-1.8 0L6.7 7 1.1 10.1a.8.8 0 0 0-.4.7v1.1c0 .37.35.64.71.54L7 10.9l.34 2.6-1.66 1.13a.5.5 0 0 0-.22.41v.34c0 .29.27.5.55.43L8 15.28l1.99.53a.44.44 0 0 0 .55-.43v-.34a.5.5 0 0 0-.22-.41L8.66 13.5 9 10.9l5.59 1.54c.36.1.71-.17.71-.54v-1.1a.8.8 0 0 0-.4-.7L9.3 7l-.4-5.9Z"/></svg>Travel</button>
+              <button data-v="pharma"><svg class="segicon" viewBox="0 0 16 16" aria-hidden="true"><g transform="rotate(-45 8 8)"><path d="M4.8 4.4h2.6v7.2H4.8a3.6 3.6 0 0 1 0-7.2Z"/><path d="M8.6 4.4h2.6a3.6 3.6 0 0 1 0 7.2H8.6V4.4Z"/></g></svg>Pharma / cosmetics</button>
+              <button data-v="media"><svg class="segicon" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M3.2 1.7h9.6a2.6 2.6 0 0 1 2.6 2.6v7.4a2.6 2.6 0 0 1-2.6 2.6H3.2a2.6 2.6 0 0 1-2.6-2.6V4.3a2.6 2.6 0 0 1 2.6-2.6ZM5.6 4.8 11 8l-5.4 3.2V4.8Z"/></svg>Media</button>
+              <button data-v="fin"><svg class="segicon" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M2.2 3.2h11.6a1.6 1.6 0 0 1 1.6 1.6v6.4a1.6 1.6 0 0 1-1.6 1.6H2.2a1.6 1.6 0 0 1-1.6-1.6V4.8a1.6 1.6 0 0 1 1.6-1.6Zm5.8 2.6a2.2 2.2 0 1 0 0 4.4 2.2 2.2 0 0 0 0-4.4Z"/></svg>Finance / fintech</button>
+            </div>
+          </div>
+          <div class="q"><label>Your model</label>
+            <div class="opts" data-q="model">
+              <button data-v="volume"><svg class="segicon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.4 1.6h2.4a.8.8 0 0 1 .8.8v2.4a.8.8 0 0 1-.8.8H2.4a.8.8 0 0 1-.8-.8V2.4A.8.8 0 0 1 2.4 1.6ZM6.8 1.6h2.4a.8.8 0 0 1 .8.8v2.4a.8.8 0 0 1-.8.8H6.8a.8.8 0 0 1-.8-.8V2.4A.8.8 0 0 1 6.8 1.6ZM11.2 1.6h2.4a.8.8 0 0 1 .8.8v2.4a.8.8 0 0 1-.8.8H11.2a.8.8 0 0 1-.8-.8V2.4A.8.8 0 0 1 11.2 1.6ZM2.4 6h2.4a.8.8 0 0 1 .8.8v2.4a.8.8 0 0 1-.8.8H2.4a.8.8 0 0 1-.8-.8V6.8A.8.8 0 0 1 2.4 6ZM6.8 6h2.4a.8.8 0 0 1 .8.8v2.4a.8.8 0 0 1-.8.8H6.8a.8.8 0 0 1-.8-.8V6.8A.8.8 0 0 1 6.8 6ZM11.2 6h2.4a.8.8 0 0 1 .8.8v2.4a.8.8 0 0 1-.8.8H11.2a.8.8 0 0 1-.8-.8V6.8A.8.8 0 0 1 11.2 6ZM2.4 10.4h2.4a.8.8 0 0 1 .8.8v2.4a.8.8 0 0 1-.8.8H2.4a.8.8 0 0 1-.8-.8V11.2A.8.8 0 0 1 2.4 10.4ZM6.8 10.4h2.4a.8.8 0 0 1 .8.8v2.4a.8.8 0 0 1-.8.8H6.8a.8.8 0 0 1-.8-.8V11.2A.8.8 0 0 1 6.8 10.4ZM11.2 10.4h2.4a.8.8 0 0 1 .8.8v2.4a.8.8 0 0 1-.8.8H11.2a.8.8 0 0 1-.8-.8V11.2A.8.8 0 0 1 11.2 10.4Z"/></svg>Mass-market volume</button>
+              <button data-v="premium"><svg class="segicon" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.3 1.6h7.4a.8.8 0 0 1 .64.32l2.5 3.33a.8.8 0 0 1-.03 1L8.6 14.6a.8.8 0 0 1-1.2 0L1.19 6.25a.8.8 0 0 1-.03-1l2.5-3.33a.8.8 0 0 1 .64-.32Z"/></svg>Premium / B2B</button>
+              <button data-v="export"><svg class="segicon" viewBox="0 0 16 16" aria-hidden="true"><path d="M7.43 1.23a.8.8 0 0 1 1.14 0l3.2 3.3a.8.8 0 0 1-1.15 1.11L8.8 3.86V10.2a.8.8 0 0 1-1.6 0V3.86L5.38 5.64a.8.8 0 0 1-1.15-1.11l3.2-3.3ZM2.4 9.6a.8.8 0 0 1 .8.8v2.4h9.6v-2.4a.8.8 0 0 1 1.6 0v2.9a1.1 1.1 0 0 1-1.1 1.1H2.7a1.1 1.1 0 0 1-1.1-1.1v-2.9a.8.8 0 0 1 .8-.8Z"/></svg>Exporting from outside OIC</button>
+            </div>
+          </div>
+          <div class="q"><label>Home region</label>
+            <div class="opts" data-q="home">
+              <button data-v="west"><svg class="segicon" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M8 .9a7.1 7.1 0 1 0 0 14.2A7.1 7.1 0 0 0 8 .9ZM2.2 4.15h11.6V5.2H2.2V4.15Zm-.9 3.2h13.4V8.4H1.3V7.35Zm.9 3.2h11.6v1.05H2.2v-1.05Z"/></svg>Europe / N. America</button>
+              <button data-v="asia"><svg class="segicon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.6 10.4a5.4 5.4 0 0 1 10.8 0H2.6Zm-1.2 1.2h13.2a.75.75 0 0 1 0 1.5H1.4a.75.75 0 0 1 0-1.5Zm2 2.4h9.2a.75.75 0 0 1 0 1.5H3.4a.75.75 0 0 1 0-1.5Z"/></svg>Asia-Pacific</button>
+              <button data-v="mena"><svg class="segicon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 .8c3.1 2.05 4.9 4.95 4.9 8.1v6.3H9.7V9.05c0-1.55-.62-2.98-1.7-4.05-1.08 1.07-1.7 2.5-1.7 4.05v6.15H3.1V8.9C3.1 5.75 4.9 2.85 8 .8Z"/></svg>Middle East / Africa</button>
+            </div>
+          </div>
+        </div>
+        <div class="result" id="helperOut"><p style="color:var(--muted);margin:0">Answer the three questions to see a shortlist.</p></div>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top:20px">
+      <div class="card">
+        <h3>Values-driven buying is now structural</h3>
+        <p class="sub">What DinarStandard's sentiment tracking found, Oct 2023 – Mar 2025 <button class="src" data-s="sgie2425" data-k="reported">i</button></p>
+        <div class="kpis" style="grid-template-columns:1fr 1fr;border-radius:12px"><div class="kpi" style="padding:16px"><div class="num" style="font-size:30px">15.6%</div><div class="lbl">of tracked social posts explicitly endorsed ethical or local substitutes for boycotted multinational brands</div></div><div class="kpi" style="padding:16px"><div class="num" style="font-size:30px">2023–</div><div class="lbl">Alternative and local brands have held the share they gained past the boycott peak, per the 2025/26 edition</div></div></div>
+        <p style="font-size:13.5px;color:var(--ink-2);margin:14px 0 0">Named beneficiaries include Malaysia's ZUS Coffee, Indonesia's Wardah in cosmetics and regional cola brands; consumer apps such as Boycat and No Thanks have normalised values-based checking at the shelf. For a brand, halal certification increasingly signals ethics and quality to non-Muslim buyers as well.</p>
+      </div>
+      <div class="card">
+        <h3>Practical constraints</h3>
+        <p class="sub">Lead times reported by certifiers and trade bodies; treat as ranges.</p>
+        <div class="movers">
+          <div class="mover"><span class="dot"></span><div><b>Certification: 10 to 60+ days</b> depending on certifier, product complexity and whether an audit visit is required.</div></div>
+          <div class="mover"><span class="dot"></span><div><b>Distributor onboarding: 4–8 weeks</b> in most OIC markets; longer where import licences are product-specific (pharma, cosmetics).</div></div>
+          <div class="mover"><span class="dot"></span><div><b>Indonesia's mandatory halal labelling</b> has been phasing in since 2019; further product categories become mandatory through 2026.</div></div>
+          <div class="mover"><span class="dot"></span><div><b>Financing:</b> <span class="gl" data-g="sharia">Sharia</span>-compliant banking is mainstream in the Gulf, Malaysia and Brunei (20–75% of banking assets), far smaller elsewhere.</div></div>
+        </div>
+        <div class="sowhat" id="sowhat-business"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TAKEAWAYS -->
+<section id="takeaways">
+  <div class="wrap">
+    <h2 id="takeTitle">What this means for you</h2>
+    <p class="section-note" id="takeNote"></p>
+    <div class="takeaways" id="takeGrid"></div>
+    <div class="actions">
+      <button class="btn" id="dlCsv">Download the data (CSV)</button>
+      <button class="btn ghost" id="dlCountries">Download country data (CSV)</button>
+      <button class="btn ghost" id="dlAll">Download everything (JSON)</button>
+    </div>
+  </div>
+</section>
+
+</div><!-- /dashboardView -->
+</main>
+
+<div class="tour" id="tour" role="dialog" aria-live="polite">
+  <div class="meta"><span id="tourStep"></span><button id="tourExit">Exit tour</button></div>
+  <div class="text" id="tourText"></div>
+  <div class="btns"><button id="tourBack">Back</button><button class="primary" id="tourNext">Next</button></div>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true"><div class="box"><h3 id="modalTitle"></h3><div id="modalBody"></div><div class="actions" style="margin-top:16px"><button class="btn ghost" id="modalClose">Close</button></div></div></div>
+<button class="to-top" id="toTop" hidden><svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" focusable="false"><path d="M8 13 V3 M4 7 L8 3 L12 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Top</button>
+<div class="toast" id="toast"></div>
+
+<footer>
+  <div class="wrap">
+    <p><b>Sources.</b> Market sizes, sector figures, projections, GIEI rankings and sector ranks, deal aggregates and trade figures: DinarStandard, <i>State of the Global Islamic Economy Report</i>, 2025/26, 2024/25 and 2023/24 editions, via DinarStandard, Salaam Gateway and press coverage. Islamic finance composition and 2024 segment growth: IFSB <i>Islamic Financial Services Industry Stability Report</i> 2025. Country shares of Islamic finance assets: Global Finance / LSEG-ICD estimates, rounded. Islamic banking share of domestic banking: Union of Arab Banks and IFSB. Muslim population by country: Pew Research Center estimates, rounded. Hajj pilgrim counts: Saudi General Authority for Statistics (GASTAT). GDP comparisons: IMF World Economic Outlook, rounded.</p>
+    <p><b>Method notes.</b> The 2029 halal food figure is the six-sector total minus the five other reported sectors. Islamic finance assets are reported separately from the six consumer sectors, so the "$9 trillion" combined figure is indicative. Every figure carries a marker showing its source, edition and whether it is reported, derived or approximate, next to a badge showing whether it has actually been checked against that source. A blue tick marks a chart whose figures were all confirmed; a gold dash, some; a rust question mark, none: <span class="vflag v-ok">Confirmed</span> when every figure behind that chart was verified, <span class="vflag v-part">2 of 4 confirmed</span> when only some were, <span class="vflag v-no">Unconfirmed</span> when none have been checked. Hover the marker for the source and the date it was checked. Treat anything unconfirmed as unverified and check it before citing. As of September 2026, 42 of 212 figures on this page have been confirmed against a retrieved source. All values in current US dollars; projections are industry forecasts, not guarantees.</p>
+    <p>Compiled 2 September 2026. Built as an open reference for the public, investors, policymakers and business owners.</p>
+    <p class="credit">Made by <b>jahit</b><span aria-hidden="true">·</span><a href="https://jahit.dev" target="_blank" rel="noopener noreferrer">jahit.dev</a><span aria-hidden="true">·</span><a href="https://github.com/jahitjanberk" target="_blank" rel="noopener noreferrer">GitHub</a></p>
+  </div>
+</footer>
+
+<div class="tooltip" id="tip"></div>
+
+</body>
+</html>

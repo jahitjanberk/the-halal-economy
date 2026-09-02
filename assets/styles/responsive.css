@@ -1,0 +1,116 @@
+/* Breakpoints, touch affordances and reduced-motion. Loaded last so it can override. */
+
+/*
+ * Finger-sized targets wherever the pointer is coarse, regardless of width:
+ * a 15px provenance marker is a mouse target, not a thumb one.
+ */
+@media (pointer:coarse){
+  .src{width:22px;height:22px;font-size:11px;}
+  .src.has-icon{width:24px;height:24px;}
+  .exports button{padding:7px 12px;font-size:12px;}
+  .chip,.mini,.tourbtn,.btn,.seg button,.viewseg button,.opts button{min-height:40px;}
+  .nav-links a{padding:10px 12px;}
+  .search-list button{padding:12px;}
+  .filters select,.filters input,.cmp-pick select{min-height:40px;}
+  .fact{padding:13px 0;}
+}
+
+@media (max-width:900px){
+  .kpis{grid-template-columns:1fr 1fr;}
+  .grid-2,.grid-3,.grid-map,.takeaways,.helper,.compare-row,.dir{grid-template-columns:1fr;}
+  .hero-pattern{display:none;}
+  .side{min-height:0;}
+  .scrolly{grid-template-columns:1fr;gap:0;}
+  .sticky{background:var(--paper);padding-bottom:8px;z-index:5;}
+  .sticky .card{padding:10px;}
+  .story-stat{min-height:0;padding-top:8px;margin-top:6px;}
+  .story-stat .n{font-size:24px;}
+  /* The caption names the layer the map is showing, so it stays; it just
+     tightens up against the panel above it. */
+  .story-layer{margin-top:6px;font-size:11.5px;}
+  .step{min-height:0;padding:14px 0;opacity:1;}
+  .step-inner{background:#fff;border:1px solid var(--hair);border-radius:14px;padding:18px;max-width:none;}
+  .step.active .step-inner{border-color:var(--gold);}
+  .cmp-grid{grid-template-columns:120px repeat(var(--n,2),1fr);}
+  /* .exports is static below this width, so nothing needs to clear it. */
+  .card h3,.controls{padding-right:0;}
+  html[dir=rtl] .card h3,html[dir=rtl] .controls{padding-left:0;}
+  .exports{position:static;margin-bottom:10px;flex-wrap:wrap;}
+}
+
+@media (max-width:600px){
+  .wrap{padding:0 16px;}
+  .kpis{grid-template-columns:1fr;}
+  /* The section list is the only way to move around a page this long, so it
+     stays put on mobile and becomes its own scrollable row. */
+  .nav-links{order:3;width:100%;padding:2px 0 4px;-webkit-overflow-scrolling:touch;}
+  .nav .wrap{gap:8px;}
+  /* The hero's perspective chips say the same thing with more room, so the nav
+     only carries the control where the hero is hidden. */
+  body:not(.story-mode) #audSel{display:none;}
+  .to-top{right:12px;bottom:14px;padding:9px 14px;}
+
+  /* Reclaim the padding: on a phone it is most of the screen. */
+  .hero{padding:32px 0 26px;}
+  .hero h1{margin-bottom:14px;}
+  .hero .lede{font-size:var(--t-md);margin-bottom:22px;}
+  .audience{margin-bottom:24px;gap:8px;}
+  section{padding:38px 0 12px;}
+  .section-note{font-size:var(--t-md);margin-bottom:18px;}
+  .card{padding:14px;border-radius:14px;}
+  .kpi{padding:18px 16px;}
+  .side,.result{padding:16px;}
+  .take{padding:18px;}
+  .grid-2,.grid-3{gap:14px;}
+  .compare-row{gap:10px;}
+  footer{padding:36px 0 60px;}
+
+  /* 16px is the threshold below which iOS zooms the page on focus. */
+  input,select,textarea{font-size:16px;}
+  .search{position:static;flex:1 1 100%;}
+  .search input{width:100%;}
+  .search-list{top:auto;}
+  .filters select,.filters input{flex:1 1 100%;}
+  .cmp-pick{gap:8px;}
+  .cmp-pick select{flex:1 1 calc(50% - 4px);}
+
+  /* A pill of three long labels cannot fit one line; let it wrap into a block. */
+  .viewseg,.seg{flex-wrap:wrap;border-radius:16px;}
+  .controls{flex-direction:column;align-items:stretch;}
+
+  /* Wide blocks keep a legible minimum and scroll inside their own shell
+     rather than stretching the page sideways. */
+  .scrollx>table{min-width:420px;}
+  .scrollx>#dealTable{min-width:560px;}
+  .heat{grid-template-columns:92px repeat(var(--hn,6),minmax(62px,1fr));}
+  .cmp-grid{grid-template-columns:104px repeat(var(--n,2),minmax(118px,1fr));}
+  .tablewrap{max-height:220px;}
+
+  /* Map marks are the tappable part of the map, and it renders at half scale. */
+  .marker{r:8;}
+  .country{stroke-width:.4;}
+  .legend{gap:12px;font-size:12.5px;}
+  .tooltip{max-width:calc(100vw - 24px);}
+
+  .modal{padding:12px;}
+  .modal .box{padding:18px;border-radius:14px;max-height:86vh;}
+  .tour{bottom:12px;padding:14px 16px;}
+  /* Back-to-top would sit on top of the tour panel at this width. */
+  .tour.show ~ .to-top{display:none;}
+
+  .story-pick{padding:18px 0 0;}
+  .story-intro{padding:30px 0 18px;}
+  .steps{padding:4vh 0 12vh;}
+}
+
+@media (max-width:430px){
+  /* Only the icons fit beside the tour button; the labels stay in the
+     accessibility tree, so the buttons keep their names. */
+  .viewseg button span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+  .viewseg button{padding:8px 13px;}
+  .segicon{width:15px;height:15px;}
+  .brand{font-size:var(--t-lg);}
+  .actions .btn{width:100%;}
+}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important;animation:none!important;}}

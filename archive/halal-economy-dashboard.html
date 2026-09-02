@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Halal Economy Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<style>
+  :root{
+    --paper:#FBFAF6; --panel:#F1F5F2; --panel-2:#E6EEE9; --ink:#132D28; --ink-2:#3C5450; --muted:#6E837D; --hair:#D9E2DD;
+    --emerald:#1F7A63; --emerald-soft:#8FC3B2; --emerald-pale:#DDEDE6; --gold:#B8912F; --gold-soft:#E7D7A9;
+    --serif:'Fraunces','Fraunces Fallback',Georgia,serif;
+    --sans:'IBM Plex Sans','IBM Plex Sans Arabic','Plex Fallback',-apple-system,Segoe UI,sans-serif;
+    --t-xs:12px; --t-sm:13.5px; --t-md:15px; --t-lg:17px; --t-xl:20px; --t-2xl:26px; --t-3xl:34px; --t-4xl:52px;
+    --track-display:-0.015em; --track-label:0.01em;
+  }
+  @font-face{font-family:'Fraunces Fallback';src:local('Georgia');size-adjust:104%;ascent-override:92%;descent-override:24%;}
+  @font-face{font-family:'Plex Fallback';src:local('Arial');size-adjust:98%;}
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:var(--t-md);line-height:1.5;-webkit-font-smoothing:antialiased;}
+  html[dir=rtl] body{font-family:'IBM Plex Sans Arabic',var(--sans);}
+  ::selection{background:var(--gold-soft);}
+  a{color:var(--emerald);}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
+  button,input,select{font-family:inherit;}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 28px;}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+  h1,h2,h3,h4,.brand,.flag,.kpi .num,.story-stat .n,.cmp-num{font-family:var(--serif);font-optical-sizing:auto;letter-spacing:var(--track-display);}
+  .num,.kpi .num,.bar-val,td.num,.fact .v,.story-stat .n,.axis text,.rk,.cmp-num{font-variant-numeric:tabular-nums lining-nums;}
+  .kpi .lbl,.card .sub,.section-note,.legend,.legend-bar,.story-layer,.take .tag,th,.hint,.axis text,.tag{letter-spacing:var(--track-label);}
+
+  /* NAV */
+  .nav{position:sticky;top:0;z-index:20;background:rgba(251,250,246,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--hair);}
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;min-height:58px;gap:14px;flex-wrap:wrap;padding-top:6px;padding-bottom:6px;}
+  .brand{font-size:var(--t-xl);font-weight:600;white-space:nowrap;}
+  .nav-links{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;}
+  .nav-links::-webkit-scrollbar{display:none;}
+  .nav-links a{text-decoration:none;color:var(--ink-2);font-size:13px;padding:6px 10px;border-radius:100px;white-space:nowrap;}
+  .nav-links a:hover{background:var(--panel);color:var(--ink);}
+  .nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0;flex-wrap:wrap;}
+  .viewseg,.seg{display:inline-flex;border:1px solid var(--hair);border-radius:100px;padding:3px;gap:2px;background:#fff;}
+  .viewseg button,.seg button{font-size:13px;font-weight:600;color:var(--ink-2);background:transparent;border:none;border-radius:100px;padding:6px 14px;cursor:pointer;}
+  .viewseg button.active{background:var(--ink);color:#fff;}
+  .seg button.active{background:var(--emerald);color:#fff;}
+  .tourbtn,.mini{border:1px solid var(--hair);background:#fff;color:var(--ink);border-radius:100px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;}
+  .tourbtn{border-color:var(--gold);}
+  .tourbtn:hover{background:var(--gold-soft);}
+  .mini:hover{background:var(--panel);}
+  select.mini{padding:6px 10px;}
+  body.story-mode #dashboardView, body.story-mode .hero{display:none;}
+  body:not(.story-mode) #storyView{display:none;}
+  section{scroll-margin-top:76px;padding:60px 0 20px;}
+  .stamp{font-size:var(--t-xs);color:var(--muted);text-align:center;padding:10px 0 0;}
+  .stamp button{background:none;border:none;color:var(--emerald);cursor:pointer;font-size:inherit;text-decoration:underline;padding:0;}
+
+  /* HERO */
+  .hero{padding:60px 0 40px;position:relative;overflow:hidden;}
+  .hero-pattern{position:absolute;right:-60px;top:-40px;width:520px;height:420px;opacity:.55;pointer-events:none;}
+  html[dir=rtl] .hero-pattern{right:auto;left:-60px;}
+  .hero h1{font-weight:500;font-size:clamp(var(--t-3xl),4.6vw,var(--t-4xl));line-height:1.06;margin:0 0 18px;max-width:18ch;position:relative;}
+  .hero .lede{font-size:var(--t-lg);color:var(--ink-2);max-width:60ch;margin:0 0 30px;position:relative;}
+  .audience{display:flex;align-items:center;gap:10px;flex-wrap:wrap;position:relative;margin-bottom:36px;}
+  .audience span{font-size:var(--t-sm);color:var(--muted);}
+  .chip{border:1px solid var(--hair);background:#fff;color:var(--ink-2);font-size:var(--t-sm);font-weight:500;border-radius:100px;padding:8px 16px;cursor:pointer;transition:all .2s;}
+  .chip:hover{border-color:var(--emerald-soft);}
+  .chip.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--hair);border:1px solid var(--hair);border-radius:16px;overflow:hidden;position:relative;}
+  .kpi{background:#fff;padding:24px 22px;}
+  .kpi .num{font-size:clamp(30px,3.6vw,44px);font-weight:600;line-height:1;}
+  .kpi .num .unit{color:var(--gold);}
+  .kpi .lbl{margin-top:10px;font-size:var(--t-sm);color:var(--muted);}
+  .kpi .delta{margin-top:8px;font-size:var(--t-xs);color:var(--emerald);font-weight:600;}
+  .compare-row{margin-top:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .cmpbox{background:var(--panel);border-radius:14px;padding:16px 18px;font-size:var(--t-sm);color:var(--ink-2);}
+  .cmpbox b{display:block;font-family:var(--serif);font-size:var(--t-xl);color:var(--ink);font-weight:600;margin-bottom:4px;}
+
+  /* SECTIONS */
+  h2{font-weight:500;font-size:clamp(var(--t-2xl),3.2vw,var(--t-3xl));margin:0 0 8px;line-height:1.15;}
+  .section-note{color:var(--ink-2);font-size:var(--t-lg);max-width:66ch;margin:0 0 26px;line-height:1.5;}
+  .forwho{display:inline-flex;gap:6px;margin:0 0 14px;flex-wrap:wrap;}
+  .forwho span{font-size:11.5px;color:var(--muted);border:1px solid var(--hair);border-radius:100px;padding:3px 10px;}
+  .forwho span.on{background:var(--gold-soft);border-color:var(--gold-soft);color:var(--ink);}
+  .card{background:#fff;border:1px solid var(--hair);border-radius:16px;padding:22px;position:relative;}
+  .card h3{font-weight:500;font-size:var(--t-xl);margin:0 0 4px;line-height:1.25;padding-right:120px;}
+  html[dir=rtl] .card h3{padding-right:0;padding-left:120px;}
+  .card .sub{font-size:var(--t-sm);color:var(--muted);margin:0 0 16px;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .grid-map{display:grid;grid-template-columns:1fr 320px;gap:20px;}
+  .sowhat{margin-top:16px;padding:14px 16px;border-left:3px solid var(--gold);background:var(--panel);border-radius:0 10px 10px 0;font-size:14px;color:var(--ink-2);}
+  html[dir=rtl] .sowhat{border-left:none;border-right:3px solid var(--gold);border-radius:10px 0 0 10px;}
+  .sowhat b{color:var(--ink);font-weight:600;}
+  .controls{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:14px;}
+  .exports{position:absolute;top:18px;right:18px;display:flex;gap:6px;}
+  html[dir=rtl] .exports{right:auto;left:18px;}
+  .exports button{border:1px solid var(--hair);background:#fff;color:var(--muted);border-radius:100px;padding:3px 10px;font-size:11.5px;cursor:pointer;}
+  .exports button:hover{color:var(--ink);border-color:var(--emerald-soft);}
+  .tablewrap{display:none;margin-top:12px;max-height:260px;overflow:auto;border:1px solid var(--hair);border-radius:10px;}
+  .tablewrap.show{display:block;}
+  .tablewrap table{font-size:12.5px;}
+  .src{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;border:1px solid var(--hair);background:#fff;color:var(--muted);font-size:9.5px;font-weight:600;cursor:help;vertical-align:middle;margin-left:4px;padding:0;line-height:1;}
+  .gl{border-bottom:1px dotted var(--gold);cursor:help;text-decoration:none;color:inherit;}
+
+  /* MAP */
+  #map{width:100%;height:auto;display:block;}
+  .country{stroke:#fff;stroke-width:.6;transition:opacity .2s;cursor:pointer;}
+  .country.nodata{cursor:default;}
+  .country:hover{opacity:.8;}
+  .country:focus{outline:none;stroke:var(--ink);stroke-width:1.5;}
+  .marker{stroke:#fff;stroke-width:1.5;cursor:pointer;}
+  .legend-bar{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted);margin-top:12px;flex-wrap:wrap;}
+  .legend-bar .ramp{flex:1;height:8px;border-radius:4px;max-width:260px;min-width:120px;}
+  .side{background:var(--panel);border-radius:16px;padding:20px;min-height:360px;}
+  .side .flag{font-size:var(--t-2xl);font-weight:500;margin:0 0 2px;}
+  .side .hint{color:var(--muted);font-size:var(--t-sm);}
+  .fact{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--hair);font-size:14px;}
+  .fact .k{color:var(--muted);}
+  .fact .v{font-weight:600;text-align:right;}
+  .side .note{margin-top:14px;font-size:13px;color:var(--ink-2);}
+  .side .cta{margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;}
+  .map-fallback{display:none;padding:20px;background:var(--panel);border-radius:12px;font-size:14px;color:var(--ink-2);}
+  .search{position:relative;}
+  .search input{border:1px solid var(--hair);border-radius:100px;padding:7px 14px;font-size:13px;width:220px;background:#fff;}
+  .search-list{position:absolute;top:36px;left:0;right:0;background:#fff;border:1px solid var(--hair);border-radius:10px;box-shadow:0 8px 24px rgba(19,45,40,.1);z-index:8;max-height:220px;overflow:auto;display:none;}
+  .search-list.show{display:block;}
+  .search-list button{display:block;width:100%;text-align:left;background:none;border:none;padding:8px 12px;font-size:13px;cursor:pointer;color:var(--ink);}
+  .search-list button:hover,.search-list button:focus{background:var(--panel);}
+  .toggle-mini{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);cursor:pointer;}
+
+  /* CHARTS */
+  svg.chart{width:100%;height:auto;display:block;overflow:visible;}
+  .axis text{font-family:var(--sans);font-size:11px;fill:var(--muted);}
+  .axis line,.axis path{stroke:var(--hair);}
+  .grid line{stroke:var(--hair);stroke-dasharray:2 3;}
+  .bar-label{font-family:var(--sans);font-size:12.5px;fill:var(--ink);}
+  .bar-val{font-family:var(--sans);font-size:12.5px;fill:var(--ink-2);font-weight:600;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px;font-size:13px;color:var(--ink-2);}
+  .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-2px;}
+  .legend i.line{height:3px;border-radius:2px;vertical-align:2px;}
+  .tooltip{position:fixed;pointer-events:none;background:var(--ink);color:#fff;font-size:12.5px;padding:8px 12px;border-radius:8px;opacity:0;transition:opacity .12s;z-index:90;max-width:280px;line-height:1.45;}
+  .tooltip.show{opacity:1;}
+  .tooltip b{color:var(--gold-soft);}
+
+  /* HEATMAP */
+  .heat{display:grid;gap:3px;font-size:12.5px;}
+  .heat .hc{border-radius:6px;padding:8px 6px;text-align:center;font-weight:600;min-height:38px;display:flex;align-items:center;justify-content:center;}
+  .heat .hh{font-weight:500;color:var(--muted);font-size:11.5px;text-align:center;padding:4px 2px;line-height:1.2;}
+  .heat .hr{font-weight:500;padding:8px 6px;display:flex;align-items:center;}
+
+  /* TABLES */
+  table{width:100%;border-collapse:collapse;font-size:14px;}
+  th{text-align:left;font-weight:500;color:var(--muted);font-size:12.5px;padding:8px 10px;border-bottom:1px solid var(--hair);white-space:nowrap;}
+  html[dir=rtl] th{text-align:right;}
+  td{padding:10px;border-bottom:1px solid var(--hair);vertical-align:middle;}
+  td.num{text-align:right;}
+  .rk{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--gold);}
+  .scorebar{height:8px;border-radius:4px;background:var(--emerald);}
+  .movers{display:flex;flex-direction:column;gap:12px;}
+  .mover{display:flex;gap:14px;align-items:flex-start;font-size:14px;}
+  .mover .dot{width:10px;height:10px;border-radius:50%;background:var(--gold);margin-top:6px;flex-shrink:0;}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+  .filters select,.filters input{border:1px solid var(--hair);border-radius:100px;padding:6px 12px;font-size:13px;background:#fff;}
+
+  /* COMPARE */
+  .cmp-pick{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;align-items:center;}
+  .cmp-pick select{border:1px solid var(--hair);border-radius:100px;padding:7px 14px;font-size:13.5px;background:#fff;}
+  .cmp-grid{display:grid;grid-template-columns:180px repeat(var(--n,2),1fr);gap:1px;background:var(--hair);border:1px solid var(--hair);border-radius:14px;overflow:hidden;}
+  .cmp-grid>div{background:#fff;padding:12px 14px;font-size:13.5px;}
+  .cmp-grid .h{background:var(--panel);font-weight:600;font-family:var(--serif);font-size:var(--t-lg);}
+  .cmp-grid .k{color:var(--muted);background:var(--panel);}
+  .cmp-num{font-size:var(--t-xl);font-weight:600;}
+  .cmp-grid .best{color:var(--emerald);}
+  .pillbar{height:6px;background:var(--emerald-pale);border-radius:3px;margin-top:6px;overflow:hidden;}
+  .pillbar i{display:block;height:100%;background:var(--emerald);}
+
+  /* ENTRY HELPER */
+  .helper{display:grid;grid-template-columns:1fr 1.4fr;gap:20px;}
+  .q{margin-bottom:16px;}
+  .q label{display:block;font-size:var(--t-sm);color:var(--muted);margin-bottom:6px;}
+  .opts{display:flex;gap:6px;flex-wrap:wrap;}
+  .result{background:var(--panel);border-radius:14px;padding:18px;}
+  .result .r{padding:12px 0;border-bottom:1px solid var(--hair);}
+  .result .r:last-child{border-bottom:none;}
+  .result .r b{font-family:var(--serif);font-size:var(--t-lg);font-weight:600;}
+  .result .r p{margin:4px 0 0;font-size:13.5px;color:var(--ink-2);}
+  .dir{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+  .dir .d{border:1px solid var(--hair);border-radius:12px;padding:12px 14px;font-size:13.5px;}
+  .dir .d b{display:block;font-weight:600;}
+  .dir .d span{color:var(--muted);font-size:12.5px;}
+
+  /* TAKEAWAYS */
+  .takeaways{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .take{background:#fff;border:1px solid var(--hair);border-radius:16px;padding:22px;}
+  .take .tag{font-size:12px;color:var(--emerald);font-weight:600;margin-bottom:8px;}
+  .take h4{font-weight:500;font-size:var(--t-xl);margin:0 0 8px;line-height:1.3;}
+  .take p{margin:0;font-size:14px;color:var(--ink-2);}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;}
+  .btn{border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:100px;padding:10px 18px;font-size:var(--t-sm);font-weight:600;cursor:pointer;}
+  .btn.ghost{background:transparent;color:var(--ink);}
+
+  footer{padding:50px 0 80px;color:var(--muted);font-size:var(--t-xs);line-height:1.7;}
+  footer .wrap{max-width:760px;}
+  footer p{margin:0 0 10px;}
+
+  /* STORY */
+  #storyView{padding-bottom:40px;}
+  .story-pick{display:flex;justify-content:center;gap:8px;padding:28px 0 0;}
+  .story-intro{padding:44px 0 26px;text-align:center;}
+  .story-intro .kicker{font-family:var(--serif);font-style:italic;color:var(--muted);font-size:18px;margin:0 0 10px;}
+  .story-intro h1{font-weight:500;font-size:clamp(var(--t-3xl),4.8vw,56px);line-height:1.04;margin:0 auto 14px;max-width:22ch;}
+  .story-intro p{color:var(--ink-2);max-width:56ch;margin:0 auto;font-size:16px;}
+  .scrollcue{margin:28px auto 0;width:22px;height:34px;border:2px solid var(--hair);border-radius:12px;position:relative;}
+  .scrollcue::after{content:'';position:absolute;left:50%;top:6px;width:4px;height:8px;margin-left:-2px;border-radius:2px;background:var(--gold);animation:cue 1.6s infinite;}
+  @keyframes cue{0%{transform:translateY(0);opacity:1}100%{transform:translateY(12px);opacity:0}}
+  .scrolly{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:start;}
+  .sticky{position:sticky;top:78px;}
+  .sticky .card{padding:16px;}
+  #storyMap,#storyChart{width:100%;height:auto;display:block;}
+  .story-stat{display:flex;align-items:baseline;gap:14px;margin-top:10px;padding-top:14px;border-top:1px solid var(--hair);min-height:64px;}
+  .story-stat .n{font-size:38px;font-weight:600;line-height:1;color:var(--ink);transition:opacity .3s;}
+  .story-stat .n .u{color:var(--gold);}
+  .story-stat .l{font-size:13px;color:var(--muted);max-width:26ch;}
+  .story-layer{font-size:12px;color:var(--muted);margin-top:8px;}
+  .steps{padding:8vh 0 20vh;}
+  .step{min-height:78vh;display:flex;align-items:center;opacity:.28;transition:opacity .4s;}
+  .step.active{opacity:1;}
+  .step-inner{max-width:44ch;}
+  .step .snum{font-family:var(--serif);font-size:15px;color:var(--gold);margin-bottom:8px;}
+  .step h3{font-weight:500;font-size:clamp(var(--t-2xl),2.8vw,var(--t-3xl));line-height:1.12;margin:0 0 12px;}
+  .step p{margin:0;font-size:var(--t-lg);color:var(--ink-2);line-height:1.55;}
+  .step .ctas{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;}
+  .story-end{text-align:center;padding:20px 0 40px;color:var(--muted);font-size:var(--t-sm);}
+
+  /* TOUR */
+  .tour-focus{outline:2px solid var(--gold);outline-offset:8px;border-radius:20px;}
+  .tour{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);width:min(560px,calc(100% - 32px));background:var(--ink);color:#fff;border-radius:16px;padding:18px 20px;box-shadow:0 18px 50px rgba(19,45,40,.28);z-index:60;display:none;}
+  .tour.show{display:block;}
+  .tour .meta{display:flex;justify-content:space-between;font-size:12px;color:var(--gold-soft);margin-bottom:8px;}
+  .tour .meta button{background:none;border:none;color:#fff;opacity:.7;cursor:pointer;font-size:12px;padding:0;}
+  .tour .text{font-size:14.5px;line-height:1.5;}
+  .tour .text b{color:var(--gold-soft);}
+  .tour .btns{display:flex;justify-content:flex-end;gap:8px;margin-top:14px;}
+  .tour .btns button{border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;border-radius:100px;padding:7px 14px;font-size:13px;font-weight:600;cursor:pointer;}
+  .tour .btns button.primary{background:var(--gold);border-color:var(--gold);color:var(--ink);}
+
+  /* MODAL */
+  .modal{position:fixed;inset:0;background:rgba(19,45,40,.4);display:none;align-items:center;justify-content:center;z-index:80;padding:20px;}
+  .modal.show{display:flex;}
+  .modal .box{background:#fff;border-radius:16px;padding:26px;max-width:560px;width:100%;max-height:80vh;overflow:auto;}
+  .modal h3{font-family:var(--serif);font-weight:500;font-size:var(--t-2xl);margin:0 0 12px;}
+  .modal ul{padding-left:18px;font-size:14px;color:var(--ink-2);}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:100px;font-size:13px;z-index:70;opacity:0;transition:opacity .2s;pointer-events:none;}
+  .toast.show{opacity:1;}
+  .lang-note{font-size:var(--t-xs);color:var(--muted);text-align:center;padding:8px 0 0;display:none;}
+  html[lang=ar] .lang-note,html[lang=id] .lang-note,html[lang=ms] .lang-note{display:block;}
+
+  @media (max-width:900px){
+    .kpis{grid-template-columns:1fr 1fr;}
+    .grid-2,.grid-3,.grid-map,.takeaways,.helper,.compare-row,.dir{grid-template-columns:1fr;}
+    .hero-pattern{display:none;}
+    .side{min-height:0;}
+    .scrolly{grid-template-columns:1fr;gap:0;}
+    .sticky{top:62px;z-index:5;background:var(--paper);padding-bottom:8px;}
+    .sticky .card{padding:10px;}
+    .story-stat{min-height:0;padding-top:8px;margin-top:6px;}
+    .story-stat .n{font-size:24px;}
+    .story-layer{display:none;}
+    .step{min-height:0;padding:14px 0;opacity:1;}
+    .step-inner{background:#fff;border:1px solid var(--hair);border-radius:14px;padding:18px;max-width:none;}
+    .step.active .step-inner{border-color:var(--gold);}
+    .cmp-grid{grid-template-columns:120px repeat(var(--n,2),1fr);}
+    .card h3{padding-right:0;}
+    .exports{position:static;margin-bottom:10px;}
+  }
+  @media (max-width:600px){
+    .wrap{padding:0 16px;}
+    .kpis{grid-template-columns:1fr;}
+    .nav-links{display:none;}
+    .search input{width:160px;}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important;animation:none!important;}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="brand" data-i18n="brand">The Halal Economy</div>
+    <div class="nav-links">
+      <a href="#map-section" data-i18n="nav.map">Map</a>
+      <a href="#sectors" data-i18n="nav.sectors">Sectors</a>
+      <a href="#growth" data-i18n="nav.growth">Growth</a>
+      <a href="#finance" data-i18n="nav.finance">Finance</a>
+      <a href="#countries" data-i18n="nav.countries">Countries</a>
+      <a href="#compare" data-i18n="nav.compare">Compare</a>
+      <a href="#trade" data-i18n="nav.trade">Trade</a>
+      <a href="#invest" data-i18n="nav.invest">Deals</a>
+      <a href="#business" data-i18n="nav.business">Entry</a>
+      <a href="#takeaways" data-i18n="nav.takeaways">Takeaways</a>
+    </div>
+    <div class="nav-right">
+      <select class="mini" id="lang" aria-label="Language">
+        <option value="en">English</option><option value="ar">العربية</option><option value="id">Bahasa Indonesia</option><option value="ms">Bahasa Melayu</option>
+      </select>
+      <div class="viewseg" role="group" aria-label="View">
+        <button class="active" data-view="dashboard" data-i18n="view.dashboard">Dashboard</button>
+        <button data-view="story" data-i18n="view.story">Story</button>
+      </div>
+      <button class="tourbtn" id="tourStart" data-i18n="tour.start">Take the tour</button>
+      <button class="mini" id="copyLink" data-i18n="copylink">Copy link to this view</button>
+    </div>
+  </div>
+</nav>
+<div class="lang-note" data-i18n="langnote">Interface translated; long-form analysis and story text remain in English for now.</div>
+
+<!-- ================= STORY VIEW ================= -->
+<div id="storyView">
+  <div class="wrap">
+    <div class="story-pick seg" role="group" aria-label="Choose a story">
+      <button class="active" data-story="gap">The gap</button>
+      <button data-story="hajj">The pilgrimage economy</button>
+    </div>
+    <div class="story-intro">
+      <p class="kicker" id="siKicker"></p>
+      <h1 id="siTitle"></h1>
+      <p id="siBody"></p>
+      <div class="scrollcue" aria-hidden="true"></div>
+    </div>
+    <div class="scrolly">
+      <div class="sticky">
+        <div class="card">
+          <svg id="storyMap" viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Story map"></svg>
+          <svg id="storyChart" class="chart" viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Story chart" style="display:none"></svg>
+          <div class="story-layer" id="storyLayer"></div>
+          <div class="story-stat"><div class="n" id="storyN"></div><div class="l" id="storyL"></div></div>
+        </div>
+      </div>
+      <div class="steps" id="steps"></div>
+    </div>
+    <p class="story-end">That's the story. Switch to the Dashboard view to explore every number yourself.</p>
+  </div>
+</div>
+
+<!-- ================= DASHBOARD VIEW ================= -->
+<div id="dashboardView">
+
+<header class="hero">
+  <svg class="hero-pattern" viewBox="0 0 520 420" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <pattern id="star8" width="56" height="56" patternUnits="userSpaceOnUse"><path d="M28 4 L37 18 L52 18 L42 30 L47 46 L28 37 L9 46 L14 30 L4 18 L19 18 Z" stroke="#B8912F" stroke-width=".9" fill="none"/></pattern>
+      <radialGradient id="fade" cx="70%" cy="30%" r="70%"><stop offset="0" stop-color="#fff" stop-opacity="1"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+      <mask id="m"><rect width="520" height="420" fill="url(#fade)"/></mask>
+    </defs>
+    <rect width="520" height="420" fill="url(#star8)" mask="url(#m)"/>
+  </svg>
+  <div class="wrap">
+    <h1 data-i18n="hero.h1">A $9 trillion economy, mapped sector by sector and country by country.</h1>
+    <p class="lede" data-i18n="hero.lede">Muslim consumers spent $2.6 trillion in 2024 on halal food, fashion, travel, media, medicines and cosmetics. Islamic finance holds another $6 trillion in assets. This dashboard shows where that money sits, how fast each part is growing, and what it means depending on who you are.</p>
+    <div class="audience" role="group" aria-label="Choose your perspective">
+      <span data-i18n="aud.label">I'm looking at this as:</span>
+      <button class="chip active" data-aud="public" data-i18n="aud.public">General public</button>
+      <button class="chip" data-aud="investor" data-i18n="aud.investor">Investor</button>
+      <button class="chip" data-aud="policy" data-i18n="aud.policy">Policymaker</button>
+      <button class="chip" data-aud="business" data-i18n="aud.business">Business owner</button>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><div class="num" data-count="2.60" data-dec="2"><span class="unit">$</span>0.00<span class="unit">T</span></div><div class="lbl"><span data-i18n="kpi.spend">Muslim consumer spending across six halal sectors, 2024</span><button class="src" data-s="sgie2526" data-k="reported">i</button></div><div class="delta">On track for $3.56T by 2029</div></div>
+      <div class="kpi"><div class="num" data-count="5.99" data-dec="2"><span class="unit">$</span>0.00<span class="unit">T</span></div><div class="lbl"><span data-i18n="kpi.fin">Islamic finance assets, 2024</span><button class="src" data-s="sgie2526" data-k="reported">i</button></div><div class="delta">Forecast $9.72T by 2029</div></div>
+      <div class="kpi"><div class="num" data-count="6.5" data-dec="1">0.0<span class="unit">%</span></div><div class="lbl"><span data-i18n="kpi.growth">Projected annual growth in consumer spend, 2024–29</span><button class="src" data-s="sgie2526" data-k="derived">i</button></div><div class="delta">Finance assets growing ~10% a year</div></div>
+      <div class="kpi"><div class="num" data-count="346" data-dec="0">0</div><div class="lbl"><span data-i18n="kpi.deals">Investment deals in the latest reporting year</span><button class="src" data-s="sgie2526" data-k="reported">i</button></div><div class="delta">$13.1B disclosed value</div></div>
+    </div>
+    <div class="compare-row" id="howbig">
+      <div class="cmpbox"><b>$2.6T</b>Muslim consumer spend is larger than the annual GDP of Italy, Canada or Brazil — each around $2.2–2.4T in 2024.<button class="src" data-s="imf" data-k="approx">i</button></div>
+      <div class="cmpbox"><b>~$9T</b>Consumer spend plus Islamic finance assets is roughly twice the size of Japan's economy and about a third of the United States'.<button class="src" data-s="imf" data-k="approx">i</button></div>
+      <div class="cmpbox"><b>1 in 4</b>People on earth is Muslim. Two billion consumers, with a median age well below the global average.<button class="src" data-s="pew" data-k="approx">i</button></div>
+    </div>
+  </div>
+</header>
+<p class="stamp"><span id="stampText">Data as of the SGIE 2025/26 edition (published June 2026). Dashboard compiled 2 September 2026.</span> · <button id="changelog">Changelog</button></p>
+
+<!-- MAP -->
+<section id="map-section">
+  <div class="wrap">
+    <div class="forwho" data-for="public policy investor business"></div>
+    <h2 data-i18n="map.h2">Where the halal economy lives</h2>
+    <p class="section-note">Population tells you where demand is. Ecosystem scores tell you where the infrastructure, regulation and finance to serve it are strongest. The two rarely line up, and that gap is the story.</p>
+    <div class="card">
+      <div class="exports" data-svg="map" data-name="halal-economy-map"></div>
+      <div class="controls">
+        <div class="seg" id="layerSeg" role="group" aria-label="Map layer">
+          <button class="active" data-layer="pop" data-i18n="layer.pop">Muslim population</button>
+          <button data-layer="giei" data-i18n="layer.giei">Ecosystem score</button>
+          <button data-layer="fin" data-i18n="layer.fin">Islamic finance share</button>
+        </div>
+        <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+          <div class="search"><input id="search" type="search" placeholder="Search a country…" aria-label="Search a country" autocomplete="off"><div class="search-list" id="searchList" role="listbox"></div></div>
+          <label class="toggle-mini"><input type="checkbox" id="cb"> Colour-blind safe</label>
+        </div>
+      </div>
+      <div class="grid-map">
+        <div>
+          <svg id="map" viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="World map of halal economy indicators"><title>World map. Use the search box or Tab through countries with data.</title></svg>
+          <div class="legend-bar"><span id="legMin">0</span><div class="ramp" id="ramp"></div><span id="legMax">240M</span><span id="layerHint" style="margin-left:auto"></span></div>
+          <div class="map-fallback" id="mapFallback">The map outlines couldn't load in this environment. Use the search box, the Countries table, or the country CSV instead.</div>
+        </div>
+        <aside class="side" id="side" aria-live="polite"></aside>
+      </div>
+      <div class="sowhat" id="sowhat-map"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTORS -->
+<section id="sectors">
+  <div class="wrap">
+    <div class="forwho" data-for="investor business public"></div>
+    <h2 data-i18n="sectors.h2">Six sectors, very different speeds</h2>
+    <p class="section-note">Food is the anchor at nearly 60% of consumer spend. But the growth is elsewhere: travel is compounding at over 11% a year, almost double the pace of food.</p>
+    <div class="grid-2">
+      <div class="card">
+        <div class="exports" data-svg="sectorBars" data-name="sector-spend" data-table="sectors"></div>
+        <div class="controls">
+          <div><h3>Consumer spend by sector</h3><p class="sub" style="margin:0">US$ billions <button class="src" data-s="sgie2526" data-k="reported">i</button></p></div>
+          <div class="seg" id="yearSeg"><button class="active" data-year="2024">2024</button><button data-year="2029">2029 forecast</button></div>
+        </div>
+        <svg class="chart" id="sectorBars" viewBox="0 0 520 300"></svg>
+        <div class="tablewrap" id="tbl-sectors"></div>
+        <div class="sowhat" id="sowhat-sectors"></div>
+      </div>
+      <div class="card">
+        <div class="exports" data-svg="growthScatter" data-name="growth-vs-gain"></div>
+        <h3>Growth rate vs. absolute gain</h3>
+        <p class="sub">Where is the fastest growth, and where is the most new money? Bubble size = 2024 spend. The upper-right is the attractive quadrant.</p>
+        <svg class="chart" id="growthScatter" viewBox="0 0 520 300"></svg>
+        <div class="legend"><span><i style="background:var(--emerald)"></i>Sector</span><span><i class="line" style="background:var(--gold)"></i>Six-sector average growth (6.5%)</span></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:20px">
+      <h3>Sector × country: who leads where</h3>
+      <p class="sub">Country rank within each sector's GIEI sub-indicator, from the latest edition where a rank has been published. Darker = higher rank. Blank cells are not yet published, not zero. <button class="src" data-s="sgie2526" data-k="reported">i</button></p>
+      <div class="heat" id="heat"></div>
+      <div class="legend" style="margin-top:14px"><span><i style="background:#1F7A63"></i>#1</span><span><i style="background:#5FA88F"></i>#2</span><span><i style="background:#A6D1C1"></i>#3–4</span><span><i style="background:#E6EEE9"></i>Top 10 / mentioned</span><span>Tag shows the edition (25/26 or 24/25)</span></div>
+      <div class="sowhat" id="sowhat-heat"><b>Read across a row to see a country's breadth; down a column to see who competes in a sector.</b> Malaysia and the UAE are the only two countries in the top three of nearly every sector. Indonesia leads modest fashion and is second in travel and pharma/cosmetics, but is well behind in Islamic finance.</div>
+    </div>
+  </div>
+</section>
+
+<!-- GROWTH -->
+<section id="growth">
+  <div class="wrap">
+    <div class="forwho" data-for="investor public policy"></div>
+    <h2>The trajectory</h2>
+    <p class="section-note">Consumer spending has grown through a pandemic and an inflation cycle. Islamic finance has grown faster still, adding a trillion dollars in a single year between 2023 and 2024.</p>
+    <div class="card">
+      <div class="exports" data-svg="lineChart" data-name="market-trajectory" data-table="trajectory"></div>
+      <h3>Market size over time</h3>
+      <p class="sub">US$ trillions. Dashed segments are industry forecasts. <button class="src" data-s="sgie-multi" data-k="reported">i</button></p>
+      <svg class="chart" id="lineChart" viewBox="0 0 1060 340"></svg>
+      <div class="legend"><span><i class="line" style="background:var(--emerald)"></i>Six-sector consumer spend</span><span><i class="line" style="background:var(--gold)"></i>Islamic finance assets</span></div>
+      <div class="tablewrap" id="tbl-trajectory"></div>
+      <div class="sowhat" id="sowhat-growth"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINANCE -->
+<section id="finance">
+  <div class="wrap">
+    <div class="forwho" data-for="investor policy business"></div>
+    <h2>Inside Islamic finance</h2>
+    <p class="section-note">Three-quarters of the industry is still banking, but the fastest-moving parts are capital markets and insurance. Ten countries hold roughly 95% of all assets.</p>
+    <div class="grid-3">
+      <div class="card"><div class="exports" data-svg="donut" data-name="finance-composition"></div><h3>What the $6T is made of</h3><p class="sub">Share of global assets, 2024 <button class="src" data-s="ifsb" data-k="reported">i</button></p><svg class="chart" id="donut" viewBox="0 0 320 260"></svg></div>
+      <div class="card"><div class="exports" data-svg="segGrowth" data-name="finance-segment-growth"></div><h3>How fast each part grew in 2024</h3><p class="sub">Year-on-year change <button class="src" data-s="ifsb" data-k="reported">i</button></p><svg class="chart" id="segGrowth" viewBox="0 0 320 260"></svg></div>
+      <div class="card"><div class="exports" data-svg="finShare" data-name="finance-share-by-country"></div><h3>Who holds the assets</h3><p class="sub">Approximate share of global <span class="gl" data-g="sharia">Sharia</span>-compliant assets <button class="src" data-s="gf" data-k="approx">i</button></p><svg class="chart" id="finShare" viewBox="0 0 320 260"></svg></div>
+    </div>
+    <div class="sowhat" id="sowhat-finance" style="margin-top:20px"></div>
+  </div>
+</section>
+
+<!-- COUNTRIES -->
+<section id="countries">
+  <div class="wrap">
+    <div class="forwho" data-for="policy investor public"></div>
+    <h2>Who's leading, and who's moving</h2>
+    <p class="section-note">The <span class="gl" data-g="giei">Global Islamic Economy Indicator</span> scores 81 countries on 52 metrics across finance, governance, awareness, social impact and innovation. It measures ecosystem quality, not market size — which is why Malaysia, with 21 million Muslims, sits far above Indonesia's 236 million.</p>
+    <div class="grid-2">
+      <div class="card">
+        <div class="exports" data-table="rank"></div>
+        <h3>Ecosystem ranking</h3>
+        <p class="sub">GIEI score, 2024/25 edition, the latest with full scores published. <button class="src" data-s="sgie2425" data-k="reported">i</button></p>
+        <table id="rankTable"><thead><tr><th>Rank</th><th>Country</th><th style="width:40%">Score</th><th style="text-align:right">Muslims</th></tr></thead><tbody></tbody></table>
+        <div class="tablewrap" id="tbl-rank"></div>
+        <p style="font-size:12.5px;color:var(--muted);margin:14px 0 0">In the 2025/26 edition Malaysia scored 186.1 and the UAE moved to second, ahead of Saudi Arabia, Indonesia and Bahrain. The UK ranks 14th and Singapore is in the top 15 — the only non-Muslim-majority countries to do so.</p>
+      </div>
+      <div class="card">
+        <div class="exports" data-svg="bump" data-name="rank-history"></div>
+        <h3>Top-five positions over time</h3>
+        <p class="sub">Editions with a published top five. Malaysia has been first in every edition since 2013. <button class="src" data-s="sgie-multi" data-k="reported">i</button></p>
+        <svg class="chart" id="bump" viewBox="0 0 520 300"></svg>
+        <div class="sowhat" id="sowhat-countries"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARE -->
+<section id="compare">
+  <div class="wrap">
+    <div class="forwho" data-for="policy investor business"></div>
+    <h2>Compare countries</h2>
+    <p class="section-note">Pick two or three countries. Green marks the strongest value in each row. Blank means not published, not zero.</p>
+    <div class="card">
+      <div class="exports" data-table="compare"></div>
+      <div class="cmp-pick">
+        <select id="c1"></select><select id="c2"></select><select id="c3"><option value="">+ third country</option></select>
+        <span style="font-size:12.5px;color:var(--muted)">Presets:</span>
+        <button class="mini" data-preset="Indonesia,Malaysia">Indonesia vs Malaysia</button>
+        <button class="mini" data-preset="Saudi Arabia,United Arab Emirates,Bahrain">Gulf hubs</button>
+        <button class="mini" data-preset="Pakistan,Türkiye,Senegal">Fast movers</button>
+        <button class="mini" data-preset="United Kingdom,Singapore,Malaysia">Non-majority vs leader</button>
+      </div>
+      <div class="cmp-grid" id="cmpGrid"></div>
+      <div class="tablewrap" id="tbl-compare"></div>
+    </div>
+  </div>
+</section>
+
+<!-- TRADE & STANDARDS -->
+<section id="trade">
+  <div class="wrap">
+    <div class="forwho" data-for="policy business"></div>
+    <h2>Trade, imports and standards</h2>
+    <p class="section-note">Most halal food is produced outside the countries that eat it. Imports into <span class="gl" data-g="oic">OIC</span> economies are growing faster than consumption, and certification is the gate everything passes through.</p>
+    <div class="grid-2">
+      <div class="card">
+        <div class="exports" data-svg="imports" data-name="oic-imports" data-table="imports"></div>
+        <h3>OIC halal-related imports</h3>
+        <p class="sub">US$ billions. All halal-related goods; food is roughly 70% of the total. <button class="src" data-s="sgie-multi" data-k="reported">i</button></p>
+        <svg class="chart" id="imports" viewBox="0 0 520 260"></svg>
+        <div class="tablewrap" id="tbl-imports"></div>
+        <div class="grid-2" style="margin-top:14px;gap:12px">
+          <div><div class="sub" style="margin-bottom:6px">Biggest OIC buyers</div><div style="font-size:13.5px">Saudi Arabia · Türkiye · Indonesia · Malaysia ($30.6B, +12.4%) · UAE</div></div>
+          <div><div class="sub" style="margin-bottom:6px">Biggest suppliers into OIC</div><div style="font-size:13.5px">Brazil · India · Russia · Türkiye · United States</div></div>
+        </div>
+        <div class="sowhat" id="sowhat-trade"></div>
+      </div>
+      <div class="card">
+        <h3>Certification bodies and recognition</h3>
+        <p class="sub">Principal certifiers and standards bodies by market. Recognition arrangements change; verify with the certifier before relying on this. <button class="src" data-s="cert" data-k="reference">i</button></p>
+        <div class="filters"><input id="certFilter" placeholder="Filter by country or body…" aria-label="Filter certification bodies"></div>
+        <div class="dir" id="certDir"></div>
+        <p style="font-size:12.5px;color:var(--muted);margin:14px 0 0"><b>Cross-border frameworks:</b> SMIIC (the OIC's standards body) publishes the OIC/SMIIC 1 halal standard; the GCC Accreditation Center (GAC) accredits certifiers for Gulf markets; Indonesia, the UAE, Türkiye and Malaysia signed a mutual-recognition arrangement in 2024/25.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INVESTMENT -->
+<section id="invest">
+  <div class="wrap">
+    <div class="forwho" data-for="investor"></div>
+    <h2>Deal flow and listed exposure</h2>
+    <p class="section-note">DinarStandard tracks investment into Islamic-economy companies each edition. Deal-level data sits behind the full report; the aggregates below are what has been published.</p>
+    <div class="grid-2">
+      <div class="card">
+        <div class="exports" data-table="deals"></div>
+        <h3>Published deal aggregates</h3>
+        <p class="sub">Filter by edition, country or sector. Values are disclosed deal value; many deals are undisclosed. <button class="src" data-s="sgie-multi" data-k="reported">i</button></p>
+        <div class="filters"><select id="dealEd"><option value="">All editions</option></select><select id="dealScope"><option value="">All scopes</option></select><input id="dealQ" placeholder="Search…" aria-label="Search deals"></div>
+        <div style="max-height:360px;overflow:auto"><table id="dealTable"><thead><tr><th>Edition</th><th>Scope</th><th>Item</th><th style="text-align:right">Deals</th><th style="text-align:right">Value</th><th>Note</th></tr></thead><tbody></tbody></table></div>
+        <div class="tablewrap" id="tbl-deals"></div>
+        <div class="sowhat" id="sowhat-deals"><b>Two hubs, two profiles.</b> Indonesia attracts value through large halal food and consumer deals; the UAE attracts count through fintech and media. Islamic finance takes the most capital; media & recreation the most transactions.</div>
+      </div>
+      <div class="card">
+        <h3>Listed exposure, for reference</h3>
+        <p class="sub">Public instruments with material halal-economy or Islamic-finance revenue. This is a reference list, not a recommendation, and is not investment advice; check current holdings and listings before acting.</p>
+        <table id="listedTable"><thead><tr><th>Name</th><th>Type</th><th>Exposure</th></tr></thead><tbody></tbody></table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUSINESS -->
+<section id="business">
+  <div class="wrap">
+    <div class="forwho" data-for="business"></div>
+    <h2>Market entry helper</h2>
+    <p class="section-note">Three questions, then a shortlist built from the data on this page. It's a starting point for research, not a substitute for it.</p>
+    <div class="card">
+      <div class="helper">
+        <div>
+          <div class="q"><label>What do you sell?</label><div class="opts seg" data-q="sector"><button data-v="food">Food</button><button data-v="fashion">Fashion</button><button data-v="travel">Travel</button><button data-v="pharma">Pharma / cosmetics</button><button data-v="media">Media</button><button data-v="fin">Finance / fintech</button></div></div>
+          <div class="q"><label>Your model</label><div class="opts seg" data-q="model"><button data-v="volume">Mass-market volume</button><button data-v="premium">Premium / B2B</button><button data-v="export">Exporting from outside OIC</button></div></div>
+          <div class="q"><label>Home region</label><div class="opts seg" data-q="home"><button data-v="west">Europe / N. America</button><button data-v="asia">Asia-Pacific</button><button data-v="mena">Middle East / Africa</button></div></div>
+        </div>
+        <div class="result" id="helperOut"><p style="color:var(--muted);margin:0">Answer the three questions to see a shortlist.</p></div>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top:20px">
+      <div class="card">
+        <h3>Values-driven buying is now structural</h3>
+        <p class="sub">What DinarStandard's sentiment tracking found, Oct 2023 – Mar 2025 <button class="src" data-s="sgie2425" data-k="reported">i</button></p>
+        <div class="kpis" style="grid-template-columns:1fr 1fr;border-radius:12px"><div class="kpi" style="padding:16px"><div class="num" style="font-size:30px">15.6%</div><div class="lbl">of tracked social posts explicitly endorsed ethical or local substitutes for boycotted multinational brands</div></div><div class="kpi" style="padding:16px"><div class="num" style="font-size:30px">2023→</div><div class="lbl">Alternative and local brands have held the share they gained past the boycott peak, per the 2025/26 edition</div></div></div>
+        <p style="font-size:13.5px;color:var(--ink-2);margin:14px 0 0">Named beneficiaries include Malaysia's ZUS Coffee, Indonesia's Wardah in cosmetics and regional cola brands; consumer apps such as Boycat and No Thanks have normalised values-based checking at the shelf. For a brand, halal certification increasingly signals ethics and quality to non-Muslim buyers as well.</p>
+      </div>
+      <div class="card">
+        <h3>Practical constraints</h3>
+        <p class="sub">Lead times reported by certifiers and trade bodies; treat as ranges.</p>
+        <div class="movers">
+          <div class="mover"><span class="dot"></span><div><b>Certification: 10 to 60+ days</b> depending on certifier, product complexity and whether an audit visit is required.</div></div>
+          <div class="mover"><span class="dot"></span><div><b>Distributor onboarding: 4–8 weeks</b> in most OIC markets; longer where import licences are product-specific (pharma, cosmetics).</div></div>
+          <div class="mover"><span class="dot"></span><div><b>Indonesia's mandatory halal labelling</b> has been phasing in since 2019; further product categories become mandatory through 2026.</div></div>
+          <div class="mover"><span class="dot"></span><div><b>Financing:</b> <span class="gl" data-g="sharia">Sharia</span>-compliant banking is mainstream in the Gulf, Malaysia and Brunei (20–75% of banking assets), far smaller elsewhere.</div></div>
+        </div>
+        <div class="sowhat" id="sowhat-business"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TAKEAWAYS -->
+<section id="takeaways">
+  <div class="wrap">
+    <h2 id="takeTitle">What this means for you</h2>
+    <p class="section-note" id="takeNote"></p>
+    <div class="takeaways" id="takeGrid"></div>
+    <div class="actions">
+      <button class="btn" id="dlCsv">Download the data (CSV)</button>
+      <button class="btn ghost" id="dlCountries">Download country data (CSV)</button>
+      <button class="btn ghost" id="dlAll">Download everything (JSON)</button>
+    </div>
+  </div>
+</section>
+
+</div><!-- /dashboardView -->
+
+<div class="tour" id="tour" role="dialog" aria-live="polite">
+  <div class="meta"><span id="tourStep"></span><button id="tourExit">Exit tour</button></div>
+  <div class="text" id="tourText"></div>
+  <div class="btns"><button id="tourBack">Back</button><button class="primary" id="tourNext">Next</button></div>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true"><div class="box"><h3 id="modalTitle"></h3><div id="modalBody"></div><div class="actions" style="margin-top:16px"><button class="btn ghost" id="modalClose">Close</button></div></div></div>
+<div class="toast" id="toast"></div>
+
+<footer>
+  <div class="wrap">
+    <p><b>Sources.</b> Market sizes, sector figures, projections, GIEI rankings and sector ranks, deal aggregates and trade figures: DinarStandard, <i>State of the Global Islamic Economy Report</i>, 2025/26, 2024/25 and 2023/24 editions, via DinarStandard, Salaam Gateway and press coverage. Islamic finance composition and 2024 segment growth: IFSB <i>Islamic Financial Services Industry Stability Report</i> 2025. Country shares of Islamic finance assets: Global Finance / LSEG-ICD estimates, rounded. Islamic banking share of domestic banking: Union of Arab Banks and IFSB. Muslim population by country: Pew Research Center estimates, rounded. Hajj pilgrim counts: Saudi General Authority for Statistics (GASTAT). GDP comparisons: IMF World Economic Outlook, rounded.</p>
+    <p><b>Method notes.</b> The 2029 halal food figure is the six-sector total minus the five other reported sectors. Islamic finance assets are reported separately from the six consumer sectors, so the "$9 trillion" combined figure is indicative. Every figure carries an <span class="src" style="cursor:default">i</span> marker on hover showing its source, edition and whether it is reported, derived or approximate. All values in current US dollars; projections are industry forecasts, not guarantees.</p>
+    <p>Compiled 2 September 2026. Built as an open reference for the public, investors, policymakers and business owners.</p>
+  </div>
+</footer>
+
+<div class="tooltip" id="tip"></div>
+
+<script>
+/* ==================== DATA ==================== */
+const sectors = [
+  {key:'food',   name:'Halal food & beverages', v2024:1530, v2029:2058, cagr:6.1},
+  {key:'fashion',name:'Modest fashion',         v2024:347,  v2029:444,  cagr:5.1},
+  {key:'media',  name:'Media & recreation',     v2024:276,  v2029:364,  cagr:5.7},
+  {key:'travel', name:'Muslim-friendly travel', v2024:249,  v2029:424,  cagr:11.2},
+  {key:'pharma', name:'Pharmaceuticals',        v2024:112,  v2029:146,  cagr:5.5},
+  {key:'cosm',   name:'Cosmetics',              v2024:92,   v2029:124,  cagr:6.2},
+];
+const consumerSpend = [{y:2018,v:2.20},{y:2022,v:2.29},{y:2023,v:2.43},{y:2024,v:2.60},{y:2029,v:3.56,proj:true}];
+const islamicFinance = [{y:2021,v:3.96},{y:2023,v:4.93},{y:2024,v:5.99},{y:2029,v:9.72,proj:true}];
+const finComposition = [{name:'Islamic banking',v:71.6},{name:'Sukuk outstanding',v:23.3},{name:'Funds & takaful',v:5.1}];
+const finGrowth = [{name:'Sukuk issuance',v:25.6},{name:'Islamic banking',v:17.1},{name:'Takaful (insurance)',v:16.9}];
+const finShareCountries = [{name:'Saudi Arabia',v:27},{name:'Iran',v:27},{name:'Malaysia',v:12},{name:'UAE',v:10},{name:'Kuwait',v:5.5},{name:'Qatar',v:5.5},{name:'Türkiye',v:3.5},{name:'Bahrain',v:3.5},{name:'Indonesia',v:2},{name:'Pakistan',v:2}];
+const oicImports = [{y:2022,v:359},{y:2023,v:407.8},{y:2024,v:421.5},{y:2028,v:608.4,proj:true}];
+const hajj = [{y:2012,v:3.16},{y:2019,v:2.49},{y:2020,v:0.01},{y:2021,v:0.06},{y:2022,v:0.93},{y:2023,v:1.85},{y:2024,v:1.83},{y:2025,v:1.67},{y:2026,v:1.71}];
+const rankHistory = { // top-5 by edition (1 = first). null = not in top 5
+  editions:['2019/20','2023/24','2024/25','2025/26'],
+  rows:[
+    {c:'Malaysia',r:[1,1,1,1]},{c:'Saudi Arabia',r:[4,2,2,3]},{c:'Indonesia',r:[5,3,3,4]},{c:'United Arab Emirates',r:[2,4,4,2]},{c:'Bahrain',r:[3,5,5,5]}
+  ]
+};
+// sector ranks: {sector: [rank, edition]}
+const sectorRanks = {
+  'Malaysia':{food:[1,'25/26'],fin:[1,'25/26'],pharma:[1,'25/26'],media:[2,'25/26'],travel:[4,'25/26'],fashion:[4,'25/26']},
+  'United Arab Emirates':{media:[1,'25/26'],food:[2,'25/26'],travel:[2,'25/26'],fashion:[2,'25/26'],pharma:[2,'25/26'],fin:[3,'25/26']},
+  'Indonesia':{fashion:[1,'24/25'],travel:[2,'24/25'],pharma:[2,'24/25']},
+  'Saudi Arabia':{fin:[2,'24/25']},
+  'Türkiye':{fashion:[2,'24/25']},
+  'Bahrain':{fin:[4,'24/25']},
+};
+const sectorCols=[['food','Halal food'],['fin','Islamic finance'],['travel','Travel'],['fashion','Modest fashion'],['pharma','Pharma & cosmetics'],['media','Media & recreation']];
+
+const countries = [
+  {atlas:'Malaysia',label:'Malaysia',pop:21,giei:165.1,rank:1,fin:12,bank:20.1,imports:30.6,lon:102,lat:4,region:'asia',oic:true,note:'Top-ranked in halal food, Islamic finance and pharma/cosmetics for the twelfth year. Halal imports grew 12.4% to $30.6B in 2024.'},
+  {atlas:'Saudi Arabia',label:'Saudi Arabia',pop:34,giei:100.9,rank:2,fin:27,bank:74.9,lon:45,lat:24,region:'mena',oic:true,note:'Largest holder of Islamic finance assets alongside Iran; Islamic banks are roughly three-quarters of domestic banking. Largest OIC halal importer.'},
+  {atlas:'Indonesia',label:'Indonesia',pop:236,giei:99.9,rank:3,fin:2,bank:5.5,lon:118,lat:-2,region:'asia',oic:true,note:'World\'s largest Muslim population and largest halal food market. #1 in modest fashion. Top destination for Islamic-economy investment (~$1.6B across 40 deals).'},
+  {atlas:'United Arab Emirates',label:'United Arab Emirates',pop:7,giei:95.8,rank:4,fin:10,bank:22.7,lon:54,lat:24,small:true,region:'mena',oic:true,note:'Moved to #2 in the 2025/26 ranking; top three in every sector and #1 in media & recreation. ~$1.5B in deals across 50 transactions.'},
+  {atlas:'Bahrain',label:'Bahrain',pop:1.2,giei:81.9,rank:5,fin:3.5,bank:16.1,lon:50.5,lat:26,small:true,region:'mena',oic:true,note:'Long-standing Islamic finance hub and a leading sukuk issuer.'},
+  {atlas:'Jordan',label:'Jordan',pop:10,giei:71.4,rank:6,fin:null,bank:17.8,lon:36.5,lat:31,region:'mena',oic:true,note:'Islamic banks hold about 18% of domestic banking assets.'},
+  {atlas:'Kuwait',label:'Kuwait',pop:3.5,giei:67.0,rank:7,fin:5.5,bank:51,lon:47.5,lat:29.4,small:true,region:'mena',oic:true,note:'Islamic banks hold about half of the domestic banking market.'},
+  {atlas:'Pakistan',label:'Pakistan',pop:231,giei:64.1,rank:8,fin:2,bank:null,lon:69,lat:30,region:'asia',oic:true,note:'Entered the GIEI top ten for the first time in 2024/25.'},
+  {atlas:'Turkey',label:'Türkiye',pop:81,giei:64.0,rank:9,fin:3.5,bank:null,lon:35,lat:39,region:'mena',oic:true,note:'Among the five largest OIC halal importers and a major exporter into OIC markets; #2 in modest fashion (2024/25).'},
+  {atlas:'Qatar',label:'Qatar',pop:2,giei:60.4,rank:10,fin:5.5,bank:28.6,lon:51.2,lat:25.3,small:true,region:'mena',oic:true,note:'Islamic banks hold about 29% of domestic banking assets.'},
+  {atlas:'United Kingdom',label:'United Kingdom',pop:4,giei:null,rank:14,fin:null,bank:null,lon:-2,lat:54,region:'west',oic:false,note:'Ranked 14th, up one place. The leading Western hub for Islamic finance and sukuk listings.'},
+  {atlas:'Singapore',label:'Singapore',pop:0.9,giei:null,rank:15,fin:null,bank:null,lon:103.8,lat:1.35,small:true,region:'asia',oic:false,note:'Inside the GIEI top 15; MUIS certification is widely recognised across Southeast Asia.'},
+  {atlas:'Iran',label:'Iran',pop:83,giei:null,rank:null,fin:27,bank:100,lon:53,lat:32,region:'mena',oic:true,note:'Fully Sharia-compliant banking system; roughly a quarter of global Islamic finance assets. Largest modest-fashion market by spend.'},
+  {atlas:'India',label:'India',pop:200,giei:null,rank:null,fin:null,bank:null,lon:78,lat:22,region:'asia',oic:false,note:'Third-largest Muslim population; a leading supplier of halal meat into OIC markets.'},
+  {atlas:'Bangladesh',label:'Bangladesh',pop:151,giei:null,rank:null,fin:null,bank:8.2,lon:90,lat:24,region:'asia',oic:true,note:'Second-largest national halal food market by spend after Indonesia.'},
+  {atlas:'Nigeria',label:'Nigeria',pop:99,giei:null,rank:null,fin:null,bank:null,lon:8,lat:9,region:'mena',oic:true,note:'Eighth-largest domestic halal market. Africa is the fastest-growing halal region at ~9.6% a year.'},
+  {atlas:'Egypt',label:'Egypt',pop:90,giei:null,rank:null,fin:null,bank:13.7,lon:30,lat:27,region:'mena',oic:true,note:'Third-largest national halal food market by spend.'},
+  {atlas:'Algeria',label:'Algeria',pop:43,lon:3,lat:28,region:'mena',oic:true},
+  {atlas:'Sudan',label:'Sudan',pop:42,bank:100,lon:30,lat:15,region:'mena',oic:true,note:'Banking system is entirely Islamic.'},
+  {atlas:'Iraq',label:'Iraq',pop:40,lon:44,lat:33,region:'mena',oic:true},
+  {atlas:'Afghanistan',label:'Afghanistan',pop:38,lon:66,lat:34,region:'asia',oic:true},
+  {atlas:'Ethiopia',label:'Ethiopia',pop:38,lon:39,lat:9,region:'mena',oic:false},
+  {atlas:'Morocco',label:'Morocco',pop:37,lon:-6,lat:32,region:'mena',oic:true,note:'Topped halal-food deal value in 2023/24 with a $610M sugar acquisition.'},
+  {atlas:'Uzbekistan',label:'Uzbekistan',pop:30,lon:64,lat:41,region:'asia',oic:true},
+  {atlas:'Yemen',label:'Yemen',pop:30,lon:48,lat:15,region:'mena',oic:true},
+  {atlas:'China',label:'China',pop:25,lon:104,lat:35,region:'asia',oic:false},
+  {atlas:'Niger',label:'Niger',pop:24,lon:9,lat:17,region:'mena',oic:true},
+  {atlas:'Tanzania',label:'Tanzania',pop:22,lon:35,lat:-6,region:'mena',oic:false},
+  {atlas:'Russia',label:'Russia',pop:20,lon:60,lat:58,region:'west',oic:false,note:'A top-five supplier of halal-related goods into OIC markets.'},
+  {atlas:'Mali',label:'Mali',pop:20,lon:-3,lat:17,region:'mena',oic:true},
+  {atlas:'Syria',label:'Syria',pop:19,lon:38,lat:35,region:'mena',oic:true},
+  {atlas:'Senegal',label:'Senegal',pop:17,rank:25,lon:-14,lat:14,region:'mena',oic:true,note:'Rose 18 places to 25th in the 2024/25 ranking.'},
+  {atlas:'Oman',label:'Oman',pop:4,bank:17.8,lon:57,lat:21,region:'mena',oic:true},
+  {atlas:'Brunei',label:'Brunei',pop:0.4,bank:29.6,lon:114.7,lat:4.5,small:true,region:'asia',oic:true,note:'Islamic banking is ~30% of the domestic banking system.'},
+  {atlas:'France',label:'France',pop:6,lon:2,lat:46,region:'west',oic:false},
+  {atlas:'Germany',label:'Germany',pop:5,lon:10,lat:51,region:'west',oic:false},
+  {atlas:'United States of America',label:'United States',pop:4,lon:-98,lat:39,region:'west',oic:false,note:'A top-five supplier of halal-related goods into OIC markets.'},
+  {atlas:'Brazil',label:'Brazil',pop:0.2,lon:-52,lat:-10,region:'west',oic:false,note:'The largest exporter of halal meat to OIC countries, despite a tiny Muslim population.'},
+  {atlas:'Australia',label:'Australia',pop:0.8,lon:134,lat:-25,region:'asia',oic:false,note:'Major halal meat exporter to the Gulf and Southeast Asia.'},
+];
+countries.forEach(c=>{ ['giei','rank','fin','bank','imports'].forEach(k=>{ if(!(k in c)) c[k]=null; }); });
+const byAtlas = Object.fromEntries(countries.map(c=>[c.atlas,c]));
+const byLabel = Object.fromEntries(countries.map(c=>[c.label,c]));
+
+const deals = [
+  {ed:'2025/26',scope:'Global',item:'All Islamic-economy sectors',n:346,v:13.11,note:'Disclosed value; "accelerated" vs prior year'},
+  {ed:'2024/25',scope:'Global',item:'All Islamic-economy sectors',n:225,v:5.8,note:'2023/24 activity'},
+  {ed:'2024/25',scope:'Country',item:'Indonesia',n:40,v:1.60,note:'Top destination by value; food, cosmetics, pharma, halal tech'},
+  {ed:'2024/25',scope:'Country',item:'United Arab Emirates',n:50,v:1.53,note:'Top destination by count; fintech and media'},
+  {ed:'2024/25',scope:'Country',item:'Saudi Arabia',n:null,v:null,note:'Significant activity; values not broken out'},
+  {ed:'2024/25',scope:'Country',item:'Türkiye',n:null,v:null,note:'Significant activity; values not broken out'},
+  {ed:'2024/25',scope:'Sector',item:'Islamic finance',n:null,v:null,note:'Highest capital attracted'},
+  {ed:'2024/25',scope:'Sector',item:'Media & recreation',n:null,v:null,note:'Most transactions'},
+  {ed:'2024/25',scope:'Sector',item:'Halal food',n:29,v:1.3,note:'Focus on capacity expansion'},
+  {ed:'2024/25',scope:'Halal food by country',item:'Morocco',n:null,v:0.61,note:'Single sugar acquisition'},
+  {ed:'2024/25',scope:'Halal food by country',item:'United Arab Emirates',n:null,v:0.398,note:'Incl. vertical-farming investment'},
+  {ed:'2024/25',scope:'Halal food by country',item:'Saudi Arabia',n:null,v:0.144,note:'Incl. JBS $50M processing plant'},
+  {ed:'2024/25',scope:'Halal food by country',item:'Indonesia',n:null,v:0.115,note:''},
+  {ed:'2024/25',scope:'Halal food by country',item:'Nigeria',n:null,v:0.016,note:''},
+];
+const listed = [
+  ['iShares MSCI World Islamic UCITS ETF (ISWD)','ETF','Global Sharia-screened equities'],
+  ['Wahed FTSE USA Shariah ETF (HLAL)','ETF','US Sharia-screened equities'],
+  ['SP Funds S&P 500 Sharia Industry Exclusions ETF (SPUS)','ETF','US Sharia-screened equities'],
+  ['Al Rajhi Bank (Tadawul: 1120)','Bank','World\'s largest Islamic bank by assets'],
+  ['Dubai Islamic Bank (DFM: DIB)','Bank','UAE Islamic banking'],
+  ['Kuwait Finance House (Boursa Kuwait: KFH)','Bank','Gulf and Türkiye Islamic banking'],
+  ['Bank Syariah Indonesia (IDX: BRIS)','Bank','Indonesia\'s largest Islamic bank'],
+  ['Maybank (Bursa: MAYBANK)','Bank','Malaysia; Maybank Islamic is the largest Islamic bank in ASEAN'],
+  ['BRF S.A. (B3: BRFS3)','Food','Brazilian poultry; largest halal exporter to the Gulf'],
+  ['Almarai (Tadawul: 2280)','Food','Gulf dairy and food'],
+  ['Nestlé Malaysia (Bursa: NESTLE)','Food','Halal-certified manufacturing hub for Nestlé globally'],
+  ['Savola Group (Tadawul: 2050)','Food','Saudi food and retail'],
+];
+const certBodies = [
+  {c:'Malaysia',b:'JAKIM',n:'Government certifier; the most widely recognised halal mark internationally.'},
+  {c:'Indonesia',b:'BPJPH (with MUI fatwa)',n:'Mandatory certification phasing in since 2019; further categories through 2026.'},
+  {c:'United Arab Emirates',b:'MoIAT / EIAC-accredited bodies',n:'National halal mark; EIAC accredits foreign certifiers.'},
+  {c:'Saudi Arabia',b:'SFDA / Saudi Halal Center',n:'Required for imported food; recognises accredited foreign certifiers.'},
+  {c:'GCC (regional)',b:'GAC (GCC Accreditation Center)',n:'Accredits halal certifiers for all Gulf states.'},
+  {c:'Türkiye',b:'HAK (Halal Accreditation Agency)',n:'Accreditation body; aligned with SMIIC standards.'},
+  {c:'Singapore',b:'MUIS',n:'Widely recognised across Southeast Asia and the Gulf.'},
+  {c:'Pakistan',b:'Pakistan Halal Authority',n:'Federal regulator under the Ministry of Science & Technology.'},
+  {c:'Egypt',b:'IS EG Halal',n:'Sole authorised certifier for imports since 2020.'},
+  {c:'United Kingdom',b:'HMC · HFA',n:'Two main private certifiers with differing slaughter standards.'},
+  {c:'United States',b:'IFANCA · ISNA Halal · ISWA',n:'IFANCA is the SGIE report\'s strategic partner and is recognised by JAKIM, MUIS and GAC.'},
+  {c:'Brazil',b:'CDIAL Halal · FAMBRAS Halal',n:'Certify the bulk of Brazil\'s poultry and beef exports to the OIC.'},
+  {c:'Australia',b:'AFIC · HCAA · SICHMA',n:'Approved Islamic organisations under the government AGSMHP scheme.'},
+  {c:'India',b:'Halal India · Jamiat Ulama-i-Hind Halal Trust',n:'Private certifiers; export focus.'},
+  {c:'Multilateral',b:'SMIIC (OIC)',n:'Publishes OIC/SMIIC 1 halal food standard; 40+ member states.'},
+];
+const sources = {
+  sgie2526:{name:'DinarStandard, State of the Global Islamic Economy Report 2025/26',date:'June 2026'},
+  sgie2425:{name:'DinarStandard, State of the Global Islamic Economy Report 2024/25',date:'July 2025'},
+  'sgie-multi':{name:'DinarStandard SGIE reports, 2019/20 – 2025/26 editions',date:'2019–2026'},
+  ifsb:{name:'IFSB Islamic Financial Services Industry Stability Report 2025',date:'May 2025'},
+  gf:{name:'Global Finance Magazine / LSEG-ICD IFDI, rounded shares',date:'2024'},
+  pew:{name:'Pew Research Center global religious demographics, rounded',date:'2020 base'},
+  imf:{name:'IMF World Economic Outlook, nominal GDP 2024, rounded',date:'2024'},
+  gastat:{name:'Saudi General Authority for Statistics (GASTAT)',date:'2012–2026'},
+  cert:{name:'Certifier and accreditation-body websites; SMIIC',date:'Reference list'},
+};
+const kinds={reported:'Reported figure',derived:'Derived from reported figures',approx:'Approximate / rounded estimate',reference:'Reference list, verify before use'};
+const glossary = {
+  sukuk:'Sukuk: Sharia-compliant certificates that give the holder a share in an asset or project\'s returns, used in place of interest-bearing bonds.',
+  takaful:'Takaful: co-operative insurance in which members pool contributions and share risk, structured to comply with Islamic law.',
+  sharia:'Sharia-compliant: structured to avoid interest, excessive uncertainty and prohibited industries such as alcohol, gambling and conventional finance.',
+  oic:'OIC: the Organisation of Islamic Cooperation, 57 member states across four continents.',
+  giei:'GIEI: the Global Islamic Economy Indicator, DinarStandard\'s composite ranking of national Islamic-economy ecosystems (81 countries, 52 metrics).',
+  halal:'Halal: permissible under Islamic law. In trade it usually refers to certified compliance across ingredients, processing and supply chain.'
+};
+
+/* ==================== NARRATIVE ==================== */
+const soWhat = {
+  public:{map:'<b>Demand and infrastructure don\'t line up.</b> Indonesia, Pakistan and India have over 650 million Muslims between them, yet none is in the top ecosystem tier. Most halal goods they buy are produced elsewhere.',sectors:'<b>Food is the anchor, travel is the story.</b> Nearly $6 of every $10 goes on food, but Muslim-friendly travel is growing almost twice as fast, adding $175B by 2029.',growth:'<b>This is not a niche.</b> $2.6T in consumer spend is larger than the GDP of most countries. Islamic finance added roughly a trillion dollars in assets in a single year.',finance:'<b>Islamic finance is mostly banking, concentrated in a few places.</b> Saudi Arabia, Iran and Malaysia hold roughly 70% of all assets; ten countries hold about 95%.',countries:'<b>Non-Muslim-majority countries are major players.</b> The UK and Singapore rank in the top 15 ecosystems; Brazil, India and the US are among the largest halal food suppliers.',trade:'<b>The halal economy is a trading economy.</b> $421.5B of halal goods crossed borders into OIC countries in 2024, much of it from Brazil, India, Russia and the US.',business:'<b>Certification is the passport.</b> A product certified by a widely recognised body can travel; one that isn\'t, can\'t.'},
+  investor:{map:'<b>Look for the gap.</b> The largest populations (Indonesia, Pakistan, Bangladesh, Nigeria) have weaker ecosystems than the Gulf and Malaysia — that is where certification, logistics and fintech infrastructure is under-supplied.',sectors:'<b>Travel has the highest rate; food the largest absolute gain.</b> Travel compounds at 11.2% to 2029; food adds over $500B in absolute terms. Media & recreation leads on deal count.',growth:'<b>Islamic finance is outgrowing consumer spend.</b> ~10% a year versus 6.5%, and Islamic funds are still sub-scale (most manage around $1M), leaving room for consolidation.',finance:'<b>Sukuk is the fastest-moving segment.</b> Issuance rose 25.6% in 2024 to about $254B; takaful grew 16.9% and remains under $31B globally — small, fragmented, digitising.',countries:'<b>Deal flow concentrates in Indonesia and the UAE</b> (~$1.6B and ~$1.5B). Islamic finance attracts the most capital; media & recreation the most transactions. Africa is the fastest-growing region.',trade:'<b>Import growth is the investable trend.</b> OIC imports are forecast to grow ~8% a year to $608B by 2028 — logistics, cold chain and certification services ride that curve regardless of which brand wins.',business:'<b>Certification and distribution are the moats.</b> Companies that already hold multi-market recognition trade at a premium to those that don\'t.'},
+  policy:{map:'<b>Ecosystem scores reward coordination, not size.</b> Malaysia leads on certification, standards and finance rails. Countries with large Muslim populations but low scores are importing goods they could produce.',sectors:'<b>Certification is the lever.</b> Mutual-recognition agreements (Indonesia–UAE–Türkiye–Malaysia) cut compliance cost and widen market access across all six sectors at once.',growth:'<b>Trade is growing faster than consumption.</b> OIC halal imports are forecast to grow ~8% a year, versus 6.5% for consumer spend — import dependence widens unless domestic capacity grows.',finance:'<b>Standards fragmentation is the main brake.</b> Divergent Sharia rulings limit product portability. IFSB and AAOIFI harmonisation, and sovereign sukuk programmes, are the levers that have moved rankings.',countries:'<b>Fast movers show what works.</b> Pakistan entered the top ten and Senegal rose 18 places after targeted national strategies. The UK\'s 14th place shows non-Muslim-majority economies can compete on regulation and finance.',trade:'<b>A $421B import bill is also an industrial-policy target.</b> Food is ~70% of it. Domestic processing capacity, halal parks and export-grade certification are the standard playbook — Malaysia\'s halal parks attracted ~$2B from multinationals.',business:'<b>Recognition arrangements are the cheapest trade policy available.</b> A single mutual-recognition agreement can open several markets to domestic producers at once.'},
+  business:{map:'<b>Pick your market by what you sell.</b> Volume is in Indonesia, Pakistan, Bangladesh and Nigeria. Premium and B2B is in the Gulf and Malaysia. The UK and Singapore are the easiest Western entry points.',sectors:'<b>Smaller sectors have less competition.</b> Cosmetics ($92B) and pharma ($112B) are a fraction of food but grow at 5.5–6.2% with fewer certified players.',growth:'<b>Values-driven buying is now structural.</b> Since 2023, alternative and local brands have held share gained during boycotts; halal certification increasingly signals ethics and quality to non-Muslim buyers too.',finance:'<b>Sharia-compliant financing is mainstream in the Gulf and Southeast Asia,</b> where Islamic banks are 20–75% of the market. Sukuk suits larger raises; takaful covers insurance.',countries:'<b>Producers outside the OIC win on supply.</b> Brazil, India and the US are top exporters into OIC markets. Certification turnaround (10–60+ days) and distributor onboarding (4–8 weeks) are the practical bottlenecks.',trade:'<b>Choose your certifier for the markets you want.</b> JAKIM, MUIS and GAC-accredited marks travel furthest; a UK or US-only mark may need re-certification for the Gulf or Indonesia.',business:'<b>Budget for certification lead time before launch dates.</b> 10–60+ days per certifier, and mandatory schemes (Indonesia) add product-category deadlines.'}
+};
+const takeaways = {
+  public:{title:'What this means for you',note:'A quick orientation to a market most people underestimate.',cards:[{tag:'Scale',h:'A quarter of humanity, spending $2.6 trillion a year',p:'Before counting the $6 trillion held in Islamic finance. Together the two are close to $9 trillion.'},{tag:'Growth',h:'Growing faster than the global economy',p:'Consumer spend is forecast at 6.5% a year to 2029, Islamic finance at around 10%. Both outpace typical global GDP growth.'},{tag:'Geography',h:'Produced in one place, consumed in another',p:'The biggest buyers are in Southeast Asia, South Asia and the Gulf. Some of the biggest suppliers — Brazil, India, the US — aren\'t Muslim-majority at all.'}]},
+  investor:{title:'Where the opportunity sits',note:'Signals drawn from published industry research. Not investment advice.',cards:[{tag:'Highest growth',h:'Muslim-friendly travel: 11.2% a year to 2029',p:'From $249B to $424B. Hospitality, halal dining and pilgrimage-adjacent services, concentrated in the Gulf, Türkiye and Southeast Asia.'},{tag:'Capital markets',h:'Sukuk issuance up 25.6% in 2024',p:'About $254B issued, led by Saudi Arabia, Malaysia and Iran. Islamic funds remain sub-scale, which points to consolidation and platform plays.'},{tag:'Under-served',h:'Big populations, thin infrastructure',p:'Indonesia, Pakistan, Bangladesh and Nigeria have ~700M Muslims and comparatively weak certification, logistics and fintech rails. Indonesia is already the top deal destination.'}]},
+  policy:{title:'Levers that have moved the needle',note:'What the rankings suggest about effective national strategy.',cards:[{tag:'Standards',h:'Certification and mutual recognition',p:'Malaysia\'s twelve-year lead rests on a unified certification regime. Multilateral recognition pacts reduce costs and widen access for exporters.'},{tag:'Trade balance',h:'OIC halal imports outgrowing consumption',p:'$421.5B in 2024, heading to $608B. Domestic production capacity in food, pharma and cosmetics is the gap most OIC economies are trying to close.'},{tag:'Finance',h:'Sovereign sukuk and harmonised rules',p:'Sovereign issuance anchors the sukuk market; harmonised Sharia governance lets products travel across borders. The UK\'s top-15 ranking shows this works outside Muslim-majority states.'}]},
+  business:{title:'Practical entry points',note:'Where a business can realistically compete. Use the entry helper above for a shortlist.',cards:[{tag:'Product',h:'Pick a lane by sector size and competition',p:'Food is huge but crowded. Cosmetics and pharma are $90–110B markets growing 5.5–6.2% with far fewer certified players. Travel is the fastest-growing service category.'},{tag:'Market',h:'Match the market to your model',p:'Volume: Indonesia, Pakistan, Bangladesh, Nigeria. Premium and B2B: Gulf and Malaysia. Western entry: UK and Singapore, both top-15 ecosystems.'},{tag:'Operations',h:'Budget for certification lead time',p:'10 to 60+ days depending on certifier; distributor onboarding 4–8 weeks. Sharia-compliant financing is mainstream in the Gulf and Southeast Asia.'}]}
+};
+const i18n = {
+  en:{},
+  ar:{brand:'الاقتصاد الحلال','nav.map':'الخريطة','nav.sectors':'القطاعات','nav.growth':'النمو','nav.finance':'التمويل','nav.countries':'الدول','nav.compare':'مقارنة','nav.trade':'التجارة','nav.invest':'الصفقات','nav.business':'الدخول','nav.takeaways':'الخلاصة','view.dashboard':'لوحة البيانات','view.story':'القصة','tour.start':'جولة إرشادية',copylink:'نسخ رابط هذا العرض',langnote:'تُرجمت الواجهة؛ التحليلات المطوّلة ونص القصة ما زالت بالإنجليزية حاليًا.','hero.h1':'اقتصاد بقيمة 9 تريليونات دولار، مرسوم قطاعًا بقطاع ودولةً بدولة.','hero.lede':'أنفق المستهلكون المسلمون 2.6 تريليون دولار في 2024 على الأغذية الحلال والأزياء والسفر والإعلام والأدوية ومستحضرات التجميل. ويحتفظ التمويل الإسلامي بستة تريليونات دولار أخرى من الأصول. تُظهر هذه اللوحة أين تتركز هذه الأموال، وسرعة نمو كل جزء، وما يعنيه ذلك بحسب من أنت.','aud.label':'أنظر إلى هذا بصفتي:','aud.public':'الجمهور العام','aud.investor':'مستثمر','aud.policy':'صانع سياسات','aud.business':'صاحب عمل','kpi.spend':'إنفاق المستهلكين المسلمين عبر ستة قطاعات حلال، 2024','kpi.fin':'أصول التمويل الإسلامي، 2024','kpi.growth':'النمو السنوي المتوقع في إنفاق المستهلكين، 2024–2029','kpi.deals':'صفقات الاستثمار في آخر سنة تقرير','map.h2':'حيث يعيش الاقتصاد الحلال','sectors.h2':'ستة قطاعات بسرعات مختلفة جدًا','layer.pop':'عدد المسلمين','layer.giei':'درجة المنظومة','layer.fin':'حصة التمويل الإسلامي'},
+  id:{brand:'Ekonomi Halal','nav.map':'Peta','nav.sectors':'Sektor','nav.growth':'Pertumbuhan','nav.finance':'Keuangan','nav.countries':'Negara','nav.compare':'Bandingkan','nav.trade':'Perdagangan','nav.invest':'Transaksi','nav.business':'Masuk pasar','nav.takeaways':'Kesimpulan','view.dashboard':'Dasbor','view.story':'Cerita','tour.start':'Ikuti tur',copylink:'Salin tautan tampilan ini',langnote:'Antarmuka telah diterjemahkan; analisis panjang dan teks cerita masih dalam bahasa Inggris.','hero.h1':'Ekonomi senilai $9 triliun, dipetakan sektor demi sektor dan negara demi negara.','hero.lede':'Konsumen Muslim membelanjakan $2,6 triliun pada 2024 untuk makanan halal, busana, perjalanan, media, obat-obatan, dan kosmetik. Keuangan syariah menyimpan $6 triliun aset lainnya. Dasbor ini menunjukkan di mana uang itu berada, seberapa cepat tiap bagian tumbuh, dan artinya bagi Anda.','aud.label':'Saya melihat ini sebagai:','aud.public':'Masyarakat umum','aud.investor':'Investor','aud.policy':'Pembuat kebijakan','aud.business':'Pemilik usaha','kpi.spend':'Belanja konsumen Muslim di enam sektor halal, 2024','kpi.fin':'Aset keuangan syariah, 2024','kpi.growth':'Proyeksi pertumbuhan tahunan belanja konsumen, 2024–29','kpi.deals':'Transaksi investasi pada tahun pelaporan terakhir','map.h2':'Di mana ekonomi halal berada','sectors.h2':'Enam sektor, kecepatan yang sangat berbeda','layer.pop':'Populasi Muslim','layer.giei':'Skor ekosistem','layer.fin':'Pangsa keuangan syariah'},
+  ms:{brand:'Ekonomi Halal','nav.map':'Peta','nav.sectors':'Sektor','nav.growth':'Pertumbuhan','nav.finance':'Kewangan','nav.countries':'Negara','nav.compare':'Banding','nav.trade':'Perdagangan','nav.invest':'Urus niaga','nav.business':'Kemasukan','nav.takeaways':'Rumusan','view.dashboard':'Papan pemuka','view.story':'Cerita','tour.start':'Ikut lawatan',copylink:'Salin pautan paparan ini',langnote:'Antara muka telah diterjemahkan; analisis panjang dan teks cerita masih dalam bahasa Inggeris.','hero.h1':'Ekonomi bernilai $9 trilion, dipetakan sektor demi sektor dan negara demi negara.','hero.lede':'Pengguna Muslim membelanjakan $2.6 trilion pada 2024 untuk makanan halal, fesyen, pelancongan, media, ubat-ubatan dan kosmetik. Kewangan Islam memegang $6 trilion aset lagi. Papan pemuka ini menunjukkan di mana wang itu berada, seberapa pantas setiap bahagian berkembang, dan maksudnya untuk anda.','aud.label':'Saya melihat ini sebagai:','aud.public':'Orang awam','aud.investor':'Pelabur','aud.policy':'Penggubal dasar','aud.business':'Pemilik perniagaan','kpi.spend':'Perbelanjaan pengguna Muslim merentas enam sektor halal, 2024','kpi.fin':'Aset kewangan Islam, 2024','kpi.growth':'Unjuran pertumbuhan tahunan perbelanjaan pengguna, 2024–29','kpi.deals':'Urus niaga pelaburan pada tahun pelaporan terkini','map.h2':'Di mana ekonomi halal berada','sectors.h2':'Enam sektor, kelajuan yang sangat berbeza','layer.pop':'Penduduk Muslim','layer.giei':'Skor ekosistem','layer.fin':'Bahagian kewangan Islam'}
+};
+const i18nDefaults={};
+
+/* ==================== HELPERS ==================== */
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const tip = document.getElementById('tip');
+function showTip(html, x, y){ tip.innerHTML = html; const w=280; tip.style.left = Math.min(x+14, innerWidth-w-10)+'px'; tip.style.top = (y+14)+'px'; tip.classList.add('show'); }
+function hideTip(){ tip.classList.remove('show'); }
+const fmtB = v => '$' + d3.format(',')(v) + 'B';
+const popFmt = p => p>=1?Math.round(p)+'M':Math.round(p*1000)+'k';
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200); }
+function download(name,text,type='text/csv'){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([text],{type})); a.download=name; document.body.appendChild(a); a.click(); a.remove(); }
+function el(tag,attrs={},html=''){ const e=document.createElement(tag); Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v)); e.innerHTML=html; return e; }
+
+/* ==================== URL STATE ==================== */
+const state={view:'dashboard',layer:'pop',pin:null,year:2024,aud:'public',lang:'en',story:'gap',cb:false,cmp:['Indonesia','Malaysia','']};
+let suppressURL=true;
+function writeURL(){ if(suppressURL) return; const p=new URLSearchParams(); p.set('v',state.view); p.set('l',state.layer); if(state.pin) p.set('pin',state.pin); p.set('y',state.year); p.set('a',state.aud); if(state.lang!=='en') p.set('lang',state.lang); if(state.view==='story') p.set('s',state.story); if(state.cb) p.set('cb','1'); p.set('c',state.cmp.filter(Boolean).join('|')); history.replaceState(null,'',location.pathname+'?'+p.toString()+location.hash); }
+function readURL(){ const p=new URLSearchParams(location.search); if(p.get('v')) state.view=p.get('v'); if(p.get('l')) state.layer=p.get('l'); if(p.get('pin')) state.pin=p.get('pin'); if(p.get('y')) state.year=+p.get('y'); if(p.get('a')) state.aud=p.get('a'); if(p.get('lang')) state.lang=p.get('lang'); if(p.get('s')) state.story=p.get('s'); if(p.get('cb')) state.cb=true; if(p.get('c')) { const c=p.get('c').split('|'); state.cmp=[c[0]||'Indonesia',c[1]||'Malaysia',c[2]||'']; } }
+document.getElementById('copyLink').addEventListener('click',()=>{ writeURL(); navigator.clipboard.writeText(location.href).then(()=>toast('Link copied — it opens on this exact view.')).catch(()=>toast(location.href)); });
+
+/* ==================== I18N ==================== */
+document.querySelectorAll('[data-i18n]').forEach(e=>i18nDefaults[e.dataset.i18n]=e.innerHTML);
+function setLang(l){ state.lang=l; const d=i18n[l]||{}; document.querySelectorAll('[data-i18n]').forEach(e=>{ e.innerHTML=d[e.dataset.i18n]||i18nDefaults[e.dataset.i18n]; }); document.documentElement.lang=l; document.documentElement.dir=l==='ar'?'rtl':'ltr'; document.getElementById('lang').value=l; writeURL(); }
+document.getElementById('lang').addEventListener('change',e=>setLang(e.target.value));
+
+/* ==================== PROVENANCE + GLOSSARY ==================== */
+document.addEventListener('mouseover',e=>{
+  const s=e.target.closest('.src[data-s]'); if(s){ const src=sources[s.dataset.s]; showTip(`<b>${kinds[s.dataset.k]||''}</b><br>${src.name}<br><span style="opacity:.7">${src.date}</span>`,e.clientX,e.clientY); return; }
+  const g=e.target.closest('.gl[data-g]'); if(g){ showTip(glossary[g.dataset.g],e.clientX,e.clientY); }
+});
+document.addEventListener('mouseout',e=>{ if(e.target.closest('.src,.gl')) hideTip(); });
+document.addEventListener('focusin',e=>{ const s=e.target.closest('.src[data-s]'); if(s){ const r=s.getBoundingClientRect(); const src=sources[s.dataset.s]; showTip(`<b>${kinds[s.dataset.k]}</b><br>${src.name}<br>${src.date}`,r.left,r.top); } });
+document.addEventListener('focusout',e=>{ if(e.target.closest('.src')) hideTip(); });
+document.querySelectorAll('.src').forEach(s=>s.setAttribute('aria-label','Source information'));
+
+/* ==================== AUDIENCE ==================== */
+function applyAudience(){
+  const s = soWhat[state.aud];
+  Object.keys(s).forEach(k=>{ const e=document.getElementById('sowhat-'+k); if(e) e.innerHTML=s[k]; });
+  const t = takeaways[state.aud];
+  document.getElementById('takeTitle').textContent = t.title; document.getElementById('takeNote').textContent = t.note;
+  document.getElementById('takeGrid').innerHTML = t.cards.map(c=>`<div class="take"><div class="tag">${c.tag}</div><h4>${c.h}</h4><p>${c.p}</p></div>`).join('');
+  document.querySelectorAll('.forwho').forEach(f=>{ const fors=f.dataset.for.split(' '); const names={public:'Public',investor:'Investors',policy:'Policy',business:'Business'}; f.innerHTML=fors.map(a=>`<span class="${a===state.aud?'on':''}">${a===state.aud?'Relevant to you: ':''}${names[a]}</span>`).join(''); });
+  document.querySelectorAll('.chip[data-aud]').forEach(c=>c.classList.toggle('active',c.dataset.aud===state.aud));
+  writeURL();
+}
+function setAudience(a){ state.aud=a; applyAudience(); }
+document.querySelectorAll('.chip[data-aud]').forEach(ch=>ch.addEventListener('click',()=>setAudience(ch.dataset.aud)));
+
+/* ==================== KPI COUNT-UP ==================== */
+document.querySelectorAll('.kpi .num[data-count]').forEach(el=>{
+  const target = parseFloat(el.dataset.count), dec = +el.dataset.dec;
+  const node = [...el.childNodes].find(n=>n.nodeType===3 && n.nodeValue.trim().length);
+  if(reduceMotion){ node.nodeValue = target.toFixed(dec); return; }
+  const t0 = performance.now(), dur = 1100;
+  (function f(now){ const t=Math.min(1,(now-t0)/dur), e=1-Math.pow(1-t,3); node.nodeValue=(target*e).toFixed(dec); if(t<1) requestAnimationFrame(f); })(t0);
+});
+
+/* ==================== MAP ==================== */
+const rampsNormal={pop:['#DDEDE6','#1F7A63'],giei:['#F3EAD0','#B8912F'],fin:['#DDEDE6','#132D28']};
+const rampsCB={pop:['#FDE725','#440154'],giei:['#FDE725','#440154'],fin:['#FDE725','#440154']}; // viridis endpoints
+const layers = {
+  pop:{hint:'Estimated Muslim population, millions',get:c=>c.pop,fmt:v=>popFmt(v),min:0,max:240,legMax:'240M'},
+  giei:{hint:'Global Islamic Economy Indicator score, 2024/25 (top ten)',get:c=>c.giei,fmt:v=>v.toFixed(1),min:50,max:170,legMax:'165'},
+  fin:{hint:'Approximate share of global Islamic finance assets, %',get:c=>c.fin,fmt:v=>v+'%',min:0,max:30,legMax:'30%'}
+};
+function ramp(l){ const r=(state.cb?rampsCB:rampsNormal)[l]; return d3.interpolateRgb(r[0],r[1]); }
+const NODATA='#E8EDEA';
+const atlasPromise = fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(r=>{ if(!r.ok) throw new Error('fetch'); return r.json(); });
+function colorFor(c, layerKey){ const L=layers[layerKey]; const v=L.get(c); if(v==null) return null; const t=Math.max(0,Math.min(1,(v-L.min)/(L.max-L.min))); return ramp(layerKey)(t); }
+
+function createMap(svgId, opts){
+  const svg=d3.select(svgId); const W=800,H=420;
+  const st={layer:'pop',highlight:null,ready:false,paths:null,markers:null};
+  function paint(){
+    if(!st.ready) return; const hl=st.highlight;
+    st.paths.attr('fill',d=>{ const c=byAtlas[d.properties.name]; if(!c) return NODATA; const col=colorFor(c,st.layer); if(hl) return hl.has(c.atlas)?(col||'#8FC3B2'):'#EEF2EF'; return col||NODATA; })
+      .attr('stroke',d=>{ const c=byAtlas[d.properties.name]; return hl&&c&&hl.has(c.atlas)?'#B8912F':'#fff'; })
+      .attr('stroke-width',d=>{ const c=byAtlas[d.properties.name]; return hl&&c&&hl.has(c.atlas)?1.6:.6; })
+      .classed('nodata',d=>!byAtlas[d.properties.name]);
+    st.markers.attr('fill',d=>{ const col=colorFor(d,st.layer); if(hl) return hl.has(d.atlas)?(col||'#8FC3B2'):'#DDE3DF'; return col||'#C9D3CE'; })
+      .attr('stroke',d=>hl&&hl.has(d.atlas)?'#B8912F':'#fff').attr('r',d=>hl&&hl.has(d.atlas)?6.5:5);
+    if(hl) st.paths.filter(d=>{const c=byAtlas[d.properties.name];return c&&hl.has(c.atlas);}).raise();
+  }
+  atlasPromise.then(topo=>{
+    const land=topojson.feature(topo,topo.objects.countries);
+    const proj=d3.geoNaturalEarth1().fitExtent([[6,6],[W-6,H-6]],{type:'Sphere'});
+    const path=d3.geoPath(proj);
+    svg.append('path').attr('d',path({type:'Sphere'})).attr('fill','#FFFFFF').attr('stroke','#D9E2DD');
+    st.paths=svg.append('g').selectAll('path').data(land.features).join('path').attr('class','country').attr('d',path);
+    st.markers=svg.append('g').selectAll('circle').data(countries.filter(c=>c.small)).join('circle').attr('class','marker').attr('r',5)
+      .attr('cx',d=>proj([d.lon,d.lat])[0]).attr('cy',d=>proj([d.lon,d.lat])[1]);
+    if(opts && opts.interactive){
+      const H2=(e,c)=>opts.onHover(c,e), L2=()=>opts.onLeave(), C2=(e,c)=>opts.onClick(c);
+      st.paths.filter(d=>!!byAtlas[d.properties.name]).attr('tabindex',0).attr('role','button').attr('aria-label',d=>byAtlas[d.properties.name].label)
+        .on('mousemove',(e,d)=>H2(e,byAtlas[d.properties.name])).on('mouseleave',L2).on('click',(e,d)=>C2(e,byAtlas[d.properties.name]))
+        .on('focus',(e,d)=>opts.onHover(byAtlas[d.properties.name],null)).on('blur',L2)
+        .on('keydown',(e,d)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); C2(e,byAtlas[d.properties.name]); } });
+      st.markers.attr('tabindex',0).attr('role','button').attr('aria-label',d=>d.label).on('mousemove',H2).on('mouseleave',L2).on('click',C2).on('focus',(e,d)=>opts.onHover(d,null)).on('blur',L2).on('keydown',(e,d)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); C2(e,d);} });
+    } else { st.paths.style('cursor','default'); st.markers.style('cursor','default'); }
+    st.ready=true; paint(); opts && opts.onReady && opts.onReady();
+  }).catch(()=>{ opts && opts.onFail && opts.onFail(); });
+  return { setLayer(l){ st.layer=l; paint(); }, get layer(){ return st.layer; }, setHighlight(names){ st.highlight=names?new Set(names):null; paint(); }, repaint:paint };
+}
+
+let pinned=null;
+function tipFor(c,layerKey){ const L=layers[layerKey]; const v=L.get(c); return `<b>${c.label}</b><br>${L.hint.split(',')[0]}: ${v!=null?L.fmt(v):'no data'}`; }
+function sideFor(c){
+  const rows=[['Muslim population', c.pop>=1?`~${Math.round(c.pop)} million`:`~${Math.round(c.pop*1000)},000`],['Ecosystem rank (GIEI)', c.rank?`#${c.rank}${c.giei?' · score '+c.giei:''}`:'Not in published top 25'],['Share of Islamic finance assets', c.fin!=null?`~${c.fin}%`:'Not among the top ten'],['Islamic banking share of domestic banking', c.bank!=null?`${c.bank}%`:'—']];
+  document.getElementById('side').innerHTML=`<p class="flag">${c.label}</p><p class="hint">${pinned===c?'Pinned. Click again to unpin.':'Click or press Enter to pin.'}</p>${rows.map(r=>`<div class="fact"><span class="k">${r[0]}</span><span class="v">${r[1]}</span></div>`).join('')}${c.note?`<p class="note">${c.note}</p>`:''}<div class="cta"><button class="mini" onclick="addToCompare('${c.label.replace(/'/g,"\\'")}')">Add to compare</button></div>`;
+}
+function resetSide(){ document.getElementById('side').innerHTML=`<p class="flag">Pick a country</p><p class="hint">Hover to preview, click to pin, or Tab through countries with the keyboard. Try Indonesia against Malaysia: one has ten times the people, the other has the top-ranked ecosystem.</p>`; }
+function pinCountry(label,scroll){ const c=label?byLabel[label]||byAtlas[label]:null; pinned=c||null; state.pin=c?c.label:null; if(c) sideFor(c); else resetSide(); mainMap.setHighlight(c?[c.atlas]:null); if(scroll&&c) document.getElementById('map-section').scrollIntoView({behavior:reduceMotion?'auto':'smooth'}); writeURL(); }
+const mainMap=createMap('#map',{interactive:true,
+  onHover:(c,e)=>{ if(e) showTip(tipFor(c,mainMap.layer),e.clientX,e.clientY); if(!pinned) sideFor(c); },
+  onLeave:()=>{ hideTip(); if(!pinned) resetSide(); },
+  onClick:(c)=>{ pinCountry(pinned===c?null:c.label); },
+  onReady:()=>{ if(pinned) mainMap.setHighlight([pinned.atlas]); },
+  onFail:()=>{ document.getElementById('map').style.display='none'; document.getElementById('mapFallback').style.display='block'; }
+});
+function setMainLayer(l){ state.layer=l; mainMap.setLayer(l); document.querySelectorAll('#layerSeg button').forEach(x=>x.classList.toggle('active',x.dataset.layer===l)); const L=layers[l]; document.getElementById('layerHint').textContent=L.hint; document.getElementById('legMin').textContent=L.min; document.getElementById('legMax').textContent=L.legMax; document.getElementById('ramp').style.background=`linear-gradient(90deg, ${ramp(l)(0)}, ${ramp(l)(1)})`; if(pinned) sideFor(pinned); writeURL(); }
+document.querySelectorAll('#layerSeg button').forEach(b=>b.addEventListener('click',()=>setMainLayer(b.dataset.layer)));
+document.getElementById('cb').addEventListener('change',e=>{ state.cb=e.target.checked; setMainLayer(state.layer); if(storyMap) storyMap.repaint(); });
+resetSide();
+
+/* search */
+const sIn=document.getElementById('search'), sList=document.getElementById('searchList');
+sIn.addEventListener('input',()=>{ const q=sIn.value.trim().toLowerCase(); if(!q){ sList.classList.remove('show'); return; } const hits=countries.filter(c=>c.label.toLowerCase().includes(q)).slice(0,8); sList.innerHTML=hits.map(c=>`<button role="option">${c.label} <span style="color:var(--muted)">· ${popFmt(c.pop)} Muslims${c.rank?' · GIEI #'+c.rank:''}</span></button>`).join('')||'<button disabled>No match</button>'; sList.classList.toggle('show',true); [...sList.querySelectorAll('button')].forEach((b,i)=>b.addEventListener('click',()=>{ pinCountry(hits[i].label); sIn.value=''; sList.classList.remove('show'); })); });
+sIn.addEventListener('keydown',e=>{ if(e.key==='ArrowDown'){ const f=sList.querySelector('button'); f&&f.focus(); e.preventDefault(); } if(e.key==='Escape') sList.classList.remove('show'); });
+document.addEventListener('click',e=>{ if(!e.target.closest('.search')) sList.classList.remove('show'); });
+
+/* ==================== EXPORTS + TABLES ==================== */
+const tableData = {
+  sectors:()=>({cols:['Sector','2024 ($B)','2029 forecast ($B)','CAGR %'],rows:sectors.map(s=>[s.name,s.v2024,s.v2029,s.cagr])}),
+  trajectory:()=>({cols:['Year','Consumer spend ($T)','Islamic finance assets ($T)'],rows:[2018,2021,2022,2023,2024,2029].map(y=>[y+(y===2029?' (forecast)':''),(consumerSpend.find(d=>d.y===y)||{}).v??'',(islamicFinance.find(d=>d.y===y)||{}).v??''])}),
+  rank:()=>({cols:['Rank','Country','GIEI 2024/25','Muslims (M)'],rows:countries.filter(c=>c.giei).sort((a,b)=>a.rank-b.rank).map(c=>[c.rank,c.label,c.giei,c.pop])}),
+  imports:()=>({cols:['Year','OIC halal-related imports ($B)'],rows:oicImports.map(d=>[d.y+(d.proj?' (forecast)':''),d.v])}),
+  deals:()=>({cols:['Edition','Scope','Item','Deals','Value ($B)','Note'],rows:deals.map(d=>[d.ed,d.scope,d.item,d.n??'',d.v??'',d.note])}),
+  compare:()=>{ const cs=state.cmp.filter(Boolean).map(l=>byLabel[l]); return {cols:['Metric',...cs.map(c=>c.label)],rows:cmpRows.map(r=>[r.k,...cs.map(c=>r.f(c)??'')])}; }
+};
+function renderTable(key){ const t=tableData[key](); return `<table><thead><tr>${t.cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${t.rows.map(r=>`<tr>${r.map((v,i)=>`<td class="${typeof v==='number'?'num':''}">${v}</td>`).join('')}</tr>`).join('')}</tbody></table>`; }
+function svgToString(svgEl,title){
+  const clone=svgEl.cloneNode(true); const vb=svgEl.getAttribute('viewBox').split(' ').map(Number);
+  clone.setAttribute('xmlns','http://www.w3.org/2000/svg'); clone.setAttribute('width',vb[2]); clone.setAttribute('height',vb[3]+36);
+  clone.setAttribute('viewBox',`0 0 ${vb[2]} ${vb[3]+36}`);
+  // inline computed styles for text & shapes
+  const src=svgEl.querySelectorAll('*'), dst=clone.querySelectorAll('*');
+  src.forEach((s,i)=>{ const cs=getComputedStyle(s); const d=dst[i]; ['fill','stroke','stroke-width','font-family','font-size','font-weight','opacity','stroke-dasharray'].forEach(p=>{ const v=cs.getPropertyValue(p); if(v&&v!=='none'||p==='fill'||p==='stroke') d.style.setProperty(p,v); }); });
+  const bg=document.createElementNS('http://www.w3.org/2000/svg','rect'); bg.setAttribute('width',vb[2]); bg.setAttribute('height',vb[3]+36); bg.setAttribute('fill','#fff'); clone.insertBefore(bg,clone.firstChild);
+  const t=document.createElementNS('http://www.w3.org/2000/svg','text'); t.setAttribute('x',12); t.setAttribute('y',vb[3]+24); t.setAttribute('font-family','IBM Plex Sans, Arial, sans-serif'); t.setAttribute('font-size','11'); t.setAttribute('fill','#6E837D'); t.textContent=`${title} · Source: DinarStandard SGIE 2025/26 & 2024/25; IFSB 2025; GASTAT. Compiled Sept 2026.`; clone.appendChild(t);
+  return new XMLSerializer().serializeToString(clone);
+}
+function exportSVG(id,name){ const s=svgToString(document.getElementById(id),name); download(name+'.svg',s,'image/svg+xml'); }
+function exportPNG(id,name){ const svgEl=document.getElementById(id); const s=svgToString(svgEl,name); const vb=svgEl.getAttribute('viewBox').split(' ').map(Number); const img=new Image(); const url=URL.createObjectURL(new Blob([s],{type:'image/svg+xml;charset=utf-8'})); img.onload=()=>{ const c=document.createElement('canvas'); c.width=vb[2]*2; c.height=(vb[3]+36)*2; const ctx=c.getContext('2d'); ctx.scale(2,2); ctx.drawImage(img,0,0); URL.revokeObjectURL(url); c.toBlob(b=>{ const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=name+'.png'; a.click(); }); }; img.onerror=()=>{ toast('PNG export blocked here; SVG export still works.'); }; img.src=url; }
+document.querySelectorAll('.exports').forEach(x=>{
+  const svg=x.dataset.svg, name=x.dataset.name, tbl=x.dataset.table;
+  if(svg){ const b1=el('button',{},'SVG'); b1.onclick=()=>exportSVG(svg,name); const b2=el('button',{},'PNG'); b2.onclick=()=>exportPNG(svg,name); x.append(b1,b2); }
+  if(tbl){ const b3=el('button',{'aria-expanded':'false'},'Table'); b3.onclick=()=>{ const w=document.getElementById('tbl-'+tbl); if(!w.classList.contains('show')) w.innerHTML=renderTable(tbl); w.classList.toggle('show'); b3.setAttribute('aria-expanded',w.classList.contains('show')); }; x.append(b3); }
+});
+
+/* ==================== SECTOR BARS ==================== */
+function drawSectorBars(){
+  const svg=d3.select('#sectorBars'); svg.selectAll('*').remove(); const year=state.year;
+  const W=520,H=300,mL=160,mR=70,rowH=44; const data=sectors.slice().sort((a,b)=>b['v'+year]-a['v'+year]);
+  const x=d3.scaleLinear().domain([0,2150]).range([mL,W-mR]);
+  const rows=svg.append('g').selectAll('g').data(data,d=>d.key).join('g').attr('transform',(d,i)=>`translate(0,${12+i*rowH})`);
+  rows.append('text').attr('class','bar-label').attr('x',mL-12).attr('y',18).attr('text-anchor','end').text(d=>d.name);
+  rows.append('rect').attr('x',mL).attr('y',6).attr('height',18).attr('rx',4).attr('fill','#DDEDE6').attr('width',x(2150)-mL);
+  rows.append('rect').attr('x',mL).attr('y',6).attr('height',18).attr('rx',4).attr('fill',d=>d.key==='travel'?'#B8912F':'#1F7A63').attr('width',0).transition().duration(reduceMotion?0:700).ease(d3.easeCubicOut).attr('width',d=>x(d['v'+year])-mL);
+  rows.append('text').attr('class','bar-val').attr('x',d=>x(d['v'+year])+8).attr('y',19).text(d=>fmtB(d['v'+year]));
+  rows.on('mousemove',(e,d)=>showTip(`<b>${d.name}</b><br>2024: ${fmtB(d.v2024)}<br>2029: ${fmtB(d.v2029)}<br>Growth: ${d.cagr}% a year`,e.clientX,e.clientY)).on('mouseleave',hideTip);
+  svg.append('text').attr('x',mL).attr('y',H-8).attr('fill','#6E837D').attr('font-size',11).text('Gold: fastest-growing sector. Scale fixed so the two years compare directly.');
+  svg.attr('aria-label',`Bar chart of Muslim consumer spend by sector, ${year}. `+data.map(d=>`${d.name} ${fmtB(d['v'+year])}`).join(', '));
+}
+function setYear(y){ state.year=y; document.querySelectorAll('#yearSeg button').forEach(x=>x.classList.toggle('active',+x.dataset.year===y)); drawSectorBars(); writeURL(); }
+document.querySelectorAll('#yearSeg button').forEach(b=>b.addEventListener('click',()=>setYear(+b.dataset.year)));
+
+/* ==================== GROWTH VS GAIN ==================== */
+(function(){
+  const svg=d3.select('#growthScatter'); const W=520,H=300,mL=50,mR=20,mT=16,mB=44;
+  const x=d3.scaleLinear().domain([0,600]).range([mL,W-mR]); const y=d3.scaleLinear().domain([4,12.5]).range([H-mB,mT]); const r=d3.scaleSqrt().domain([0,1530]).range([6,30]);
+  svg.append('rect').attr('x',x(300)).attr('y',mT).attr('width',W-mR-x(300)).attr('height',y(6.5)-mT).attr('fill','#F1F5F2');
+  svg.append('text').attr('x',W-mR-6).attr('y',mT+14).attr('text-anchor','end').attr('fill','#6E837D').attr('font-size',11).text('fast and large');
+  svg.append('g').attr('class','grid').selectAll('line').data(y.ticks(5)).join('line').attr('x1',mL).attr('x2',W-mR).attr('y1',d=>y(d)).attr('y2',d=>y(d));
+  svg.append('g').attr('class','axis').attr('transform',`translate(0,${H-mB})`).call(d3.axisBottom(x).ticks(6).tickFormat(d=>'+$'+d+'B').tickSize(0)).select('.domain').remove();
+  svg.append('g').attr('class','axis').attr('transform',`translate(${mL},0)`).call(d3.axisLeft(y).ticks(5).tickFormat(d=>d+'%').tickSize(0)).select('.domain').remove();
+  svg.append('text').attr('x',W-mR).attr('y',H-8).attr('text-anchor','end').attr('fill','#6E837D').attr('font-size',11).text('Absolute gain 2024→2029');
+  svg.append('text').attr('x',mL).attr('y',10).attr('fill','#6E837D').attr('font-size',11).text('Growth rate to 2029');
+  svg.append('line').attr('x1',mL).attr('x2',W-mR).attr('y1',y(6.5)).attr('y2',y(6.5)).attr('stroke','#B8912F').attr('stroke-dasharray','4 4').attr('stroke-width',1.5);
+  const pts=svg.append('g').selectAll('g').data(sectors).join('g');
+  pts.append('circle').attr('cx',d=>x(d.v2029-d.v2024)).attr('cy',d=>y(d.cagr)).attr('r',d=>r(d.v2024)).attr('fill','#1F7A63').attr('fill-opacity',.75).attr('stroke','#fff').attr('stroke-width',1.5)
+    .on('mousemove',(e,d)=>showTip(`<b>${d.name}</b><br>${fmtB(d.v2024)} in 2024<br>+${fmtB(d.v2029-d.v2024)} by 2029<br>${d.cagr}% a year`,e.clientX,e.clientY)).on('mouseleave',hideTip);
+  pts.append('text').attr('class','bar-label').attr('x',d=>x(d.v2029-d.v2024)+r(d.v2024)+6).attr('y',d=>y(d.cagr)+4).text(d=>d.name.replace('Muslim-friendly ','').replace(' & beverages','').replace('Media & recreation','Media'));
+  svg.attr('aria-label','Scatter of sector growth rate against absolute gain. Travel is fastest at 11.2%; food adds the most, over $500B.');
+})();
+
+/* ==================== HEATMAP ==================== */
+(function(){
+  const cs=['Malaysia','United Arab Emirates','Indonesia','Saudi Arabia','Türkiye','Bahrain'];
+  const h=document.getElementById('heat'); h.style.gridTemplateColumns=`140px repeat(${sectorCols.length},1fr)`;
+  const col=r=>r===1?'#1F7A63':r===2?'#5FA88F':r<=4?'#A6D1C1':'#E6EEE9'; const txt=r=>r<=2?'#fff':'#132D28';
+  h.innerHTML=`<div class="hh"></div>`+sectorCols.map(s=>`<div class="hh">${s[1]}</div>`).join('')+cs.map(c=>`<div class="hr">${c}</div>`+sectorCols.map(s=>{ const v=(sectorRanks[c]||{})[s[0]]; return v?`<div class="hc" style="background:${col(v[0])};color:${txt(v[0])}" title="${c}, ${s[1]}: #${v[0]} (SGIE ${v[1]})">#${v[0]}<span style="font-size:9.5px;font-weight:500;opacity:.8;margin-left:4px">${v[1]}</span></div>`:`<div class="hc" style="background:#FAFBFA;color:#B7C4BF">—</div>`; }).join('')).join('');
+})();
+
+/* ==================== LINE CHART ==================== */
+(function(){
+  const svg=d3.select('#lineChart'); const W=1060,H=340,mL=50,mR=60,mT=20,mB=40;
+  const x=d3.scaleLinear().domain([2018,2029]).range([mL,W-mR]); const y=d3.scaleLinear().domain([0,10]).range([H-mB,mT]);
+  svg.append('rect').attr('x',x(2024)).attr('width',x(2029)-x(2024)).attr('y',mT).attr('height',H-mB-mT).attr('fill','#F1F5F2');
+  svg.append('text').attr('x',x(2026.5)).attr('y',mT+14).attr('text-anchor','middle').attr('fill','#6E837D').attr('font-size',11).text('Forecast');
+  svg.append('g').attr('class','grid').selectAll('line').data(y.ticks(5)).join('line').attr('x1',mL).attr('x2',W-mR).attr('y1',d=>y(d)).attr('y2',d=>y(d));
+  svg.append('g').attr('class','axis').attr('transform',`translate(0,${H-mB})`).call(d3.axisBottom(x).tickValues([2018,2021,2022,2023,2024,2029]).tickFormat(d3.format('d')).tickSize(0)).select('.domain').remove();
+  svg.append('g').attr('class','axis').attr('transform',`translate(${mL},0)`).call(d3.axisLeft(y).ticks(5).tickFormat(d=>'$'+d+'T').tickSize(0)).select('.domain').remove();
+  const line=d3.line().x(d=>x(d.y)).y(d=>y(d.v));
+  function series(data,color,label){
+    const solid=data.filter(d=>!d.proj), last2=data.slice(-2);
+    svg.append('path').attr('d',line(solid)).attr('fill','none').attr('stroke',color).attr('stroke-width',2.5);
+    svg.append('path').attr('d',line(last2)).attr('fill','none').attr('stroke',color).attr('stroke-width',2.5).attr('stroke-dasharray','6 5');
+    svg.append('g').selectAll('circle').data(data).join('circle').attr('cx',d=>x(d.y)).attr('cy',d=>y(d.v)).attr('r',5).attr('fill',d=>d.proj?'#fff':color).attr('stroke',color).attr('stroke-width',2.5).attr('tabindex',0).attr('aria-label',d=>`${label} ${d.y}: $${d.v}T`)
+      .on('mousemove focus',(e,d)=>{const b=e.target.getBoundingClientRect(); showTip(`<b>${label}, ${d.y}</b><br>$${d.v.toFixed(2)}T${d.proj?' (forecast)':''}`,b.left+b.width/2,b.top);}).on('mouseleave blur',hideTip);
+    const last=data[data.length-1]; svg.append('text').attr('x',x(2029)+10).attr('y',y(last.v)+4).attr('fill',color).attr('font-size',12).attr('font-weight',600).text('$'+last.v+'T');
+  }
+  series(consumerSpend,'#1F7A63','Consumer spend'); series(islamicFinance,'#B8912F','Islamic finance assets');
+  // annotation
+  const ax=x(2023.5), ay=y(5.46); svg.append('line').attr('x1',ax).attr('x2',ax+40).attr('y1',ay).attr('y2',ay-40).attr('stroke','#6E837D').attr('stroke-width',1);
+  svg.append('text').attr('x',ax+44).attr('y',ay-44).attr('font-size',11.5).attr('fill','#3C5450').attr('font-weight',600).text('+$1.06T in a single year');
+  svg.attr('aria-label','Line chart. Consumer spend rose from $2.2T in 2018 to $2.6T in 2024, forecast $3.56T by 2029. Islamic finance assets rose from $3.96T in 2021 to $5.99T in 2024, forecast $9.72T by 2029.');
+})();
+
+/* ==================== FINANCE CHARTS ==================== */
+(function(){
+  const svg=d3.select('#donut'); const W=320,H=260,R=90; const g=svg.append('g').attr('transform',`translate(${W/2},${H/2-10})`);
+  const cols=['#1F7A63','#B8912F','#8FC3B2']; const arc=d3.arc().innerRadius(R-30).outerRadius(R).padAngle(.02).cornerRadius(3); const pie=d3.pie().value(d=>d.v).sort(null)(finComposition);
+  g.selectAll('path').data(pie).join('path').attr('d',arc).attr('fill',(d,i)=>cols[i]).on('mousemove',(e,d)=>showTip(`<b>${d.data.name}</b><br>${d.data.v}% of assets`,e.clientX,e.clientY)).on('mouseleave',hideTip);
+  g.append('text').attr('text-anchor','middle').attr('y',-4).attr('font-family','Fraunces, Georgia, serif').attr('font-weight',600).attr('font-size',30).attr('fill','#132D28').text('$5.99T');
+  g.append('text').attr('text-anchor','middle').attr('y',18).attr('font-size',11.5).attr('fill','#6E837D').text('total assets, 2024');
+  const lg=svg.append('g').attr('transform',`translate(16,${H-16})`); finComposition.forEach((d,i)=>{ const it=lg.append('g').attr('transform',`translate(${i*100},0)`); it.append('rect').attr('width',10).attr('height',10).attr('rx',2).attr('fill',cols[i]); it.append('text').attr('x',14).attr('y',9).attr('font-size',10.5).attr('fill','#3C5450').text(`${d.name.split(' ')[0]} ${d.v}%`); });
+  svg.attr('aria-label','Donut: Islamic banking 71.6%, sukuk 23.3%, funds and takaful 5.1% of $5.99T.');
+})();
+(function(){
+  const svg=d3.select('#segGrowth'); const W=320,H=260,mL=20,rowH=64,top=20; const x=d3.scaleLinear().domain([0,30]).range([mL,W-60]);
+  const rows=svg.append('g').selectAll('g').data(finGrowth).join('g').attr('transform',(d,i)=>`translate(0,${top+i*rowH})`);
+  rows.append('text').attr('class','bar-label').attr('x',mL).attr('y',12).text(d=>d.name);
+  rows.append('rect').attr('x',mL).attr('y',22).attr('height',16).attr('rx',4).attr('fill','#DDEDE6').attr('width',x(30)-mL);
+  rows.append('rect').attr('x',mL).attr('y',22).attr('height',16).attr('rx',4).attr('fill',(d,i)=>i===0?'#B8912F':'#1F7A63').attr('width',0).transition().duration(reduceMotion?0:800).attr('width',d=>x(d.v)-mL);
+  rows.append('text').attr('class','bar-val').attr('x',d=>x(d.v)+8).attr('y',35).text(d=>'+'+d.v+'%');
+  svg.append('text').attr('x',mL).attr('y',H-14).attr('font-size',11).attr('fill','#6E837D').text('Source: IFSB Stability Report 2025. Sukuk = issuance volume.');
+  svg.attr('aria-label','Bars: sukuk issuance +25.6%, Islamic banking +17.1%, takaful +16.9% in 2024.');
+})();
+(function(){
+  const svg=d3.select('#finShare'); const W=320,H=260,mL=78,rowH=22,top=8; const x=d3.scaleLinear().domain([0,30]).range([mL,W-44]);
+  const rows=svg.append('g').selectAll('g').data(finShareCountries).join('g').attr('transform',(d,i)=>`translate(0,${top+i*rowH})`);
+  rows.append('text').attr('x',mL-8).attr('y',13).attr('text-anchor','end').attr('font-size',11.5).attr('fill','#132D28').text(d=>d.name);
+  rows.append('rect').attr('x',mL).attr('y',4).attr('height',12).attr('rx',3).attr('fill','#132D28').attr('fill-opacity',(d,i)=>1-i*.07).attr('width',0).transition().duration(reduceMotion?0:800).delay((d,i)=>i*40).attr('width',d=>x(d.v)-mL);
+  rows.append('text').attr('x',d=>x(d.v)+6).attr('y',14).attr('font-size',11).attr('fill','#3C5450').attr('font-weight',600).text(d=>'~'+d.v+'%');
+  svg.append('text').attr('x',mL).attr('y',H-14).attr('font-size',11).attr('fill','#6E837D').text('Ten countries hold about 95% of global assets.');
+  svg.attr('aria-label','Bars of approximate share of Islamic finance assets: Saudi Arabia 27%, Iran 27%, Malaysia 12%, UAE 10%, others smaller.');
+})();
+
+/* ==================== RANK TABLE + BUMP ==================== */
+(function(){
+  const tb=document.querySelector('#rankTable tbody'); const top=countries.filter(c=>c.giei).sort((a,b)=>a.rank-b.rank);
+  tb.innerHTML=top.map(c=>`<tr><td><span class="rk">${String(c.rank).padStart(2,'0')}</span></td><td><button class="mini" style="border:none;padding:0;font-weight:500" onclick="pinCountry('${c.label.replace(/'/g,"\\'")}',true)">${c.label}</button></td><td><div style="display:flex;align-items:center;gap:10px"><div class="scorebar" style="width:${(c.giei/165.1)*100}%"></div><span style="font-size:12.5px" class="num">${c.giei}</span></div></td><td class="num">${popFmt(c.pop)}</td></tr>`).join('');
+  const svg=d3.select('#bump'); const W=520,H=300,mL=40,mR=150,mT=24,mB=30; const x=d3.scalePoint().domain(rankHistory.editions).range([mL,W-mR]); const y=d3.scaleLinear().domain([1,5]).range([mT,H-mB]);
+  const cols={'Malaysia':'#1F7A63','Saudi Arabia':'#B8912F','Indonesia':'#5FA88F','United Arab Emirates':'#132D28','Bahrain':'#C9A24B'};
+  svg.append('g').attr('class','axis').attr('transform',`translate(0,${H-mB+6})`).call(d3.axisBottom(x).tickSize(0)).select('.domain').remove();
+  svg.append('g').attr('class','axis').attr('transform',`translate(${mL-10},0)`).call(d3.axisLeft(y).ticks(5).tickFormat(d=>'#'+d).tickSize(0)).select('.domain').remove();
+  const line=d3.line().x((d,i)=>x(rankHistory.editions[i])).y(d=>y(d)).curve(d3.curveMonotoneX);
+  rankHistory.rows.forEach(r=>{ svg.append('path').attr('d',line(r.r)).attr('fill','none').attr('stroke',cols[r.c]).attr('stroke-width',2.5).attr('opacity',.9); svg.append('g').selectAll('circle').data(r.r).join('circle').attr('cx',(d,i)=>x(rankHistory.editions[i])).attr('cy',d=>y(d)).attr('r',5).attr('fill',cols[r.c]).attr('stroke','#fff').attr('stroke-width',1.5).on('mousemove',(e,d)=>showTip(`<b>${r.c}</b><br>#${d}`,e.clientX,e.clientY)).on('mouseleave',hideTip); svg.append('text').attr('x',x(rankHistory.editions.at(-1))+12).attr('y',y(r.r.at(-1))+4).attr('font-size',12).attr('fill',cols[r.c]).attr('font-weight',600).text(r.c.replace('United Arab Emirates','UAE')); });
+  svg.append('text').attr('x',mL).attr('y',12).attr('font-size',11).attr('fill','#6E837D').text('Gap between 2019/20 and 2023/24: intermediate editions not shown.');
+  svg.attr('aria-label','Bump chart of top-five GIEI positions. Malaysia first throughout; UAE rose from 4th to 2nd in 2025/26; Saudi Arabia 2nd to 3rd.');
+})();
+
+/* ==================== COMPARE ==================== */
+const cmpRows=[
+  {k:'Muslim population',f:c=>c.pop,fmt:v=>v>=1?`~${Math.round(v)}M`:`~${Math.round(v*1000)}k`,best:'max'},
+  {k:'GIEI rank',f:c=>c.rank,fmt:v=>'#'+v,best:'min'},
+  {k:'GIEI score (2024/25)',f:c=>c.giei,fmt:v=>v.toFixed(1),best:'max',bar:186},
+  {k:'Share of Islamic finance assets',f:c=>c.fin,fmt:v=>'~'+v+'%',best:'max',bar:30},
+  {k:'Islamic banking share of domestic banking',f:c=>c.bank,fmt:v=>v+'%',best:'max',bar:100},
+  {k:'Halal imports 2024',f:c=>c.imports,fmt:v=>'$'+v+'B',best:null},
+  {k:'Halal food rank',f:c=>(sectorRanks[c.label]||{}).food?.[0],fmt:v=>'#'+v,best:'min'},
+  {k:'Islamic finance rank',f:c=>(sectorRanks[c.label]||{}).fin?.[0],fmt:v=>'#'+v,best:'min'},
+  {k:'Travel rank',f:c=>(sectorRanks[c.label]||{}).travel?.[0],fmt:v=>'#'+v,best:'min'},
+  {k:'Modest fashion rank',f:c=>(sectorRanks[c.label]||{}).fashion?.[0],fmt:v=>'#'+v,best:'min'},
+  {k:'Pharma & cosmetics rank',f:c=>(sectorRanks[c.label]||{}).pharma?.[0],fmt:v=>'#'+v,best:'min'},
+  {k:'Media & recreation rank',f:c=>(sectorRanks[c.label]||{}).media?.[0],fmt:v=>'#'+v,best:'min'},
+  {k:'OIC member',f:c=>c.oic?'Yes':'No',fmt:v=>v,best:null},
+];
+const cSel=[document.getElementById('c1'),document.getElementById('c2'),document.getElementById('c3')];
+const sortedLabels=countries.map(c=>c.label).sort();
+cSel.forEach((s,i)=>{ s.innerHTML=(i===2?'<option value="">+ third country</option>':'')+sortedLabels.map(l=>`<option>${l}</option>`).join(''); s.addEventListener('change',()=>{ state.cmp[i]=s.value; renderCompare(); }); });
+function renderCompare(){
+  const cs=state.cmp.filter(Boolean).map(l=>byLabel[l]).filter(Boolean); cSel.forEach((s,i)=>s.value=state.cmp[i]||'');
+  const g=document.getElementById('cmpGrid'); g.style.setProperty('--n',cs.length);
+  let html=`<div class="k"></div>`+cs.map(c=>`<div class="h">${c.label}</div>`).join('');
+  cmpRows.forEach(r=>{ const vals=cs.map(c=>r.f(c)); const nums=vals.filter(v=>typeof v==='number'); const best=r.best&&nums.length>1?(r.best==='max'?Math.max(...nums):Math.min(...nums)):null;
+    html+=`<div class="k">${r.k}</div>`+vals.map(v=>`<div class="${v===best?'best':''}">${v==null||v===undefined?'<span style="color:#B7C4BF">—</span>':`<span class="cmp-num">${r.fmt(v)}</span>`}${r.bar&&typeof v==='number'?`<div class="pillbar"><i style="width:${Math.min(100,v/r.bar*100)}%"></i></div>`:''}</div>`).join(''); });
+  g.innerHTML=html; const w=document.getElementById('tbl-compare'); if(w.classList.contains('show')) w.innerHTML=renderTable('compare'); writeURL();
+}
+function addToCompare(label){ if(state.cmp.includes(label)) { toast(label+' is already in the comparison.'); } else { const i=state.cmp.indexOf(''); if(i>=0) state.cmp[i]=label; else state.cmp[2]=label; } renderCompare(); document.getElementById('compare').scrollIntoView({behavior:reduceMotion?'auto':'smooth'}); }
+document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click',()=>{ const p=b.dataset.preset.split(','); state.cmp=[p[0],p[1],p[2]||'']; renderCompare(); }));
+
+/* ==================== IMPORTS CHART ==================== */
+(function(){
+  const svg=d3.select('#imports'); const W=520,H=260,mL=50,mR=30,mT=20,mB=36; const x=d3.scaleLinear().domain([2022,2028]).range([mL,W-mR]); const y=d3.scaleLinear().domain([0,650]).range([H-mB,mT]);
+  svg.append('rect').attr('x',x(2024)).attr('width',x(2028)-x(2024)).attr('y',mT).attr('height',H-mB-mT).attr('fill','#F1F5F2');
+  svg.append('g').attr('class','grid').selectAll('line').data(y.ticks(4)).join('line').attr('x1',mL).attr('x2',W-mR).attr('y1',d=>y(d)).attr('y2',d=>y(d));
+  svg.append('g').attr('class','axis').attr('transform',`translate(0,${H-mB})`).call(d3.axisBottom(x).tickValues([2022,2023,2024,2028]).tickFormat(d3.format('d')).tickSize(0)).select('.domain').remove();
+  svg.append('g').attr('class','axis').attr('transform',`translate(${mL},0)`).call(d3.axisLeft(y).ticks(4).tickFormat(d=>'$'+d+'B').tickSize(0)).select('.domain').remove();
+  const line=d3.line().x(d=>x(d.y)).y(d=>y(d.v)); const solid=oicImports.filter(d=>!d.proj);
+  svg.append('path').attr('d',line(solid)).attr('fill','none').attr('stroke','#1F7A63').attr('stroke-width',2.5);
+  svg.append('path').attr('d',line(oicImports.slice(-2))).attr('fill','none').attr('stroke','#1F7A63').attr('stroke-width',2.5).attr('stroke-dasharray','6 5');
+  svg.append('g').selectAll('circle').data(oicImports).join('circle').attr('cx',d=>x(d.y)).attr('cy',d=>y(d.v)).attr('r',5).attr('fill',d=>d.proj?'#fff':'#1F7A63').attr('stroke','#1F7A63').attr('stroke-width',2.5).on('mousemove',(e,d)=>showTip(`<b>${d.y}${d.proj?' (forecast)':''}</b><br>$${d.v}B`,e.clientX,e.clientY)).on('mouseleave',hideTip);
+  svg.append('g').selectAll('text').data(oicImports).join('text').attr('x',d=>x(d.y)).attr('y',d=>y(d.v)-12).attr('text-anchor','middle').attr('font-size',11.5).attr('font-weight',600).attr('fill','#3C5450').text(d=>'$'+d.v+'B');
+  svg.append('text').attr('x',x(2026)).attr('y',mT+14).attr('text-anchor','middle').attr('fill','#6E837D').attr('font-size',11).text('Forecast ~8% a year');
+  svg.attr('aria-label','OIC halal imports: $359B 2022, $408B 2023, $421.5B 2024, forecast $608B 2028.');
+})();
+
+/* ==================== CERT DIRECTORY ==================== */
+function renderCerts(q=''){ const l=q.toLowerCase(); document.getElementById('certDir').innerHTML=certBodies.filter(c=>!l||c.c.toLowerCase().includes(l)||c.b.toLowerCase().includes(l)).map(c=>`<div class="d"><b>${c.c}</b>${c.b}<br><span>${c.n}</span></div>`).join('')||'<p style="color:var(--muted)">No match.</p>'; }
+document.getElementById('certFilter').addEventListener('input',e=>renderCerts(e.target.value)); renderCerts();
+
+/* ==================== DEALS + LISTED ==================== */
+(function(){
+  const ed=document.getElementById('dealEd'), sc=document.getElementById('dealScope'), q=document.getElementById('dealQ');
+  [...new Set(deals.map(d=>d.ed))].forEach(v=>ed.append(el('option',{},v))); [...new Set(deals.map(d=>d.scope))].forEach(v=>sc.append(el('option',{},v)));
+  function render(){ const rows=deals.filter(d=>(!ed.value||d.ed===ed.value)&&(!sc.value||d.scope===sc.value)&&(!q.value||(d.item+d.note).toLowerCase().includes(q.value.toLowerCase()))); document.querySelector('#dealTable tbody').innerHTML=rows.map(d=>`<tr><td>${d.ed}</td><td>${d.scope}</td><td>${d.item}</td><td class="num">${d.n??'—'}</td><td class="num">${d.v!=null?(d.v>=1?'$'+d.v+'B':'$'+Math.round(d.v*1000)+'M'):'—'}</td><td style="color:var(--muted);font-size:12.5px">${d.note}</td></tr>`).join('')||'<tr><td colspan="6" style="color:var(--muted)">No rows match.</td></tr>'; }
+  [ed,sc,q].forEach(e=>e.addEventListener('input',render)); render();
+  document.querySelector('#listedTable tbody').innerHTML=listed.map(r=>`<tr><td>${r[0]}</td><td style="color:var(--muted)">${r[1]}</td><td style="font-size:13px">${r[2]}</td></tr>`).join('');
+})();
+
+/* ==================== ENTRY HELPER ==================== */
+const helper={sector:null,model:null,home:null};
+document.querySelectorAll('.opts[data-q] button').forEach(b=>b.addEventListener('click',()=>{ const q=b.closest('.opts').dataset.q; helper[q]=b.dataset.v; b.closest('.opts').querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b)); runHelper(); }));
+function runHelper(){
+  const out=document.getElementById('helperOut'); if(!helper.sector||!helper.model||!helper.home){ out.innerHTML='<p style="color:var(--muted);margin:0">Answer all three questions to see a shortlist.</p>'; return; }
+  const scored=countries.filter(c=>c.rank||c.pop>=15).map(c=>{ let s=0, why=[];
+    if(helper.model==='volume'){ s+=Math.min(c.pop,240)/40; if(c.pop>=90) why.push(`${popFmt(c.pop)} Muslims`); }
+    if(helper.model==='premium'){ if(c.rank&&c.rank<=10){ s+=(11-c.rank); why.push(`GIEI #${c.rank}`);} if(c.fin>=5){ s+=2; why.push('deep Islamic finance');} }
+    if(helper.model==='export'){ if(c.oic&&c.rank&&c.rank<=10){ s+=(11-c.rank)*.8; } if(c.imports){ s+=3; why.push(`$${c.imports}B halal imports, growing fast`);} if(['Saudi Arabia','Türkiye','Indonesia','Malaysia','United Arab Emirates'].includes(c.label)){ s+=3; why.push('top-five OIC importer'); } }
+    const sr=(sectorRanks[c.label]||{})[helper.sector==='pharma'?'pharma':helper.sector]; if(sr){ s+=(5-sr[0])*1.2; why.push(`#${sr[0]} in this sector`); }
+    if(helper.sector==='fin'&&c.bank>=20){ s+=2; why.push(`Islamic banks ${c.bank}% of market`); }
+    if(helper.sector==='food'&&['Indonesia','Bangladesh','Egypt'].includes(c.label)){ s+=3; why.push('top-three food market by spend'); }
+    if(helper.sector==='fashion'&&['Iran','Türkiye','Saudi Arabia','Indonesia'].includes(c.label)){ s+=2.5; why.push('leading modest-fashion market'); }
+    if(helper.sector==='travel'&&['Saudi Arabia','United Arab Emirates','Türkiye','Malaysia','Indonesia'].includes(c.label)){ s+=2.5; why.push('major Muslim-friendly travel destination'); }
+    if(helper.home==='west'&&['United Kingdom','Singapore','United Arab Emirates','Malaysia'].includes(c.label)){ s+=2; why.push('common first step from the West'); }
+    if(helper.home==='asia'&&c.region==='asia'){ s+=1.5; why.push('same region'); }
+    if(helper.home==='mena'&&c.region==='mena'){ s+=1.5; why.push('same region'); }
+    return {c,s,why}; }).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).slice(0,4);
+  const cert=c=>{ const b=certBodies.find(x=>x.c===c.label||(c.label==='Türkiye'&&x.c==='Türkiye')); return b?b.b:(c.oic?'GAC / SMIIC-aligned bodies':'local private certifiers'); };
+  out.innerHTML=`<p style="margin:0 0 6px;font-size:12.5px;color:var(--muted)">Shortlist, scored on this page's data. Research each before committing.</p>`+scored.map((x,i)=>`<div class="r"><b>${i+1}. ${x.c.label}</b><p>${[...new Set(x.why)].slice(0,3).join(' · ')}</p><p>Certifier: ${cert(x.c)}${x.c.bank!=null?` · Islamic financing ${x.c.bank>=20?'mainstream':'available but small'}`:''}</p><div class="cta" style="margin-top:6px"><button class="mini" onclick="addToCompare('${x.c.label.replace(/'/g,"\\'")}')">Compare</button><button class="mini" onclick="pinCountry('${x.c.label.replace(/'/g,"\\'")}',true)">Show on map</button></div></div>`).join('');
+}
+
+/* ==================== STORIES ==================== */
+const stories={
+  gap:{kicker:'A short story in nine steps',title:'Where does a quarter of the world buy its food?',body:'Two billion people. Nine trillion dollars. And a map where the demand and the infrastructure sit in different places. Scroll to follow the story; the map changes as you go.',graphic:'map',steps:[
+    {layer:'pop',hl:null,title:'Two billion people, spread across every continent',body:'Roughly a quarter of humanity is Muslim. The darker the country, the more Muslims live there. Notice where the colour pools: Southeast Asia, South Asia, the Middle East and a widening band across Africa.',n:'~2<span class="u">B</span>',l:'Muslims worldwide, about 25% of the global population'},
+    {layer:'pop',hl:['Indonesia','Pakistan','India','Bangladesh','Nigeria'],title:'Five countries hold almost half of them',body:'Indonesia, Pakistan, India, Bangladesh and Nigeria together are home to more than 900 million Muslims. This is where the demand is. None of the five is a Gulf state, and only Indonesia and Pakistan appear in the top ten halal ecosystems.',n:'917<span class="u">M</span>',l:'Muslims in these five countries alone'},
+    {layer:'pop',hl:null,title:'Together they spend $2.6 trillion a year',body:'That is Muslim consumer spending across six halal sectors in 2024. Food takes nearly $6 of every $10. But the growth is elsewhere: Muslim-friendly travel is compounding at over 11% a year, almost twice the pace of food, and is forecast to reach $424 billion by 2029.',n:'<span class="u">$</span>2.60<span class="u">T</span>',l:'consumer spend, 2024. Forecast $3.56T by 2029'},
+    {layer:'giei',hl:['Malaysia','United Arab Emirates','Saudi Arabia','Bahrain','Kuwait','Qatar','Jordan'],title:'But the infrastructure sits somewhere else',body:'Switch the lens to ecosystem strength — certification, regulation, finance, innovation — and the map re-centres on Malaysia and the Gulf. The Global Islamic Economy Indicator measures how well a country is set up to serve halal demand, not how much demand it has.',n:'186.1',l:'Malaysia\'s GIEI score in 2025/26. Twelve straight years at #1'},
+    {layer:'giei',hl:['Indonesia','Malaysia'],title:'Indonesia versus Malaysia',body:'Indonesia has 236 million Muslims and the world\'s largest halal food market. Malaysia has 21 million and has topped the ecosystem ranking since the index began, leading in food, finance and pharmaceuticals. Eleven times the people; a fraction of the score. That gap is the whole story of this market.',n:'11<span class="u">×</span>',l:'more Muslims in Indonesia than Malaysia'},
+    {layer:'pop',hl:['Brazil','India','Russia','United States of America','Turkey'],title:'Much of the halal food is produced elsewhere',body:'OIC member countries imported $421.5 billion of halal-related goods in 2024. The largest suppliers into those markets are Brazil, India, Russia, Türkiye and the United States. Brazil, with a Muslim population in the low hundreds of thousands, is the biggest halal meat exporter on earth.',n:'<span class="u">$</span>421.5<span class="u">B</span>',l:'OIC halal-related imports, 2024. Heading to $608B by 2028'},
+    {layer:'fin',hl:['Saudi Arabia','Iran','Malaysia'],title:'And the money is concentrated in three places',body:'Islamic finance holds a further $5.99 trillion in assets, growing around 10% a year. Saudi Arabia, Iran and Malaysia hold roughly 70% of it between them; ten countries hold about 95%. Three-quarters is still banking, but sukuk issuance rose 25.6% in 2024.',n:'~70<span class="u">%</span>',l:'of Islamic finance assets in Saudi Arabia, Iran and Malaysia'},
+    {layer:'giei',hl:['Pakistan','Senegal','United Kingdom'],title:'The map is changing',body:'Pakistan entered the ecosystem top ten for the first time. Senegal climbed 18 places to 25th. The United Kingdom sits at 14th, the highest-ranked non-Muslim-majority country and the West\'s main hub for Islamic finance. National strategy, not population, is what moves these rankings.',n:'+18',l:'places Senegal rose in a single year'},
+    {layer:'pop',hl:null,title:'What this means depends on who you are',body:'For an investor, the gap between demand and infrastructure is an opportunity. For a policymaker, it is import dependence. For a business, it is a question of which market to enter first. Pick a perspective and the dashboard will reframe every chart for you.',n:'',l:'',cta:true}
+  ]},
+  hajj:{kicker:'A second story, in seven steps',title:'Two million people, one week, one city.',body:'The pilgrimage economy is the most concentrated consumer event on earth. Every year the Hajj compresses travel, food, insurance and finance for millions of people into a few days in Makkah. The chart follows the numbers.',graphic:'chart',steps:[
+    {upto:2012,hl:[],title:'The peak before the rebuild',body:'In 2012 more than three million pilgrims performed Hajj. The following year Saudi Arabia cut country quotas by around 20% to allow the Grand Mosque to be expanded, and numbers settled near two and a half million.',n:'3.16<span class="u">M</span>',l:'pilgrims in 2012, the largest Hajj on record'},
+    {upto:2019,title:'A steady two and a half million',body:'By 2019, 2.49 million pilgrims attended, over 85% of them from abroad. Asian countries, led by Indonesia and Pakistan, supplied the majority. That is the scale the travel sector was built to serve.',n:'2.49<span class="u">M</span>',l:'pilgrims in 2019, before the pandemic'},
+    {upto:2021,title:'Then almost nobody',body:'In 2020 only around 10,000 residents were permitted to perform Hajj. In 2021 about 58,000. For two years the pilgrimage economy — hotels, airlines, tour operators, food supply — effectively closed.',n:'10<span class="u">k</span>',l:'pilgrims in 2020, down 99.6% on 2019'},
+    {upto:2023,title:'The rebound',body:'2022 was capped at one million and brought 926,000. In 2023 the cap came off and 1.84 million people came — the largest gathering since the pandemic and a signal to the whole travel sector that demand had not gone anywhere.',n:'1.85<span class="u">M</span>',l:'pilgrims in 2023'},
+    {upto:2026,title:'Settling below the old peak',body:'2024 brought 1.83 million; 2025, 1.67 million; 2026, 1.71 million. The numbers are stable but well below 2019, as the authorities manage heat, crowding and infrastructure works. Umrah, the year-round lesser pilgrimage, now brings around 17 million visitors a year on top.',n:'1.71<span class="u">M</span>',l:'pilgrims in 2026 (GASTAT)'},
+    {upto:2026,title:'Why this matters beyond Makkah',body:'Muslim-friendly travel is the fastest-growing sector in the halal economy — $249 billion in 2024, forecast at $424 billion by 2029, an 11.2% annual pace. Pilgrimage is the anchor demand around which airlines, hotel groups, fintechs and insurers build products for the rest of the year.',n:'11.2<span class="u">%</span>',l:'annual growth in Muslim-friendly travel to 2029'},
+    {upto:2026,title:'From pilgrimage to platform',body:'Saudi Arabia\'s Vision 2030 targets 30 million Umrah visitors a year. Digital pilgrimage platforms, sovereign travel apps and takaful travel cover are among the opportunity signals in the 2025/26 report. The pilgrimage is the oldest halal market and increasingly the most digitised one.',n:'30<span class="u">M</span>',l:'Umrah visitors a year targeted by 2030',cta:true}
+  ]}
+};
+let storyMap=null, storyBuilt=false, storyObserver=null, storyChartApi=null;
+function buildStoryChart(){
+  const svg=d3.select('#storyChart'); svg.selectAll('*').remove(); const W=800,H=420,mL=56,mR=30,mT=30,mB=44;
+  const x=d3.scaleLinear().domain([2012,2026]).range([mL,W-mR]); const y=d3.scaleLinear().domain([0,3.5]).range([H-mB,mT]);
+  svg.append('g').attr('class','grid').selectAll('line').data(y.ticks(7)).join('line').attr('x1',mL).attr('x2',W-mR).attr('y1',d=>y(d)).attr('y2',d=>y(d));
+  svg.append('g').attr('class','axis').attr('transform',`translate(0,${H-mB})`).call(d3.axisBottom(x).tickValues(hajj.map(d=>d.y)).tickFormat(d3.format('d')).tickSize(0)).select('.domain').remove();
+  svg.append('g').attr('class','axis').attr('transform',`translate(${mL},0)`).call(d3.axisLeft(y).ticks(7).tickFormat(d=>d+'M').tickSize(0)).select('.domain').remove();
+  svg.append('text').attr('x',mL).attr('y',16).attr('font-size',12).attr('fill','#6E837D').text('Hajj pilgrims per year, millions (GASTAT)');
+  const line=d3.line().x(d=>x(d.y)).y(d=>y(d.v)).curve(d3.curveMonotoneX);
+  const path=svg.append('path').attr('fill','none').attr('stroke','#1F7A63').attr('stroke-width',3);
+  const dots=svg.append('g'); const labels=svg.append('g');
+  storyChartApi={show(upto){ const d=hajj.filter(p=>p.y<=upto); path.attr('d',line(d)); dots.selectAll('circle').data(d,p=>p.y).join('circle').attr('cx',p=>x(p.y)).attr('cy',p=>y(p.v)).attr('r',6).attr('fill',p=>p.y===upto?'#B8912F':'#1F7A63').attr('stroke','#fff').attr('stroke-width',2); labels.selectAll('text').data(d.filter(p=>[2012,2019,2020,2023,2026].includes(p.y)),p=>p.y).join('text').attr('x',p=>x(p.y)).attr('y',p=>y(p.v)-14).attr('text-anchor','middle').attr('font-size',12).attr('font-weight',600).attr('fill','#3C5450').text(p=>p.v>=1?p.v.toFixed(2)+'M':Math.round(p.v*1000)+'k'); }};
+}
+function setStory(key){
+  state.story=key; const s=stories[key]; document.querySelectorAll('.story-pick button').forEach(b=>b.classList.toggle('active',b.dataset.story===key));
+  document.getElementById('siKicker').textContent=s.kicker; document.getElementById('siTitle').textContent=s.title; document.getElementById('siBody').textContent=s.body;
+  document.getElementById('storyMap').style.display=s.graphic==='map'?'':'none'; document.getElementById('storyChart').style.display=s.graphic==='chart'?'':'none';
+  const wrap=document.getElementById('steps');
+  wrap.innerHTML=s.steps.map((st,i)=>`<div class="step" data-i="${i}"><div class="step-inner"><div class="snum">${i+1} / ${s.steps.length}</div><h3>${st.title}</h3><p>${st.body}</p>${st.cta?`<div class="ctas">${['public','investor','policy','business'].map(a=>`<button class="chip" data-go="${a}">${{public:'General public',investor:'Investor',policy:'Policymaker',business:'Business owner'}[a]}</button>`).join('')}</div>`:''}</div></div>`).join('');
+  wrap.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>{ setAudience(b.dataset.go); setView('dashboard'); setTimeout(()=>document.getElementById('takeaways').scrollIntoView({behavior:reduceMotion?'auto':'smooth'}),80); }));
+  if(storyObserver) storyObserver.disconnect();
+  storyObserver=new IntersectionObserver(entries=>{ entries.forEach(en=>{ if(en.isIntersecting) activateStep(+en.target.dataset.i); }); },{rootMargin:'-45% 0px -45% 0px',threshold:0});
+  wrap.querySelectorAll('.step').forEach(e=>storyObserver.observe(e));
+  if(s.graphic==='chart') buildStoryChart();
+  activateStep(0); writeURL(); window.scrollTo({top:0,behavior:reduceMotion?'auto':'smooth'});
+}
+function activateStep(i){
+  const s=stories[state.story]; const st=s.steps[i]; if(!st) return;
+  document.querySelectorAll('.step').forEach(e=>e.classList.toggle('active',+e.dataset.i===i));
+  if(s.graphic==='map'&&storyMap){ storyMap.setLayer(st.layer); storyMap.setHighlight(st.hl); document.getElementById('storyLayer').textContent='Map layer: '+layers[st.layer].hint; }
+  if(s.graphic==='chart'&&storyChartApi){ storyChartApi.show(st.upto); document.getElementById('storyLayer').textContent='Source: Saudi General Authority for Statistics'; }
+  const n=document.getElementById('storyN'); n.style.opacity=0; setTimeout(()=>{ n.innerHTML=st.n; document.getElementById('storyL').textContent=st.l; n.style.opacity=1; }, reduceMotion?0:150);
+}
+function initStory(){ if(storyBuilt) return; storyBuilt=true; storyMap=createMap('#storyMap',{onFail:()=>{ document.getElementById('storyMap').outerHTML='<div class="map-fallback" style="display:block">The map outlines couldn\'t load here; the story still works with the figures below.</div>'; }}); setStory(state.story); }
+document.querySelectorAll('.story-pick button').forEach(b=>b.addEventListener('click',()=>setStory(b.dataset.story)));
+
+/* ==================== VIEW TOGGLE ==================== */
+function setView(v){ state.view=v; document.body.classList.toggle('story-mode',v==='story'); document.querySelectorAll('.viewseg button').forEach(b=>b.classList.toggle('active',b.dataset.view===v)); document.getElementById('tourStart').style.display=v==='story'?'none':''; if(v==='story') initStory(); else window.scrollTo({top:0,behavior:reduceMotion?'auto':'smooth'}); writeURL(); }
+document.querySelectorAll('.viewseg button').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));
+
+/* ==================== TOUR ==================== */
+const tourSteps=[
+  {target:'#map-section',set:()=>{ setMainLayer('pop'); pinCountry('Indonesia'); },text:'<b>Start with demand.</b> This layer shows where Muslims live. Indonesia alone has 236 million — the world\'s largest Muslim population and its largest halal food market.'},
+  {target:'#map-section',set:()=>{ setMainLayer('giei'); pinCountry('Malaysia'); },text:'<b>Now switch the lens to infrastructure.</b> Malaysia has a tenth of Indonesia\'s Muslims but has topped the ecosystem ranking for twelve years. Demand and capability live in different places.'},
+  {target:'#sectors',set:()=>{ setYear(2029); },text:'<b>Six sectors, one anchor.</b> Food is nearly 60% of the $2.6 trillion. The bars show the 2029 forecast — travel, in gold, grows at 11% a year while food grows at 6%. Below, the heatmap shows who leads each sector.'},
+  {target:'#growth',set:()=>{},text:'<b>Two curves, two speeds.</b> Consumer spend has risen steadily through a pandemic and inflation. Islamic finance assets, in gold, added a trillion dollars in one year and are forecast to reach $9.7T by 2029.'},
+  {target:'#finance',set:()=>{},text:'<b>Inside the $6 trillion.</b> Three-quarters is banking, but sukuk issuance grew fastest in 2024. Saudi Arabia, Iran and Malaysia hold about 70% of everything.'},
+  {target:'#countries',set:()=>{},text:'<b>Who leads, who moves.</b> The GIEI rewards coordination over size. Watch the UAE climb from 4th to 2nd in the bump chart; Pakistan just entered the top ten; the UK ranks 14th.'},
+  {target:'#compare',set:()=>{ state.cmp=['Indonesia','Malaysia','']; renderCompare(); },text:'<b>Compare any countries side by side.</b> Green marks the strongest value in each row. Indonesia wins on people; Malaysia wins on almost everything else.'},
+  {target:'#trade',set:()=>{},text:'<b>Follow the goods.</b> $421B of halal imports into OIC countries, mostly from Brazil, India, Russia and the US. The certification directory on the right is the gate every shipment passes through.'},
+  {target:'#business',set:()=>{},text:'<b>Try the entry helper.</b> Three questions produce a shortlist scored on this page\'s data, with the relevant certifier and financing note for each market.'},
+  {target:'#takeaways',set:()=>{},text:'<b>Make it yours.</b> The perspective switcher at the top reframes every chart for the public, investors, policymakers or business owners. Then copy the link — it preserves your exact view — or download the data.'}
+];
+let tourI=-1, tourFocusEl=null;
+function tourGo(i){ if(i<0||i>=tourSteps.length){ tourEnd(); return; } tourI=i; const s=tourSteps[i]; if(tourFocusEl) tourFocusEl.classList.remove('tour-focus'); const e=document.querySelector(s.target); tourFocusEl=e; e.classList.add('tour-focus'); s.set(); e.scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'start'}); document.getElementById('tourStep').textContent=`Step ${i+1} of ${tourSteps.length}`; document.getElementById('tourText').innerHTML=s.text; document.getElementById('tourBack').disabled=i===0; document.getElementById('tourNext').textContent=i===tourSteps.length-1?'Finish':'Next'; }
+function tourStart(){ setView('dashboard'); document.getElementById('tour').classList.add('show'); tourGo(0); }
+function tourEnd(){ document.getElementById('tour').classList.remove('show'); if(tourFocusEl) tourFocusEl.classList.remove('tour-focus'); tourFocusEl=null; tourI=-1; pinCountry(null); setYear(2024); setMainLayer('pop'); }
+document.getElementById('tourStart').addEventListener('click',tourStart); document.getElementById('tourNext').addEventListener('click',()=>tourGo(tourI+1)); document.getElementById('tourBack').addEventListener('click',()=>tourGo(tourI-1)); document.getElementById('tourExit').addEventListener('click',tourEnd);
+document.addEventListener('keydown',e=>{ if(tourI<0) return; if(e.key==='ArrowRight'||e.key==='Enter') tourGo(tourI+1); else if(e.key==='ArrowLeft') tourGo(tourI-1); else if(e.key==='Escape') tourEnd(); });
+
+/* ==================== CHANGELOG MODAL ==================== */
+const changelog=[['2 Sep 2026','Added compare mode, sector × country heatmap, deal aggregates, trade & standards, entry helper, pilgrimage story, URL state, chart export, search, provenance markers, glossary, language switcher, colour-blind ramp, keyboard map navigation.'],['2 Sep 2026','Typography moved to Fraunces + IBM Plex Sans; type scale and tabular numerals throughout.'],['2 Sep 2026','Story mode (scrollytelling) and guided tour added.'],['2 Sep 2026','Rebuilt on SGIE 2025/26 figures (published June 2026). Sector 2024 values, 2029 forecasts, $5.99T Islamic finance assets, 346 deals.'],['SGIE 2024/25','GIEI full scores (Malaysia 165.1 … Qatar 60.4) remain from this edition; 2025/26 publishes top-five order and Malaysia 186.1 only.']];
+document.getElementById('changelog').addEventListener('click',()=>{ document.getElementById('modalTitle').textContent='Data and dashboard changelog'; document.getElementById('modalBody').innerHTML='<ul>'+changelog.map(c=>`<li><b>${c[0]}.</b> ${c[1]}</li>`).join('')+'</ul><p style="font-size:13px;color:var(--muted)">SGIE publishes annually (mid-year); IFSB in May; GASTAT after each Hajj. Next expected refresh: SGIE 2026/27, mid-2027.</p>'; document.getElementById('modal').classList.add('show'); });
+document.getElementById('modalClose').addEventListener('click',()=>document.getElementById('modal').classList.remove('show'));
+document.getElementById('modal').addEventListener('click',e=>{ if(e.target.id==='modal') e.target.classList.remove('show'); });
+
+/* ==================== DOWNLOADS ==================== */
+document.getElementById('dlCsv').addEventListener('click',()=>{ let csv='dataset,item,year,value,unit,note\n'; sectors.forEach(s=>{csv+=`sector_spend,${s.name},2024,${s.v2024},USD billions,\nsector_spend,${s.name},2029,${s.v2029},USD billions,forecast\nsector_cagr,${s.name},2024-2029,${s.cagr},percent,\n`;}); consumerSpend.forEach(d=>csv+=`consumer_spend_total,Six sectors,${d.y},${d.v},USD trillions,${d.proj?'forecast':''}\n`); islamicFinance.forEach(d=>csv+=`islamic_finance_assets,Total,${d.y},${d.v},USD trillions,${d.proj?'forecast':''}\n`); finComposition.forEach(d=>csv+=`finance_composition,${d.name},2024,${d.v},percent of assets,\n`); finGrowth.forEach(d=>csv+=`finance_segment_growth,${d.name},2024,${d.v},percent yoy,\n`); finShareCountries.forEach(d=>csv+=`finance_share_by_country,${d.name},2024,${d.v},percent (approx),\n`); oicImports.forEach(d=>csv+=`oic_halal_imports,OIC,${d.y},${d.v},USD billions,${d.proj?'forecast':''}\n`); hajj.forEach(d=>csv+=`hajj_pilgrims,Total,${d.y},${d.v},millions,\n`); download('halal-economy-data.csv',csv); });
+document.getElementById('dlCountries').addEventListener('click',()=>{ let csv='country,muslim_population_millions,giei_score_2024_25,giei_rank,share_of_islamic_finance_assets_pct,islamic_banking_share_of_domestic_banking_pct,halal_imports_2024_usd_bn,oic_member,note\n'; countries.forEach(c=>csv+=`"${c.label}",${c.pop},${c.giei??''},${c.rank??''},${c.fin??''},${c.bank??''},${c.imports??''},${c.oic?'yes':'no'},"${(c.note||'').replace(/"/g,'""')}"\n`); download('halal-economy-countries.csv',csv); });
+document.getElementById('dlAll').addEventListener('click',()=>download('halal-economy-dataset.json',JSON.stringify({compiled:'2026-09-02',sources,sectors,consumerSpend,islamicFinance,finComposition,finGrowth,finShareCountries,oicImports,hajj,rankHistory,sectorRanks,countries,deals,certBodies},null,2),'application/json'));
+
+/* ==================== INIT FROM URL ==================== */
+readURL();
+setLang(state.lang);
+document.getElementById('cb').checked=state.cb;
+setMainLayer(state.layer); setYear(state.year); applyAudience(); renderCompare(); if(state.pin) pinCountry(state.pin);
+if(state.view==='story') setView('story');
+suppressURL=false; writeURL();
+if(location.hash){ const t=document.querySelector(location.hash); t&&setTimeout(()=>t.scrollIntoView(),200); }
+</script>
+</body>
+</html>

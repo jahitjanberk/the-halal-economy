@@ -1,0 +1,170 @@
+[
+  {
+    "id": "consumerSpend.2024.v",
+    "value": 2.6
+  },
+  {
+    "id": "consumerSpend.2029.v",
+    "value": 3.56
+  },
+  {
+    "id": "countryGiei.Malaysia.giei2526",
+    "value": 186.1
+  },
+  {
+    "id": "countryGiei.Malaysia.rank",
+    "value": 1
+  },
+  {
+    "id": "deals.2025/26/Global/All-Islamic-economy-sectors.n",
+    "value": 346
+  },
+  {
+    "id": "deals.2025/26/Global/All-Islamic-economy-sectors.v",
+    "value": 13.11
+  },
+  {
+    "id": "finGrowth.Islamic-banking.v",
+    "value": 17.1
+  },
+  {
+    "id": "finGrowth.Sukuk-issuance.v",
+    "value": 25.6
+  },
+  {
+    "id": "finGrowth.Takaful-(insurance).v",
+    "value": 16.9
+  },
+  {
+    "id": "islamicFinance.2024.v",
+    "value": 5.99
+  },
+  {
+    "id": "islamicFinance.2029.v",
+    "value": 9.72
+  },
+  {
+    "id": "oicImports.2024.v",
+    "value": 421.5
+  },
+  {
+    "id": "oicImports.2028.v",
+    "value": 608.4
+  },
+  {
+    "id": "rankHistory.Bahrain.2025/26",
+    "value": 5
+  },
+  {
+    "id": "rankHistory.Indonesia.2025/26",
+    "value": 4
+  },
+  {
+    "id": "rankHistory.Malaysia.2025/26",
+    "value": 1
+  },
+  {
+    "id": "rankHistory.Saudi-Arabia.2025/26",
+    "value": 3
+  },
+  {
+    "id": "rankHistory.United-Arab-Emirates.2025/26",
+    "value": 2
+  },
+  {
+    "id": "sectorRanks.Malaysia.fashion",
+    "value": 4
+  },
+  {
+    "id": "sectorRanks.Malaysia.fin",
+    "value": 1
+  },
+  {
+    "id": "sectorRanks.Malaysia.food",
+    "value": 1
+  },
+  {
+    "id": "sectorRanks.Malaysia.media",
+    "value": 2
+  },
+  {
+    "id": "sectorRanks.Malaysia.pharma",
+    "value": 1
+  },
+  {
+    "id": "sectorRanks.Malaysia.travel",
+    "value": 4
+  },
+  {
+    "id": "sectors.cosm.cagr",
+    "value": 6.2
+  },
+  {
+    "id": "sectors.cosm.v2024",
+    "value": 92
+  },
+  {
+    "id": "sectors.cosm.v2029",
+    "value": 124
+  },
+  {
+    "id": "sectors.fashion.cagr",
+    "value": 5.1
+  },
+  {
+    "id": "sectors.fashion.v2024",
+    "value": 347
+  },
+  {
+    "id": "sectors.fashion.v2029",
+    "value": 444
+  },
+  {
+    "id": "sectors.food.cagr",
+    "value": 6.1
+  },
+  {
+    "id": "sectors.food.v2024",
+    "value": 1530
+  },
+  {
+    "id": "sectors.food.v2029",
+    "value": 2058
+  },
+  {
+    "id": "sectors.media.cagr",
+    "value": 5.7
+  },
+  {
+    "id": "sectors.media.v2024",
+    "value": 276
+  },
+  {
+    "id": "sectors.media.v2029",
+    "value": 364
+  },
+  {
+    "id": "sectors.pharma.cagr",
+    "value": 5.5
+  },
+  {
+    "id": "sectors.pharma.v2024",
+    "value": 112
+  },
+  {
+    "id": "sectors.pharma.v2029",
+    "value": 146
+  },
+  {
+    "id": "sectors.travel.cagr",
+    "value": 11.2
+  },
+  {
+    "id": "sectors.travel.v2024",
+    "value": 249
+  },
+  {
+    "id": "sectors.travel.v2029",
+    "value": 424
+  }
+]
