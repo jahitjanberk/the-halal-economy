@@ -7,6 +7,7 @@ import { JSDOM } from 'jsdom';
 import { readFileSync } from 'fs';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
+import { stubAtlas } from './atlas-stub.mjs';
 
 const ROOT = new URL('..', import.meta.url);
 const html = readFileSync(new URL('index.html', ROOT), 'utf8');
@@ -34,14 +35,9 @@ globalThis.requestAnimationFrame = cb => setTimeout(() => cb(performance.now()),
 globalThis.d3 = d3;
 globalThis.topojson = topojson;
 
-// The map fetches world-atlas from a CDN. Node has a native fetch; just record the call.
-const ATLAS = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
-const nativeFetch = globalThis.fetch;
-let atlasLoaded = false;
-globalThis.fetch = (url, ...rest) => {
-  if(url === ATLAS) atlasLoaded = true;
-  return nativeFetch(url, ...rest);
-};
+// The map fetches world-atlas from a CDN. Serve it from a pinned fixture so the
+// map actually renders under test and does not depend on someone else's deploy.
+const atlas = stubAtlas();
 
 const errors = [];
 window.addEventListener('error', e => errors.push('window error: ' + e.message));
@@ -89,7 +85,7 @@ for(const [name, ok] of checks){
   if(!ok) failed++;
 }
 
-console.log('\natlas fetch attempted: ' + atlasLoaded);
+console.log('\natlas fetch attempted: ' + atlas.requested());
 if(errors.length){ console.log('\nRuntime errors:'); errors.slice(0, 10).forEach(e => console.log('  ' + e)); }
 console.log('\n' + (failed ? failed + ' CHECK(S) FAILED' : 'ALL ' + checks.length + ' CHECKS PASSED'));
 process.exit(failed || errors.length ? 1 : 0);

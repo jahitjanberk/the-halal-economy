@@ -10,7 +10,7 @@ import { state } from '../core/state.js';
 import { popFmt } from '../core/dom.js';
 import { countries, byAtlas } from '../data/countries.js';
 
-export const rampsNormal={pop:['#DDEDE6','#1F7A63'],giei:['#F3EAD0','#B8912F'],fin:['#DDEDE6','#132D28']};
+export const rampsNormal={pop:['#DDEDE6','#1F7A63'],giei:['#F3EAD0','#A88429'],fin:['#DDEDE6','#132D28']};
 export const rampsCB={pop:['#FDE725','#440154'],giei:['#FDE725','#440154'],fin:['#FDE725','#440154']}; // viridis endpoints
 
 /** What each map layer reads, how it formats, and its colour domain. */

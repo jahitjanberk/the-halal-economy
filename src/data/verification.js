@@ -17,7 +17,8 @@
  * chart draws on more than one), which is how the tooltip finds this.
  */
 import { sectors, sectorCols, sectorRanks } from './sectors.js';
-import { consumerSpend, islamicFinance, finComposition, finGrowth, finShareCountries, oicImports, hajj } from './series.js';
+import { consumerSpend, islamicFinance, finComposition, finGrowth, finShareCountries, oicImports, hajj, sukukIssuance } from './series.js';
+import { gapRows } from './gap.js';
 import { countries, rankHistory } from './countries.js';
 import { deals, certBodies } from './markets.js';
 
@@ -47,6 +48,11 @@ export const checks = {
   gfmag: {
     label: 'Global Finance Magazine',
     url: 'https://gfmag.com/banking/islamic-finance-just-muslim-majority-nations/',
+    on: '2026-09-02',
+  },
+  iifm2025: {
+    label: 'the IIFM Sukuk Report 2025 press release',
+    url: 'https://www.iifm.net/public/press-media/news-and-updates/record-breaking-international-sukuk-issuances-hit-us-656-billion/97',
     on: '2026-09-02',
   },
   derived: {
@@ -89,6 +95,22 @@ export const datasets = {
   countryPop:        { label: 'Muslim population by country',   records: () => countries,         figures: ['pop'],          check: 'sgiePress' },
   countryFinance:    { label: 'Islamic finance by country',     records: () => countries,         figures: ['fin', 'bank'],  check: 'gfmag' },
   countryTrade:      { label: 'halal imports by country',       records: () => countries,         figures: ['imports'],      check: 'sgiePress' },
+  sukukIssuance:     { label: 'sukuk issuance',                 records: () => sukukIssuance,     figures: ['intl', 'short'], check: 'iifm2025' },
+
+  /*
+   * The gap figures are ours, not a publisher's: each is arithmetic over a
+   * country's asset share, its population and the global asset total. A derived
+   * figure cannot be better confirmed than its inputs, and `pop` is confirmed
+   * for no country in the table — so none of these count as confirmed, and the
+   * marker on the section says so rather than implying someone checked them.
+   */
+  assetsPerMuslim: {
+    label: 'assets per Muslim',
+    records: () => gapRows(),
+    figures: ['perMuslim'],
+    check: 'derived',
+  },
+
   deals:             { label: 'investment deals',               records: () => deals,             figures: ['n', 'v'], check: 'sgie2526' },
   certBodies:        { label: 'certifier directory',            records: () => certBodies,        figures: null,  check: 'sgie2526' },
 
@@ -193,6 +215,8 @@ const identify = {
   consumerSpend: r => r.y,
   islamicFinance: r => r.y,
   oicImports: r => r.y,
+  sukukIssuance: r => r.y,
+  assetsPerMuslim: r => r.label,
   hajj: r => r.y,
   finComposition: r => r.name,
   finGrowth: r => r.name,

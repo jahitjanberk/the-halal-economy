@@ -2,10 +2,70 @@
   "compiled": "2026-09-02",
   "verifiedOn": "September 2026",
   "verification": {
-    "confirmed": 66,
-    "total": 197,
+    "confirmed": 70,
+    "total": 211,
     "note": "A figure is \"confirmed\" when it was checked against a named source that was actually retrieved. It is not a claim that the figure is true.",
     "figures": [
+      {
+        "id": "assetsPerMuslim.Bahrain.perMuslim",
+        "value": 174708.33333333337,
+        "confirmed": false,
+        "check": "derived"
+      },
+      {
+        "id": "assetsPerMuslim.Indonesia.perMuslim",
+        "value": 507.6271186440678,
+        "confirmed": false,
+        "check": "derived"
+      },
+      {
+        "id": "assetsPerMuslim.Iran.perMuslim",
+        "value": 19485.542168674703,
+        "confirmed": false,
+        "check": "derived"
+      },
+      {
+        "id": "assetsPerMuslim.Kuwait.perMuslim",
+        "value": 94128.57142857143,
+        "confirmed": false,
+        "check": "derived"
+      },
+      {
+        "id": "assetsPerMuslim.Malaysia.perMuslim",
+        "value": 34228.57142857143,
+        "confirmed": false,
+        "check": "derived"
+      },
+      {
+        "id": "assetsPerMuslim.Pakistan.perMuslim",
+        "value": 518.6147186147186,
+        "confirmed": false,
+        "check": "derived"
+      },
+      {
+        "id": "assetsPerMuslim.Qatar.perMuslim",
+        "value": 164725,
+        "confirmed": false,
+        "check": "derived"
+      },
+      {
+        "id": "assetsPerMuslim.Saudi-Arabia.perMuslim",
+        "value": 47567.64705882354,
+        "confirmed": false,
+        "check": "derived"
+      },
+      {
+        "id": "assetsPerMuslim.Türkiye.perMuslim",
+        "value": 2588.271604938272,
+        "confirmed": false,
+        "check": "derived"
+      },
+      {
+        "id": "assetsPerMuslim.United-Arab-Emirates.perMuslim",
+        "value": 85571.42857142857,
+        "confirmed": false,
+        "check": "derived"
+      },
       {
         "id": "consumerSpend.2018.v",
         "value": 2.2,
@@ -1187,6 +1247,30 @@
         "value": 424,
         "confirmed": true,
         "check": "sgie2526"
+      },
+      {
+        "id": "sukukIssuance.2023.intl",
+        "value": 52.7,
+        "confirmed": true,
+        "check": "iifm2025"
+      },
+      {
+        "id": "sukukIssuance.2023.short",
+        "value": 72.7,
+        "confirmed": true,
+        "check": "iifm2025"
+      },
+      {
+        "id": "sukukIssuance.2024.intl",
+        "value": 65.6,
+        "confirmed": true,
+        "check": "iifm2025"
+      },
+      {
+        "id": "sukukIssuance.2024.short",
+        "value": 59.1,
+        "confirmed": true,
+        "check": "iifm2025"
       }
     ]
   },
@@ -1232,6 +1316,12 @@
       "date": "2024",
       "url": "https://www.imf.org/en/Publications/WEO",
       "reached": "blocked"
+    },
+    "iifm": {
+      "name": "IIFM Sukuk Report 2025 (14th edition), International Islamic Financial Market",
+      "date": "November 2025",
+      "url": "https://www.iifm.net/public/press-media/news-and-updates/record-breaking-international-sukuk-issuances-hit-us-656-billion/97",
+      "reached": "ok"
     },
     "gastat": {
       "name": "Saudi General Authority for Statistics (GASTAT)",

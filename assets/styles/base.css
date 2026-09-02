@@ -1,7 +1,12 @@
 /* Design tokens, resets and the base type scale. Loaded first. */
 :root{
-  --paper:#FBFAF6; --panel:#F1F5F2; --panel-2:#E6EEE9; --ink:#132D28; --ink-2:#3C5450; --muted:#6E837D; --hair:#D9E2DD;
-  --emerald:#1F7A63; --emerald-soft:#8FC3B2; --emerald-pale:#DDEDE6; --gold:#B8912F; --gold-soft:#E7D7A9;
+  --paper:#FBFAF6; --panel:#F1F5F2; --panel-2:#E6EEE9; --ink:#132D28; --ink-2:#3C5450; --muted:#5E706B; --hair:#D9E2DD;
+  /* --gold is a decorative fill only: at 2.8:1 on paper it is too light to carry
+     text or any mark a reader has to resolve. Anything meaning-bearing -- units on
+     figures, focus rings, legend keys, chart lines -- uses --gold-ink (4.6:1 or
+     better on paper, panel and the v-part chip). --gold stays where the reader
+     loses nothing by missing it, and behind --ink text on the tour button. */
+  --emerald:#1F7A63; --emerald-soft:#8FC3B2; --emerald-pale:#DDEDE6; --gold:#B8912F; --gold-ink:#886A20; --gold-soft:#E7D7A9;
   /* Verification states: confirmed / partly confirmed / unconfirmed. */
   --verified:#1B74E4; --verified-soft:#8FC2F7; --verified-pale:#E6F0FD; --verified-ink:#0F4C9E;
   --warn:#B4552F; --warn-soft:#F0A88A; --warn-pale:#F7E4DA;
@@ -30,7 +35,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);f
 html[dir=rtl] body{font-family:'IBM Plex Sans Arabic',var(--sans);}
 ::selection{background:var(--gold-soft);}
 a{color:var(--emerald);}
-:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
+:focus-visible{outline:2px solid var(--gold-ink);outline-offset:3px;}
 button,input,select{font-family:inherit;}
 .wrap{max-width:1140px;margin:0 auto;padding:0 28px;}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}

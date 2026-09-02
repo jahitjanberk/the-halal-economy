@@ -30,7 +30,7 @@
   .story-layer{margin-top:6px;font-size:11.5px;}
   .step{min-height:0;padding:14px 0;opacity:1;}
   .step-inner{background:#fff;border:1px solid var(--hair);border-radius:14px;padding:18px;max-width:none;}
-  .step.active .step-inner{border-color:var(--gold);}
+  .step.active .step-inner{border-color:var(--gold-ink);}
   .cmp-grid{grid-template-columns:120px repeat(var(--n,2),1fr);}
   /* .exports is static below this width, so nothing needs to clear it. */
   .card h3,.controls{padding-right:0;}

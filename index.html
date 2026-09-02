@@ -21,7 +21,7 @@
 <meta property="og:image" content="https://jahitjanberk.github.io/the-halal-economy/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="The Halal Economy: $2.60T consumer spend and $5.99T Islamic finance assets in 2024, with 66 of 212 figures checked against a source.">
+<meta property="og:image:alt" content="The Halal Economy: $2.60T consumer spend and $5.99T Islamic finance assets in 2024, with 70 of 226 figures checked against a source.">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The Halal Economy — a $9 trillion economy, mapped country by country">
@@ -54,7 +54,7 @@
   "@type": "Dataset",
   "name": "The Halal Economy",
   "alternateName": "Halal Economy Dashboard",
-  "description": "The halal economy mapped sector by sector and country by country: 6 consumer sectors, Islamic finance, trade, investment deals and certification across 39 countries. Compiled from published industry reporting. Every figure records its source and whether it has been checked against that source — 66 of 212 were verified as of September 2026.",
+  "description": "The halal economy mapped sector by sector and country by country: 6 consumer sectors, Islamic finance, trade, investment deals and certification across 39 countries. Compiled from published industry reporting. Every figure records its source and whether it has been checked against that source — 70 of 226 were verified as of September 2026.",
   "url": "https://jahitjanberk.github.io/the-halal-economy/",
   "sameAs": "https://github.com/jahitjanberk/the-halal-economy",
   "isAccessibleForFree": true,
@@ -320,6 +320,12 @@
     },
     {
       "@type": "CreativeWork",
+      "name": "IIFM Sukuk Report 2025 (14th edition), International Islamic Financial Market",
+      "url": "https://www.iifm.net/public/press-media/news-and-updates/record-breaking-international-sukuk-issuances-hit-us-656-billion/97",
+      "datePublished": "November 2025"
+    },
+    {
+      "@type": "CreativeWork",
       "name": "Saudi General Authority for Statistics (GASTAT)",
       "url": "https://www.stats.gov.sa/en/statistics-tabs/-/categories/1051",
       "datePublished": "2012–2026"
@@ -351,6 +357,7 @@
       <a href="#sectors" data-i18n="nav.sectors">Sectors</a>
       <a href="#growth" data-i18n="nav.growth">Growth</a>
       <a href="#finance" data-i18n="nav.finance">Finance</a>
+      <a href="#gap" data-i18n="nav.gap">The gap</a>
       <a href="#countries" data-i18n="nav.countries">Countries</a>
       <a href="#compare" data-i18n="nav.compare">Compare</a>
       <a href="#trade" data-i18n="nav.trade">Trade</a>
@@ -360,7 +367,7 @@
       <a href="#references">Sources</a>
     </div>
     <div class="nav-right">
-      <select class="mini" id="audSel" aria-label="Perspective: reframes the commentary for your role" title="Reframes every commentary line and the closing takeaways for your role">
+      <select class="mini" id="audSel" aria-label="Perspective: reframes the commentary for your role" data-i18n-aria="aria.perspective" title="Reframes every commentary line and the closing takeaways for your role">
         <option value="public">As: general public</option>
         <option value="investor">As: investor</option>
         <option value="policy">As: policymaker</option>
@@ -375,7 +382,7 @@
         <button class="mini navmenu-btn" id="moreBtn" aria-expanded="false" aria-controls="morePanel" aria-label="More options">More <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" focusable="false"><path d="M4 6 L8 10 L12 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="navmenu-panel" id="morePanel" hidden>
           <label for="lang">Language</label>
-          <select class="mini" id="lang" aria-label="Language">
+          <select class="mini" id="lang" aria-label="Language" data-i18n-aria="aria.language">
             <option value="en">English</option><option value="ar">العربية</option><option value="id">Bahasa Indonesia</option><option value="ms">Bahasa Melayu</option>
           </select>
           <button class="mini" id="copyLink" data-i18n="copylink">Copy link to this view</button>
@@ -472,7 +479,7 @@
   <div class="wrap">
     <h1 data-i18n="hero.h1">A $9 trillion economy, mapped sector by sector and country by country.</h1>
     <p class="lede" data-i18n="hero.lede">Muslim consumers spent $2.6 trillion in 2024 on halal food, fashion, travel, media, medicines and cosmetics. Islamic finance holds another $6 trillion in assets. This dashboard shows where that money sits, how fast each part is growing, and what it means depending on who you are.</p>
-    <div class="audience" role="group" aria-label="Choose your perspective">
+    <div class="audience" role="group" aria-label="Choose your perspective" data-i18n-aria="aria.perspectiveGroup">
       <span data-i18n="aud.label">I'm looking at this as:</span>
       <button class="chip active" data-aud="public" data-i18n="aud.public">General public</button>
       <button class="chip" data-aud="investor" data-i18n="aud.investor">Investor</button>
@@ -509,7 +516,7 @@
           <button data-layer="giei" data-i18n="layer.giei">Ecosystem score</button>
           <button data-layer="fin" data-i18n="layer.fin">Islamic finance share</button>
         </div>
-        <div class="search"><input id="search" type="search" placeholder="Search a country…" aria-label="Search a country" autocomplete="off"><div class="search-list" id="searchList" role="listbox"></div></div>
+        <div class="search"><input id="search" type="search" placeholder="Search a country…" aria-label="Search a country" data-i18n-aria="aria.searchCountry" autocomplete="off"><div class="search-list" id="searchList" role="listbox"></div></div>
       </div>
       <div class="grid-map">
         <div>
@@ -546,7 +553,7 @@
         <h3>Growth rate vs. absolute gain</h3>
         <p class="sub">Where is the fastest growth, and where is the most new money? Bubble size = 2024 spend. The upper-right is the attractive quadrant.</p>
         <svg class="chart" id="growthScatter" viewBox="0 0 520 300"></svg>
-        <div class="legend"><span><i style="background:var(--emerald)"></i>Sector</span><span><i class="line" style="background:var(--gold)"></i>Six-sector average growth (6.5%)</span></div>
+        <div class="legend"><span><i style="background:var(--emerald)"></i>Sector</span><span><i class="line" style="background:var(--gold-ink)"></i>Six-sector average growth (6.5%)</span></div>
       </div>
     </div>
     <div class="card" style="margin-top:20px">
@@ -570,7 +577,7 @@
       <h3>Market size over time</h3>
       <p class="sub">US$ trillions. Dashed segments are industry forecasts. <button class="src" data-s="sgie-multi" data-k="reported" data-d="consumerSpend islamicFinance">i</button></p>
       <svg class="chart" id="lineChart" viewBox="0 0 1060 340"></svg>
-      <div class="legend"><span><i class="line" style="background:var(--emerald)"></i>Six-sector consumer spend</span><span><i class="line" style="background:var(--gold)"></i>Islamic finance assets</span></div>
+      <div class="legend"><span><i class="line" style="background:var(--emerald)"></i>Six-sector consumer spend</span><span><i class="line" style="background:var(--ink)"></i>Islamic finance assets</span></div>
       <div class="tablewrap" id="tbl-trajectory"></div>
       <div class="sowhat" id="sowhat-growth"></div>
     </div>
@@ -588,7 +595,41 @@
       <div class="card"><div class="exports" data-svg="segGrowth" data-name="finance-segment-growth"></div><h3>How fast each part grew in 2024</h3><p class="sub">Year-on-year change <button class="src" data-s="ifsb" data-k="reported" data-d="finGrowth">i</button></p><svg class="chart" id="segGrowth" viewBox="0 0 320 260"></svg></div>
       <div class="card"><div class="exports" data-svg="finShare" data-name="finance-share-by-country"></div><h3>Who holds the assets</h3><p class="sub">Approximate share of global <span class="gl" data-g="sharia">Sharia</span>-compliant assets <button class="src" data-s="gf" data-k="approx" data-d="finShareCountries">i</button></p><svg class="chart" id="finShare" viewBox="0 0 320 260"></svg></div>
     </div>
+    <div class="grid-2" style="margin-top:20px">
+      <div class="card">
+        <div class="exports" data-svg="sukuk" data-name="sukuk-issuance" data-table="sukuk"></div>
+        <h3>Two sukuk markets, moving apart</h3>
+        <p class="sub">Issuance in 2023 and 2024, from the IIFM's own report rather than the SGIE editions <button class="src" data-s="iifm" data-k="reported" data-d="sukukIssuance">i</button></p>
+        <svg class="chart" id="sukuk" viewBox="0 0 320 260"></svg>
+      </div>
+      <div class="card">
+        <h3>Why a second publisher</h3>
+        <p class="sub">Most of this page reads one annual report. This series does not.</p>
+        <p style="font-size:13.5px;line-height:1.6;margin:0 0 14px">International sukuk issuance reached <b>$65.6B</b> in 2024, its highest level since the market began, up 24.5% on 2023. Short-term issuance moved the other way, falling to <b>$59.1B</b> as issuers shifted out of short-dated paper. Both come from the IIFM, the industry body that sets sukuk documentation standards, and neither figure passes through DinarStandard.</p>
+        <div class="fact"><span class="k">Total issued, 2024</span><span class="v">$205B</span></div>
+        <div class="fact"><span class="k">Outstanding, 2024</span><span class="v">$902.8B</span></div>
+        <div class="fact"><span class="k">Report edition</span><span class="v">14th, Nov 2025</span></div>
+      </div>
+    </div>
     <div class="sowhat" id="sowhat-finance" style="margin-top:20px"></div>
+  </div>
+</section>
+
+<!-- GAP -->
+<section id="gap">
+  <div class="wrap">
+    <div class="forwho" data-for="investor policy business"></div>
+    <h2>Where the money is, and where the people are</h2>
+    <p class="section-note">Every other figure on this page is one a publisher printed. This one is not. For each country it sets its share of the world's Muslims against its share of global Islamic finance assets — two shares of the same world total, so the distance between them can be read directly. <button class="src" data-s="gf" data-k="derived" data-d="assetsPerMuslim countryFinance countryPop">i</button></p>
+    <div class="card">
+      <div class="exports" data-svg="gapChart" data-name="assets-per-muslim" data-table="gap"></div>
+      <h3>Share of the world's Muslims against share of its Islamic finance assets</h3>
+      <p class="sub">Right-hand figure is Islamic finance assets per Muslim. Derived from published shares and a rounded population, so treat it as an order of magnitude, not a measurement.</p>
+      <div class="legend"><span><i style="background:var(--emerald)"></i>Share of the world's Muslims</span><span><i style="background:var(--ink)"></i>Share of global Islamic finance assets</span></div>
+      <svg class="chart" id="gapChart" viewBox="0 0 700 340"></svg>
+      <div class="sowhat"><b>The gap is the finding.</b> Bahrain and Qatar hold roughly 50 times more Islamic finance assets per Muslim than the world average; Indonesia and Pakistan, between them 467 million Muslims, hold about a sixth of it. The infrastructure of the industry sits almost inversely to the population it serves.</div>
+      <div class="tablewrap" id="tbl-gap"></div>
+    </div>
   </div>
 </section>
 
@@ -627,7 +668,7 @@
     <div class="card">
       <div class="exports" data-table="compare"></div>
       <div class="cmp-pick">
-        <select id="c1"></select><select id="c2"></select><select id="c3"><option value="">+ third country</option></select>
+        <select id="c1" aria-label="First country to compare" data-i18n-aria="aria.cmp1"></select><select id="c2" aria-label="Second country to compare" data-i18n-aria="aria.cmp2"></select><select id="c3" aria-label="Third country to compare, optional" data-i18n-aria="aria.cmp3"><option value="">+ third country</option></select>
         <span style="font-size:12.5px;color:var(--muted)">Presets:</span>
         <button class="mini" data-preset="Indonesia,Malaysia">Indonesia vs Malaysia</button>
         <button class="mini" data-preset="Saudi Arabia,United Arab Emirates,Bahrain">Gulf hubs</button>
@@ -681,7 +722,7 @@
         <div class="exports" data-table="deals"></div>
         <h3>Published deal aggregates</h3>
         <p class="sub">Filter by edition, country or sector. Values are disclosed deal value; many deals are undisclosed. <button class="src" data-s="sgie-multi" data-k="reported" data-d="deals">i</button></p>
-        <div class="filters"><select id="dealEd"><option value="">All editions</option></select><select id="dealScope"><option value="">All scopes</option></select><input id="dealQ" placeholder="Search…" aria-label="Search deals"></div>
+        <div class="filters"><select id="dealEd" aria-label="Filter deals by report edition" data-i18n-aria="aria.dealEd"><option value="">All editions</option></select><select id="dealScope" aria-label="Filter deals by scope" data-i18n-aria="aria.dealScope"><option value="">All scopes</option></select><input id="dealQ" placeholder="Search…" aria-label="Search deals" data-i18n-aria="aria.dealQ"></div>
         <div class="scrollx" style="max-height:360px;overflow:auto"><table id="dealTable"><thead><tr><th>Edition</th><th>Scope</th><th>Item</th><th style="text-align:right">Deals</th><th style="text-align:right">Value</th><th>Note</th></tr></thead><tbody></tbody></table></div>
         <div class="tablewrap" id="tbl-deals"></div>
         <div class="sowhat" id="sowhat-deals"><b>Two hubs, two profiles.</b> Indonesia attracts value through large halal food and consumer deals; the UAE attracts count through fintech and media. Islamic finance takes the most capital; media & recreation the most transactions.</div>
@@ -820,7 +861,7 @@
 <footer>
   <div class="wrap">
     <p><b>Sources.</b> Market sizes, sector figures, projections, GIEI rankings and sector ranks, deal aggregates and trade figures: DinarStandard, <i>State of the Global Islamic Economy Report</i>, 2025/26, 2024/25 and 2023/24 editions, via DinarStandard, Salaam Gateway and press coverage. Islamic finance composition and 2024 segment growth: IFSB <i>Islamic Financial Services Industry Stability Report</i> 2025. Country shares of Islamic finance assets: Global Finance / LSEG-ICD estimates, rounded. Islamic banking share of domestic banking: Union of Arab Banks and IFSB. Muslim population by country: Pew Research Center estimates, rounded. Hajj pilgrim counts: Saudi General Authority for Statistics (GASTAT). GDP comparisons: IMF World Economic Outlook, rounded.</p>
-    <p><b>Method notes.</b> The 2029 halal food figure is the six-sector total minus the five other reported sectors. Islamic finance assets are reported separately from the six consumer sectors, so the "$9 trillion" combined figure is indicative. Every figure carries a marker showing its source, edition and whether it is reported, derived or approximate, next to a badge showing whether it has actually been checked against that source. A blue tick marks a chart whose figures were all confirmed; a gold dash, some; a rust question mark, none: <span class="vflag v-ok">Confirmed</span> when every figure behind that chart was verified, <span class="vflag v-part">2 of 4 confirmed</span> when only some were, <span class="vflag v-no">Unconfirmed</span> when none have been checked. Hover the marker for the source and the date it was checked. Treat anything unconfirmed as unverified and check it before citing. As of September 2026, 66 of 212 figures on this page have been confirmed against a retrieved source. All values in current US dollars; projections are industry forecasts, not guarantees.</p>
+    <p><b>Method notes.</b> The 2029 halal food figure is the six-sector total minus the five other reported sectors. Islamic finance assets are reported separately from the six consumer sectors, so the "$9 trillion" combined figure is indicative. Every figure carries a marker showing its source, edition and whether it is reported, derived or approximate, next to a badge showing whether it has actually been checked against that source. A blue tick marks a chart whose figures were all confirmed; a gold dash, some; a rust question mark, none: <span class="vflag v-ok">Confirmed</span> when every figure behind that chart was verified, <span class="vflag v-part">2 of 4 confirmed</span> when only some were, <span class="vflag v-no">Unconfirmed</span> when none have been checked. Hover the marker for the source and the date it was checked. Treat anything unconfirmed as unverified and check it before citing. As of September 2026, 70 of 226 figures on this page have been confirmed against a retrieved source. All values in current US dollars; projections are industry forecasts, not guarantees.</p>
     <p>Compiled 2 September 2026. Built as an open reference for the public, investors, policymakers and business owners.</p>
     <p>Compilation <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>; underlying figures remain the property of the publishers cited above. Code <a href="LICENSE">MIT</a>.</p>
     <p class="credit">Made by <b>jahit</b><span aria-hidden="true">·</span><a href="https://jahit.dev" target="_blank" rel="noopener noreferrer">jahit.dev</a><span aria-hidden="true">·</span><a href="https://github.com/jahitjanberk" target="_blank" rel="noopener noreferrer">GitHub</a></p>

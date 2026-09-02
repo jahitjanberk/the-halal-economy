@@ -1,4 +1,14 @@
 figure_id,value,confirmed,checked_against
+assetsPerMuslim.Bahrain.perMuslim,174708.33333333337,no,
+assetsPerMuslim.Indonesia.perMuslim,507.6271186440678,no,
+assetsPerMuslim.Iran.perMuslim,19485.542168674703,no,
+assetsPerMuslim.Kuwait.perMuslim,94128.57142857143,no,
+assetsPerMuslim.Malaysia.perMuslim,34228.57142857143,no,
+assetsPerMuslim.Pakistan.perMuslim,518.6147186147186,no,
+assetsPerMuslim.Qatar.perMuslim,164725,no,
+assetsPerMuslim.Saudi-Arabia.perMuslim,47567.64705882354,no,
+assetsPerMuslim.Türkiye.perMuslim,2588.271604938272,no,
+assetsPerMuslim.United-Arab-Emirates.perMuslim,85571.42857142857,no,
 consumerSpend.2018.v,2.2,no,
 consumerSpend.2022.v,2.29,no,
 consumerSpend.2023.v,2.43,no,
@@ -196,3 +206,7 @@ sectors.pharma.v2029,146,yes,sgie2526
 sectors.travel.cagr,11.2,yes,derived
 sectors.travel.v2024,249,yes,sgie2526
 sectors.travel.v2029,424,yes,sgie2526
+sukukIssuance.2023.intl,52.7,yes,iifm2025
+sukukIssuance.2023.short,72.7,yes,iifm2025
+sukukIssuance.2024.intl,65.6,yes,iifm2025
+sukukIssuance.2024.short,59.1,yes,iifm2025

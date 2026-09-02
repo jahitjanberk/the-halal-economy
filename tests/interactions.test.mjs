@@ -7,6 +7,7 @@ import { JSDOM } from 'jsdom';
 import { readFileSync } from 'fs';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
+import { stubAtlas } from './atlas-stub.mjs';
 
 const ROOT = new URL('..', import.meta.url);
 const dom = new JSDOM(readFileSync(new URL('index.html', ROOT), 'utf8'), { url: 'https://example.org/', pretendToBeVisual: true });
@@ -33,6 +34,7 @@ const errors = [];
 process.on('unhandledRejection', r => errors.push('unhandled rejection: ' + r));
 window.addEventListener('error', e => errors.push('window error: ' + e.message));
 
+stubAtlas();   /* map outlines from a fixture, before main.js fetches them */
 await import(new URL('src/main.js', ROOT).href);
 await new Promise(r => setTimeout(r, 1200));
 

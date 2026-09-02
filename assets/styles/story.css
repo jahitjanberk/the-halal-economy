@@ -14,7 +14,7 @@
 #storyMap,#storyChart{width:100%;height:auto;display:block;}
 .story-stat{display:flex;align-items:baseline;gap:14px;margin-top:10px;padding-top:14px;border-top:1px solid var(--hair);min-height:64px;}
 .story-stat .n{font-size:38px;font-weight:600;line-height:1;color:var(--ink);transition:opacity .3s;}
-.story-stat .n .u{color:var(--gold);}
+.story-stat .n .u{color:var(--gold-ink);}
 .story-stat .l{font-size:13px;color:var(--muted);max-width:26ch;}
 .story-stat .prov{margin-left:auto;align-self:center;}
 .story-layer{font-size:12px;color:var(--muted);margin-top:8px;}
@@ -22,7 +22,7 @@
 .step{min-height:78vh;display:flex;align-items:center;opacity:.28;transition:opacity .4s;}
 .step.active{opacity:1;}
 .step-inner{max-width:44ch;}
-.step .snum{font-family:var(--serif);font-size:15px;color:var(--gold);margin-bottom:8px;}
+.step .snum{font-family:var(--serif);font-size:15px;color:var(--gold-ink);margin-bottom:8px;}
 .step h3{font-weight:500;font-size:clamp(var(--t-2xl),2.8vw,var(--t-3xl));line-height:1.12;margin:0 0 12px;}
 .step p{margin:0;font-size:var(--t-lg);color:var(--ink-2);line-height:1.55;}
 .step .ctas{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;}
@@ -52,7 +52,7 @@
 .story-end-actions .chip.primary:hover{background:var(--ink);border-color:var(--ink);}
 
 /* TOUR */
-.tour-focus{outline:2px solid var(--gold);outline-offset:8px;border-radius:20px;}
+.tour-focus{outline:2px solid var(--gold-ink);outline-offset:8px;border-radius:20px;}
 .tour{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);width:min(560px,calc(100% - 32px));background:var(--ink);color:#fff;border-radius:16px;padding:18px 20px;box-shadow:0 18px 50px rgba(19,45,40,.28);z-index:60;display:none;}
 .tour.show{display:block;}
 .tour .meta{display:flex;justify-content:space-between;font-size:12px;color:var(--gold-soft);margin-bottom:8px;}

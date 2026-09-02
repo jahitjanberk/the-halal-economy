@@ -2,6 +2,7 @@
  * OIC halal-related imports, actuals through 2024 and the 2028 forecast.
  */
 import { showTip, hideTip, isNarrow } from '../core/dom.js';
+import { MUTED } from '../core/palette.js';
 import { oicImports } from '../data/series.js';
 
 export function drawImportsChart(){
@@ -18,6 +19,6 @@ export function drawImportsChart(){
   svg.append('path').attr('d',line(oicImports.slice(-2))).attr('fill','none').attr('stroke','#1F7A63').attr('stroke-width',2.5).attr('stroke-dasharray','6 5');
   svg.append('g').selectAll('circle').data(oicImports).join('circle').attr('cx',d=>x(d.y)).attr('cy',d=>y(d.v)).attr('r',5).attr('fill',d=>d.proj?'#fff':'#1F7A63').attr('stroke','#1F7A63').attr('stroke-width',2.5).on('mousemove',(e,d)=>showTip(`<b>${d.y}${d.proj?' (forecast)':''}</b><br>$${d.v}B`,e.clientX,e.clientY)).on('mouseleave',hideTip);
   svg.append('g').selectAll('text').data(oicImports).join('text').attr('x',d=>x(d.y)).attr('y',d=>y(d.v)-12).attr('text-anchor','middle').attr('font-size',11.5).attr('font-weight',600).attr('fill','#3C5450').text(d=>'$'+d.v+'B');
-  svg.append('text').attr('x',x(2026)).attr('y',mT+14).attr('text-anchor','middle').attr('fill','#6E837D').attr('font-size',11).text('Forecast ~8% a year');
+  svg.append('text').attr('x',x(2026)).attr('y',mT+14).attr('text-anchor','middle').attr('fill',MUTED).attr('font-size',11).text('Forecast ~8% a year');
   svg.attr('aria-label','OIC halal imports: $359B 2022, $408B 2023, $421.5B 2024, forecast $608B 2028.');
 }

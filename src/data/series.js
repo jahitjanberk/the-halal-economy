@@ -14,3 +14,21 @@ export const finShareCountries = [{name:'Saudi Arabia',v:27},{name:'Iran',v:27},
 /* Trade and pilgrimage. Imports in USD billions, pilgrims in millions. */
 export const oicImports = [{y:2022,v:359},{y:2023,v:407.8},{y:2024,v:421.5,verified:true},{y:2028,v:608.4,proj:true,verified:true}];
 export const hajj = [{y:2012,v:3.16},{y:2019,v:2.49},{y:2020,v:0.01},{y:2021,v:0.06},{y:2022,v:0.93},{y:2023,v:1.85},{y:2024,v:1.83},{y:2025,v:1.67},{y:2026,v:1.71}];
+
+/*
+ * Sukuk issuance, USD billions, from IIFM's own annual report rather than the
+ * SGIE editions the rest of the page leans on. IIFM publishes two headline
+ * series that moved in opposite directions in 2024 — international issuance to
+ * a record, short-term issuance down — which is the reason both are here.
+ *
+ * Only 2023 and 2024 are carried: IIFM's press releases for earlier editions
+ * have gone dead (their news URLs 404), and this page does not assert a figure
+ * whose source a reader cannot open.
+ */
+export const sukukIssuance = [
+  {y:2023,intl:52.7,short:72.7,verified:['intl','short']},
+  {y:2024,intl:65.6,short:59.1,verified:['intl','short']},
+];
+
+/** Context figures for the sukuk card, same IIFM report. */
+export const sukukTotals = {issued2024:205, outstanding2024:902.82};

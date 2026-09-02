@@ -6,14 +6,16 @@
  * styles onto the clone — otherwise the file renders unstyled elsewhere.
  */
 import { el, download, toast } from '../core/dom.js';
+import { MUTED } from '../core/palette.js';
 import { state } from '../core/state.js';
 import { sectors } from '../data/sectors.js';
-import { consumerSpend, islamicFinance, oicImports } from '../data/series.js';
+import { consumerSpend, islamicFinance, oicImports, sukukIssuance } from '../data/series.js';
+import { gapRows } from '../data/gap.js';
 import { countries, byLabel } from '../data/countries.js';
 import { deals } from '../data/markets.js';
 import { cmpRows } from '../data/metrics.js';
 
-const CREDIT = 'Source: DinarStandard SGIE 2025/26 & 2024/25; IFSB 2025; GASTAT. Compiled Sept 2026.';
+const CREDIT = 'Source: DinarStandard SGIE 2025/26 & 2024/25; IFSB 2025; IIFM Sukuk Report 2025; Global Finance/LSEG; Pew; GASTAT. Compiled Sept 2026.';
 
 /** Each key builds {cols, rows} on demand, so tables reflect current state. */
 const tableData = {
@@ -28,6 +30,12 @@ const tableData = {
   }),
   rank: () => ({ cols: ['Rank', 'Country', 'GIEI 2024/25', 'Muslims (M)'], rows: countries.filter(c => c.giei).sort((a, b) => a.rank - b.rank).map(c => [c.rank, c.label, c.giei, c.pop]) }),
   imports: () => ({ cols: ['Year', 'OIC halal-related imports ($B)'], rows: oicImports.map(d => [d.y + (d.proj ? ' (forecast)' : ''), d.v]) }),
+  sukuk: () => ({ cols: ['Year', 'International ($B)', 'Short-term ($B)'], rows: sukukIssuance.map(d => [d.y, d.intl, d.short]) }),
+  gap: () => ({
+    cols: ['Country', 'Muslims (M)', 'Share of world Muslims (%)', 'Share of global assets (%)', 'Assets per Muslim ($)', 'vs world average'],
+    rows: gapRows().map(r => [r.label, r.pop, +r.peopleShare.toFixed(2), r.assetShare, Math.round(r.perMuslim),
+      r.ratio >= 1 ? +r.ratio.toFixed(1) + '×' : '1/' + (1 / r.ratio).toFixed(1)]),
+  }),
   deals: () => ({ cols: ['Edition', 'Scope', 'Item', 'Deals', 'Value ($B)', 'Note'], rows: deals.map(d => [d.ed, d.scope, d.item, d.n ?? '', d.v ?? '', d.note]) }),
   compare: () => {
     const cs = state.cmp.filter(Boolean).map(l => byLabel[l]);
@@ -68,7 +76,7 @@ function svgToString(svgEl, title){
   const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
   t.setAttribute('x', 12); t.setAttribute('y', vb[3] + 24);
   t.setAttribute('font-family', 'Scoutie Sans, Arial, sans-serif');
-  t.setAttribute('font-size', '11'); t.setAttribute('fill', '#6E837D');
+  t.setAttribute('font-size', '11'); t.setAttribute('fill', MUTED);
   t.textContent = `${title} · ${CREDIT}`;
   clone.appendChild(t);
 

@@ -8,6 +8,7 @@ import { JSDOM } from 'jsdom';
 import { readFileSync } from 'fs';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
+import { stubAtlas } from './atlas-stub.mjs';
 
 const ROOT = new URL('..', import.meta.url);
 
@@ -98,6 +99,7 @@ check('Malaysia\'s 2025/26 score is in the data and confirmed', () => {
 
 /* ---- booted behaviour ---- */
 
+stubAtlas();   /* map outlines from a fixture, before main.js fetches them */
 await import(new URL('src/main.js', ROOT).href);
 await new Promise(r => setTimeout(r, 2500));
 

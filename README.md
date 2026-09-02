@@ -89,7 +89,7 @@ a figure was checked against a named source that was actually retrieved, on a
 recorded date. Unchecked is the default — the point of the flag is to surface
 what nobody has looked at.
 
-As of September 2026, **66 of 212 figures are confirmed** (31%).
+As of September 2026, **70 of 226 figures are confirmed** (31%).
 
 ### How it fits together
 

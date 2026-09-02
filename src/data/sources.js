@@ -42,6 +42,10 @@ export const sources = {
     name:'IMF World Economic Outlook, nominal GDP 2024, rounded', date:'2024',
     url:'https://www.imf.org/en/Publications/WEO', reached:'blocked',
   },
+  iifm:{
+    name:'IIFM Sukuk Report 2025 (14th edition), International Islamic Financial Market', date:'November 2025',
+    url:'https://www.iifm.net/public/press-media/news-and-updates/record-breaking-international-sukuk-issuances-hit-us-656-billion/97', reached:'ok',
+  },
   gastat:{
     name:'Saudi General Authority for Statistics (GASTAT)', date:'2012–2026',
     url:'https://www.stats.gov.sa/en/statistics-tabs/-/categories/1051', reached:'ok',

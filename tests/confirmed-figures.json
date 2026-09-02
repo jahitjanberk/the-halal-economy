@@ -262,5 +262,21 @@
   {
     "id": "sectors.travel.v2029",
     "value": 424
+  },
+  {
+    "id": "sukukIssuance.2023.intl",
+    "value": 52.7
+  },
+  {
+    "id": "sukukIssuance.2023.short",
+    "value": 72.7
+  },
+  {
+    "id": "sukukIssuance.2024.intl",
+    "value": 65.6
+  },
+  {
+    "id": "sukukIssuance.2024.short",
+    "value": 59.1
   }
 ]

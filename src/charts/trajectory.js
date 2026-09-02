@@ -3,6 +3,7 @@
  * actual year, dashed into the forecast, with the forecast band shaded.
  */
 import { showTip, hideTip, isNarrow } from '../core/dom.js';
+import { MUTED, EMERALD, INK } from '../core/palette.js';
 import { consumerSpend, islamicFinance } from '../data/series.js';
 
 export function drawTrajectory(){
@@ -14,7 +15,7 @@ export function drawTrajectory(){
   svg.attr('viewBox',`0 0 ${W} ${H}`);
   const x=d3.scaleLinear().domain([2018,2029]).range([mL,W-mR]); const y=d3.scaleLinear().domain([0,10]).range([H-mB,mT]);
   svg.append('rect').attr('x',x(2024)).attr('width',x(2029)-x(2024)).attr('y',mT).attr('height',H-mB-mT).attr('fill','#F1F5F2');
-  svg.append('text').attr('x',x(2026.5)).attr('y',mT+12).attr('text-anchor','middle').attr('fill','#6E837D').attr('font-size',11).text('Forecast');
+  svg.append('text').attr('x',x(2026.5)).attr('y',mT+12).attr('text-anchor','middle').attr('fill',MUTED).attr('font-size',11).text('Forecast');
   svg.append('g').attr('class','grid').selectAll('line').data(y.ticks(5)).join('line').attr('x1',mL).attr('x2',W-mR).attr('y1',d=>y(d)).attr('y2',d=>y(d));
   svg.append('g').attr('class','axis').attr('transform',`translate(0,${H-mB})`).call(d3.axisBottom(x).tickValues(narrow?[2018,2021,2024,2029]:[2018,2021,2022,2023,2024,2029]).tickFormat(d3.format('d')).tickSize(0)).select('.domain').remove();
   svg.append('g').attr('class','axis').attr('transform',`translate(${mL},0)`).call(d3.axisLeft(y).ticks(5).tickFormat(d=>'$'+d+'T').tickSize(0)).select('.domain').remove();
@@ -30,9 +31,9 @@ export function drawTrajectory(){
     svg.append('text').attr('x',narrow?x(2029)-2:x(2029)+10).attr('y',narrow?y(last.v)-11:y(last.v)+4)
       .attr('text-anchor',narrow?'end':'start').attr('fill',color).attr('font-size',12).attr('font-weight',600).text('$'+last.v+'T');
   }
-  series(consumerSpend,'#1F7A63','Consumer spend'); series(islamicFinance,'#B8912F','Islamic finance assets');
+  series(consumerSpend,EMERALD,'Consumer spend'); series(islamicFinance,INK,'Islamic finance assets');
   // annotation
-  const ax=x(2023.5), ay=y(5.46); svg.append('line').attr('x1',ax).attr('x2',ax+40).attr('y1',ay).attr('y2',ay-40).attr('stroke','#6E837D').attr('stroke-width',1);
+  const ax=x(2023.5), ay=y(5.46); svg.append('line').attr('x1',ax).attr('x2',ax+40).attr('y1',ay).attr('y2',ay-40).attr('stroke',MUTED).attr('stroke-width',1);
   svg.append('text').attr('x',narrow?W-4:ax+44).attr('y',ay-44).attr('text-anchor',narrow?'end':'start').attr('font-size',11.5).attr('fill','#3C5450').attr('font-weight',600).text(narrow?'+$1.06T in one year':'+$1.06T in a single year');
   svg.attr('aria-label','Line chart. Consumer spend rose from $2.2T in 2018 to $2.6T in 2024, forecast $3.56T by 2029. Islamic finance assets rose from $3.96T in 2021 to $5.99T in 2024, forecast $9.72T by 2029.');
 }

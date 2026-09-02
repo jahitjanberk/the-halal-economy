@@ -40,6 +40,8 @@ import { drawTrajectory } from './charts/trajectory.js';
 import { drawFinanceCharts } from './charts/finance.js';
 import { drawRankings } from './charts/rankings.js';
 import { drawImportsChart } from './charts/imports.js';
+import { drawGapChart } from './charts/gap.js';
+import { drawSukukChart } from './charts/sukuk.js';
 
 /**
  * Rendered markup asks for cross-feature actions through data attributes
@@ -62,7 +64,7 @@ function initActions(){
  */
 function initResponsiveCharts(){
   const q = matchMedia(NARROW);
-  const redraw = () => { drawSectorBars(); drawGrowthScatter(); drawTrajectory(); drawRankings(); drawImportsChart(); };
+  const redraw = () => { drawSectorBars(); drawGrowthScatter(); drawTrajectory(); drawRankings(); drawImportsChart(); drawGapChart(); drawSukukChart(); };
   if(q.addEventListener) q.addEventListener('change', redraw);
 }
 
@@ -91,6 +93,8 @@ function wire(){
   drawHeatmap();
   drawTrajectory();
   drawFinanceCharts();
+  drawSukukChart();
+  drawGapChart();
   drawRankings();
   drawImportsChart();
 

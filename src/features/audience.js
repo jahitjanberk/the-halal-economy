@@ -15,7 +15,7 @@ export function applyAudience(){
   document.getElementById('takeTitle').textContent = t.title;
   document.getElementById('takeNote').textContent = t.note;
   document.getElementById('takeGrid').innerHTML = t.cards
-    .map(c => `<div class="take"><div class="tag">${c.tag}</div><h4>${c.h}</h4><p>${c.p}</p></div>`).join('');
+    .map(c => `<div class="take"><div class="tag">${c.tag}</div><h3>${c.h}</h3><p>${c.p}</p></div>`).join('');
 
   document.querySelectorAll('.forwho').forEach(f => {
     const fors = f.dataset.for.split(' ');
