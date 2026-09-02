@@ -18,7 +18,7 @@ import { datasets, statusFor, VERIFIED_ON } from '../src/data/verification.js';
 import { countries } from '../src/data/countries.js';
 import { sectors } from '../src/data/sectors.js';
 
-const BASE = 'https://jahitjanberk.github.io/halal-economy/';
+const BASE = 'https://jahitjanberk.github.io/the-halal-economy/';
 const START = '<!-- BEGIN generated dataset metadata -->';
 const END = '<!-- END generated dataset metadata -->';
 
@@ -54,7 +54,7 @@ const dataset = {
     `Compiled from published industry reporting. Every figure records its source and whether it has been ` +
     `checked against that source — ${confirmed} of ${total} were verified as of ${VERIFIED_ON}.`,
   url: BASE,
-  sameAs: 'https://github.com/jahitjanberk/halal-economy',
+  sameAs: 'https://github.com/jahitjanberk/the-halal-economy',
   isAccessibleForFree: true,
   /*
    * CC BY covers the compilation and the verification metadata. The underlying
