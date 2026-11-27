@@ -135,7 +135,9 @@ check('the static data files are current', () => {
     let onDisk;
     try { onDisk = readFileSync(new URL('assets/data/' + name, ROOT), 'utf8'); }
     catch { stale.push(name + ' (missing)'); continue; }
-    if(onDisk !== build()) stale.push(name);
+    /* Line endings aren't content: a Windows checkout may hold CRLF. */
+    const lf = t => t.replace(/\r(?=\n|$)/g, '');
+    if(lf(onDisk) !== lf(build())) stale.push(name);
   }
   return stale.length === 0 || 'run `npm run data` — stale: ' + stale.join(', ');
 });
@@ -159,7 +161,8 @@ check('the generated metadata is up to date with the data', () => {
   const before = readFileSync(new URL('index.html', ROOT), 'utf8');
   execSync('node scripts/build-metadata.mjs', { cwd: fileURLToPath(ROOT), stdio: 'pipe' });
   const after = readFileSync(new URL('index.html', ROOT), 'utf8');
-  return before === after || 'index.html changed when regenerated — run `npm run metadata`';
+  const lf = t => t.replace(/\r(?=\n|$)/g, '');
+  return lf(before) === lf(after) || 'index.html changed when regenerated — run `npm run metadata`';
 });
 
 /* ---- licensing ---- */

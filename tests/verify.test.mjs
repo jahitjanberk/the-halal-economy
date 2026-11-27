@@ -194,6 +194,13 @@ refused = '';
 try { E.markVerified(countriesSrc, { array: 'countries', ident: "label:'Indonesia'", field: 'fin', check: 'x' }); } catch(e){ refused = e.message; }
 check('an already-confirmed figure is never relabelled', /already confirmed/.test(refused));
 
+const verSrc = readFileSync(new URL('src/data/verification.js', ROOT), 'utf8').replace(/\r?\n/g, '\r\n');
+const withCheck = E.addCheck(verSrc, 'testsrc', { label: 'Test', url: 'https://example.org', on: '2026-11-27' });
+check('adding a source keeps a Windows (CRLF) file\'s line endings', !/[^\r]\n/.test(withCheck) && /testsrc: \{\r\n/.test(withCheck));
+const crlfCountries = countriesSrc.replace(/\r?\n/g, '\r\n');
+const crlfAfter = E.markVerified(crlfCountries, { array: 'countries', ident: "label:'Bahrain'", field: 'pop', check: 'x' });
+check('marking a figure works on a CRLF file and keeps its endings', !/[^\r]\n/.test(crlfAfter) && /label:'Bahrain',verified:\[[^\]]*'pop'\]/.test(crlfAfter));
+
 /* ------------------------------------------------- apply, end to end --- */
 
 /* On a scratch copy of the repo, so the real data files are never touched. */
@@ -251,7 +258,7 @@ try {
   check('apply updates the share-card alt text', new RegExp(`with ${pins.length} of \\d+ figures checked`).test(html));
   check('apply regenerates the structured data', new RegExp(`${pins.length} of \\d+ were verified as of November 2026`).test(html));
   const label = datasets[tds].label.toLowerCase();
-  const row = readme.split('\n').find(l => l.toLowerCase().startsWith('| ' + label + ' |')) || '';
+  const row = readme.split(/\r?\n/).find(l => l.toLowerCase().startsWith('| ' + label + ' |')) || '';
   check('apply updates the README summary and that dataset\'s row',
     readme.includes(`**${pins.length} of `) && row.endsWith(`| ${rowBefore.confirmed + 1} / ${rowBefore.total} |`), row);
 

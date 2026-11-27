@@ -87,14 +87,15 @@ function insertAfterIdent(obj, ident, kv){
  * src/data/verification.js. New entries go just before `derived`.
  */
 export function addCheck(src, key, { label, url, on }){
-  const block = new RegExp(`\\n  ${key}: \\{[\\s\\S]*?\\n  \\},`);
+  const block = new RegExp(`\\r?\\n  ${key}: \\{[\\s\\S]*?\\r?\\n  \\},`);
   if(block.test(src)){
     return src.replace(block, m => m.replace(/on: '[^']*'/, `on: '${on}'`));
   }
-  const anchor = '\n  derived: {';
+  const nl = src.includes('\r\n') ? '\r\n' : '\n';
+  const anchor = `${nl}  derived: {`;
   if(!src.includes(anchor)) throw new Error('Cannot find where to add the source in `checks`.');
   const q = s => "'" + String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "'";
-  const entry = `\n  ${key}: {\n    label: ${q(label)},\n    url: ${q(url)},\n    on: '${on}',\n  },`;
+  const entry = [``, `  ${key}: {`, `    label: ${q(label)},`, `    url: ${q(url)},`, `    on: '${on}',`, `  },`].join(nl);
   return src.replace(anchor, entry + anchor);
 }
 

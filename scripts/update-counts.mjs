@@ -46,9 +46,10 @@ readme = replaceOrFail(readme,
   /As of [A-Z][a-z]+ \d{4}, \*\*\d+ of \d+ figures are confirmed\*\* \(\d+%\)/,
   `As of ${asOf}, **${confirmed} of ${total} figures are confirmed** (${pct}%)`,
   'the README summary');
-readme = readme.replace(/^\| ([^|]+?) \| \d+ \/ \d+ \|$/gm, (line, label) => {
+/* \r? so a Windows (CRLF) checkout's table rows still match, and keep their ending. */
+readme = readme.replace(/^\| ([^|]+?) \| \d+ \/ \d+ \|(\r?)$/gm, (line, label, cr) => {
   const r = rows[label.trim().toLowerCase()];
-  return r ? `| ${label} | ${r.confirmed} / ${r.total} |` : line;
+  return r ? `| ${label} | ${r.confirmed} / ${r.total} |${cr}` : line;
 });
 writeFileSync(readmeFile, readme);
 
