@@ -142,6 +142,9 @@ const ask = q => ({ messages: [{ role: 'user', content: q }], view: { aud: 'inve
   });
   check('the handler only takes POST', (await handler(req('GET'))).status === 405);
   check('the handler refuses other sites', (await handler(req('POST', 'https://evil.example', '{}'))).status === 403);
+  const preview = new Request('https://deploy-preview-1--halaleconomy.netlify.app/api/ask', {
+    method: 'POST', headers: { 'Content-Type': 'application/json', origin: 'https://deploy-preview-1--halaleconomy.netlify.app' }, body: '{}' });
+  check('the handler accepts its own site, so deploy previews work', (await handler(preview)).status !== 403);
   const noKey = await handler(req('POST', 'http://localhost:8888', '{}'));
   check('a missing API key gives a clear error, not a crash', noKey.status === 500 && /GROQ_API_KEY/.test((await noKey.json()).error));
   if(saved !== undefined) process.env.GROQ_API_KEY = saved;

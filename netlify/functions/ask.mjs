@@ -7,7 +7,8 @@
  * Environment:
  *   GROQ_API_KEY     required
  *   GROQ_MODEL       optional, defaults below
- *   ALLOWED_ORIGINS  optional, comma-separated; localhost is always allowed
+ *   ALLOWED_ORIGINS  optional, comma-separated; the function's own site and
+ *                    localhost are always allowed
  */
 import { answer, groqModel } from '../lib/analyst.mjs';
 
@@ -21,8 +22,11 @@ const json = (status, body) => new Response(JSON.stringify(body), {
 
 const env = k => (globalThis.Netlify && Netlify.env ? Netlify.env.get(k) : undefined) ?? process.env[k];
 
-function originAllowed(origin){
+function originAllowed(origin, own){
   if(!origin) return true; // same-origin requests from some browsers omit it
+  /* The site the function is served from, whatever its address: the live
+     domain, a deploy preview or a branch deploy. */
+  if(origin === own) return true;
   if(/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return true;
   const list = (env('ALLOWED_ORIGINS') || '').split(',').map(s => s.trim()).filter(Boolean);
   return [...DEFAULT_ORIGINS, ...list].includes(origin);
@@ -30,7 +34,7 @@ function originAllowed(origin){
 
 export default async function handler(req){
   if(req.method !== 'POST') return json(405, { error: 'Use POST.' });
-  if(!originAllowed(req.headers.get('origin'))) return json(403, { error: 'Not allowed from this site.' });
+  if(!originAllowed(req.headers.get('origin'), new URL(req.url).origin)) return json(403, { error: 'Not allowed from this site.' });
 
   const apiKey = env('GROQ_API_KEY');
   if(!apiKey) return json(500, { error: 'Mizan is not configured yet (GROQ_API_KEY is missing).' });
