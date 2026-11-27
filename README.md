@@ -223,6 +223,8 @@ numbers in it. Everything else happens in code and is checked:
 - each number it names must appear word for word **in that passage**;
 - the value is **computed in code** from those numbers (directly, as a sum, or
   as a percentage of a total), and only then compared with the dashboard's;
+- it **matches only if it rounds to the dashboard's figure** at the decimals the
+  page shows: 1,673,230 matches 1.67, but 239.1 million does not match 236;
 - a number with misplaced separators is refused as garbled. GASTAT's own PDF
   extracts "1,673,230" as "230,673,1" because of its right-to-left layout.
 
@@ -247,8 +249,7 @@ years are. Tooltips now date each confirmation from its own source's `on` date.
 
 ### Adding a dataset
 
-Sources live in `scripts/verify/sources.mjs`: the unit, how close a match must
-be (the page rounds), the words that locate each record in a source, a hint on
+Sources live in `scripts/verify/sources.mjs`: the unit, the words that locate each record in a source, a hint on
 how the source lays figures out, and the sources to try in order. The hint must
 never contain the dashboard's value. Datasets whose records live somewhere
 `scripts/verify/edit.mjs` can't edit automatically are listed by `verify:apply`

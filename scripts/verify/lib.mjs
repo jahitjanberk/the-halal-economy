@@ -73,11 +73,14 @@ const escapeRe = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 export function excerpts(text, terms, { radius = 300, max = 6 } = {}){
   const spans = [];
   for(const term of [...new Set(terms.filter(Boolean))]){
-    const re = new RegExp(`(^|[^\\p{L}\\d])${escapeRe(term)}(?=$|[^\\p{L}\\d])`, 'giu');
+    /* PDFs break long names across lines ("United Arab\nEmirates"), so any run of
+       whitespace between the words counts as one space. */
+    const pattern = term.trim().split(/\s+/).map(escapeRe).join('\\s+');
+    const re = new RegExp(`(^|[^\\p{L}\\d])${pattern}(?=$|[^\\p{L}\\d])`, 'giu');
     let m;
     while((m = re.exec(text))){
       const at = m.index + m[1].length;
-      spans.push([Math.max(0, at - radius), Math.min(text.length, at + term.length + radius)]);
+      spans.push([Math.max(0, at - radius), Math.min(text.length, at + m[0].length - m[1].length + radius)]);
     }
   }
   spans.sort((a, b) => a[0] - b[0]);
@@ -154,13 +157,33 @@ ${parts.map((p, i) => `--- excerpt ${i + 1} ---\n${p}`).join('\n')}`,
 }
 
 /** Groq's chat endpoint in JSON mode. */
-export function groqJson({ apiKey, model = 'openai/gpt-oss-120b', fetchImpl = fetch }){
+/**
+ * How long Groq asks us to wait after a 429, in ms: its retry-after header, or
+ * the "try again in 7.5s" in the message. Free accounts are capped per minute,
+ * so a run over 39 countries will hit this; waiting is the fix, not failing.
+ */
+export function retryDelay(res, body){
+  const header = Number(res.headers.get('retry-after'));
+  if(header > 0) return Math.ceil(header * 1000);
+  const m = /try again in (?:(\d+)m)?([\d.]+)(ms|s)/i.exec(body || '');
+  if(m) return Math.ceil((+(m[1] || 0) * 60 + +m[2] / (m[3] === 'ms' ? 1000 : 1)) * 1000) + 250;
+  return 10000;
+}
+
+export function groqJson({ apiKey, model = 'openai/gpt-oss-120b', fetchImpl = fetch, retries = 6, sleep = ms => new Promise(r => setTimeout(r, ms)), onWait = () => {} }){
   return async messages => {
-    const res = await fetchImpl('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
-      body: JSON.stringify({ model, messages, temperature: 0, max_tokens: 700, response_format: { type: 'json_object' } }),
-    });
+    let res;
+    for(let attempt = 0; ; attempt++){
+      res = await fetchImpl('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
+        body: JSON.stringify({ model, messages, temperature: 0, max_tokens: 500, response_format: { type: 'json_object' } }),
+      });
+      if(res.status !== 429 || attempt >= retries) break;
+      const wait = Math.min(retryDelay(res, await res.text()), 65000);
+      onWait(wait);
+      await sleep(wait);
+    }
     if(!res.ok) throw new Error(`Groq returned ${res.status}: ${(await res.text()).slice(0, 200)}`);
     const data = await res.json();
     return JSON.parse(data.choices[0].message.content);
@@ -170,6 +193,17 @@ export function groqJson({ apiKey, model = 'openai/gpt-oss-120b', fetchImpl = fe
 /* --------------------------------------------------------------- judging --- */
 
 const UNIT_SIZE = { 'million pilgrims': 1e6, 'million Muslims': 1e6 };
+
+/**
+ * Does the source's value, rounded the way the dashboard writes its figure,
+ * give the dashboard's figure? 1,673,230 rounds to 1.67 (two decimals); 239.1
+ * million does not round to 236. A percentage allowance can't express this:
+ * on big numbers it is looser than any rounding could explain.
+ */
+export function roundsTo(sourceValue, shown){
+  const dp = (String(shown).split('.')[1] || '').length;
+  return Math.abs(sourceValue - shown) <= 0.5 * Math.pow(10, -dp) + 1e-9;
+}
 
 /**
  * Turn the model's pointer into a finding, checking each claim it makes.
@@ -191,6 +225,9 @@ export function judge({ answer, pageText, figure, cfg }){
   for(const raw of inputs){
     if(!containsVerbatim(quote, raw)){
       return { status: 'unsupported', reason: `"${raw}" is not in the quoted passage`, quote };
+    }
+    if(/^\s*[<>~≈]/.test(raw)){
+      return { status: 'unsupported', reason: `the source only gives a bound ("${raw}"), not a value, so this figure can't be confirmed from it`, quote };
     }
     const p = parseNumber(raw);
     if(!p) return { status: 'unsupported', reason: `"${raw}" does not read as a well-formed number; the source text may be garbled`, quote };
@@ -241,10 +278,11 @@ export function judge({ answer, pageText, figure, cfg }){
   const sourceValue = raw / size;
   const diff = figure.value === 0 ? Math.abs(sourceValue) : Math.abs(sourceValue - figure.value) / Math.abs(figure.value);
   const round = v => Math.round(v * 1000) / 1000;
+  const ok = roundsTo(sourceValue, figure.value);
 
   return {
-    status: diff <= cfg.tolerance ? 'match' : 'mismatch',
-    reason: diff <= cfg.tolerance
+    status: ok ? 'match' : 'mismatch',
+    reason: ok
       ? `the source gives ${round(sourceValue)} ${cfg.unit}; the dashboard has ${figure.value}`
       : `the source gives ${round(sourceValue)} ${cfg.unit}, but the dashboard has ${figure.value} (${(diff * 100).toFixed(1)}% apart)`,
     quote,

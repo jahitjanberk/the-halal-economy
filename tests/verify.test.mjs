@@ -39,6 +39,8 @@ const blocked = await L.fetchSource('https://example.org/', async () => new Resp
 check('a site that blocks automated requests is reported, not retried around', !blocked.ok && /blocks automated/.test(blocked.reason));
 
 const parts = L.excerpts('a '.repeat(400) + 'Indonesia 2020 273,520,000 ' + 'b '.repeat(400) + 'Indonesian food', ['Indonesia'], { radius: 40 });
+check('a name split across lines in a PDF is still found',
+  L.excerpts('Tanzania 2020 59,730,000\nUnited Arab\nEmirates 2020 9,290,000 12.6 76.9', ['United Arab Emirates']).some(e => e.includes('9,290,000')));
 check('excerpts are cut around whole-word mentions only', parts.length === 1 && parts[0].includes('273,520,000'));
 
 /* ------------------------------------------------------------- numbers --- */
@@ -75,6 +77,9 @@ check('a model\'s own value is ignored: the number is read from the quote',
   j({ found: true, quote: 'in 2025 reached 1,673,230 pilgrims', method: 'direct', inputs: ['1,673,230'], value: 999 }).sourceValue === 1.673);
 check('a different figure is a mismatch, with both values',
   L.judge({ answer: { found: true, quote: 'in 2025 reached 1,673,230 pilgrims', method: 'direct', inputs: ['1,673,230'] }, pageText: page, figure: { value: 1.83 }, cfg: hajjCfg }).status === 'mismatch');
+check('a bound like "<0.1" is refused as a bound, with that reason',
+  /only gives a bound/.test(L.judge({ answer: { found: true, quote: 'Brazil 2020 213,200,000 88.9 <0.1', method: 'percent_of', inputs: ['213,200,000', '<0.1'] },
+    pageText: 'Brazil 2020 213,200,000 88.9 <0.1 10.3', figure: { value: 0.2 }, cfg: SOURCES.countryPop }).reason));
 check('"not found" passes through with its note', j({ found: false, note: 'only 2024 is given' }).status === 'not_found');
 
 const series = 'Number of Pilgrims Year Number (mln) 2011 2.93 2012 3.16 2013 1.98';
@@ -87,7 +92,32 @@ const popCfg = SOURCES.countryPop;
 const comp = L.judge({ answer: { found: true, quote: 'Indonesia 2020 273,520,000 10.5 86.7', method: 'percent_of', inputs: ['273,520,000', '86.7'] },
   pageText: pdfPage.text, figure: { value: 236 }, cfg: popCfg });
 check('a computed figure is worked out in code and shows its working',
-  comp.status === 'match' && comp.computed && comp.sourceValue === 237.142 && /273,520,000 × 86.7%/.test(comp.working));
+  comp.computed && comp.sourceValue === 237.142 && /273,520,000 × 86.7%/.test(comp.working));
+check('a figure matches only if the source rounds to it', comp.status === 'mismatch'
+  && L.judge({ answer: { found: true, quote: 'Indonesia 2020 273,520,000 10.5 86.7', method: 'percent_of', inputs: ['273,520,000', '86.7'] },
+    pageText: pdfPage.text, figure: { value: 237 }, cfg: popCfg }).status === 'match');
+check('rounding follows the decimals the dashboard shows',
+  L.roundsTo(1.673230, 1.67) && L.roundsTo(1.707301, 1.71) && !L.roundsTo(239.085, 236) && L.roundsTo(1.0952, 1.1) && !L.roundsTo(1.0952, 1.2) && L.roundsTo(21.723, 22) && !L.roundsTo(21.723, 21));
+
+/* -------------------------------------------------------- rate limits --- */
+
+{
+  let calls = 0;
+  const waits = [];
+  const limited = async () => {
+    calls++;
+    if(calls < 3) return new Response('{"error":{"message":"Rate limit reached ... Please try again in 7.5s."}}', { status: 429 });
+    return new Response(JSON.stringify({ choices: [{ message: { content: '{"found":false}' } }] }), { status: 200 });
+  };
+  const ask = L.groqJson({ apiKey: 'x', fetchImpl: limited, sleep: async ms => { waits.push(ms); } });
+  const out = await ask([]);
+  check('a rate-limited call waits as Groq asks and tries again', out.found === false && calls === 3 && waits.every(w => w >= 7500 && w < 9000));
+  const always = async () => new Response('{"error":{"message":"try again in 1s"}}', { status: 429 });
+  let failed = '';
+  try { await L.groqJson({ apiKey: 'x', fetchImpl: always, retries: 2, sleep: async () => {} })([]); } catch(e){ failed = e.message; }
+  check('it gives up after a few retries and says why', /429/.test(failed));
+  check('Groq\'s retry-after header wins when present', L.retryDelay(new Response('', { status: 429, headers: { 'retry-after': '3' } }), 'try again in 9s') === 3000);
+}
 
 /* ------------------------------------------------------------------ run --- */
 
