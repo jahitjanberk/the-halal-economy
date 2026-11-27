@@ -4,3 +4,9 @@ npm-debug.log*
 Thumbs.db
 .vscode/
 .idea/
+
+# Local secrets and Netlify CLI state
+.env
+.env.*
+!.env.example
+.netlify/

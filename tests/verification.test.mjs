@@ -285,7 +285,9 @@ check('a confirmed tooltip names the source and the date', () => {
 });
 
 check('an unconfirmed tooltip says to check before citing', () => {
-  const line = verificationLine(['hajj']);
+  /* Any dataset nobody has checked yet: a fixed one would break the day it gets checked. */
+  const unchecked = Object.keys(datasets).find(k => { const s = statusFor([k]); return s.total && !s.confirmed; });
+  const line = verificationLine([unchecked]);
   return line.level === 'no' && line.text === 'Unconfirmed — check before citing.';
 });
 

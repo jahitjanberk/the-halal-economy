@@ -11,7 +11,7 @@
  * a source that stops being cited shows up as unused instead of lingering.
  */
 import { sources, kinds } from '../data/sources.js';
-import { datasets, statusFor, VERIFIED_ON } from '../data/verification.js';
+import { datasets, statusFor, checkedOn } from '../data/verification.js';
 import { storyStats } from '../content/story-stats.js';
 
 /**
@@ -53,11 +53,11 @@ function listSentence(items){
 
 function verificationFor(keys){
   if(!keys.length) return null;
-  const { confirmed, total } = statusFor(keys);
+  const { confirmed, total, sources } = statusFor(keys);
   if(!total) return null;
-  if(confirmed === total) return { level: 'ok', text: `All ${total} figures checked against this source, ${VERIFIED_ON}.` };
+  if(confirmed === total) return { level: 'ok', text: `All ${total} figures checked against this source, ${checkedOn(sources)}.` };
   if(confirmed === 0) return { level: 'no', text: `None of the ${total} figures drawn from this source have been checked yet.` };
-  return { level: 'part', text: `${confirmed} of ${total} figures checked against this source, ${VERIFIED_ON}.` };
+  return { level: 'part', text: `${confirmed} of ${total} figures checked against this source, ${checkedOn(sources)}.` };
 }
 
 export function renderReferences(){

@@ -89,7 +89,7 @@ a figure was checked against a named source that was actually retrieved, on a
 recorded date. Unchecked is the default — the point of the flag is to surface
 what nobody has looked at.
 
-As of September 2026, **70 of 226 figures are confirmed** (31%).
+As of November 2026, **72 of 226 figures are confirmed** (32%).
 
 ### How it fits together
 
@@ -140,13 +140,121 @@ only thing stopping an edited figure from carrying an old confirmation forward.
 | Investment deals | 2 / 15 |
 | GIEI scores and ranks | 2 / 24 |
 | Islamic finance composition | 0 / 3 |
-| Hajj pilgrim counts | 0 / 9 |
+| Hajj pilgrim counts | 2 / 9 |
 | Muslim population by country | 0 / 39 |
 | Halal imports by country | 0 / 1 |
 | Certifier directory | 0 / 15 |
 
 The GIEI *scores* — as opposed to the rankings, which are confirmed — sit behind
 Salaam Gateway's paywall, which is why the rank table shows 2 / 24.
+
+## Mizan, the AI analyst
+
+Mizan (Arabic for balance, or a scale) is an AI agent in a chat panel, opened
+from the floating button or the nav. It answers questions from the figures on
+this page and nothing else. It runs as a Netlify Function at `/api/ask`, calling
+Groq with four tools:
+
+| Tool | What it does |
+|---|---|
+| `find_figures` | looks figures up by dataset, country or words in the label |
+| `compare_countries` | every country-level figure for one to three countries |
+| `get_source` | the publisher a figure is cited to, and what it was checked against |
+| `set_view` | moves the dashboard: map layer, pinned country, comparison, audience, section |
+
+The tools read `src/data/` directly, so the analyst can never quote a figure the
+page doesn't hold, and every figure comes with its verification status.
+
+**The citation guard.** The model cites each figure as `[[figure.id]]`. Before a
+reply leaves the function, any cited id that no tool returned *during that
+request* is stripped — including real ids the model remembers from an earlier
+turn. The panel turns each surviving citation into the same `Confirmed` /
+`Unconfirmed` badge the charts use, and lists the figures under the answer.
+
+View changes are applied in `main.js` through the functions the page's own
+controls call, so an answer that compares two countries leaves a shareable URL
+like any other view.
+
+### Running it locally
+
+`npm start` serves static files only, so the panel will say the analyst is
+missing. To run the function too:
+
+```bash
+npm install -g netlify-cli
+cp .env.example .env      # then paste your key into .env
+netlify dev               # http://localhost:8888
+```
+
+`.env` is git-ignored. In production, set `GROQ_API_KEY` under Site configuration →
+Environment variables in Netlify. `GROQ_MODEL` defaults to `openai/gpt-oss-120b`.
+
+### Where it lives
+
+```
+netlify/functions/ask.mjs     the HTTP handler: origin check, rate limit, errors
+netlify/lib/analyst.mjs       the tool loop, system prompt and citation guard
+netlify/lib/analyst-tools.mjs the four tools, over src/data/
+src/features/ask.js           the panel
+tests/ask.test.mjs            tools, guard, handler and panel, with a scripted model
+```
+
+## Fact-check agent
+
+`scripts/verify/` is an agent that works through unconfirmed figures, checks
+each against a source, and proposes confirmations for a person to approve. It
+never changes the site on its own.
+
+```bash
+npm run verify -- hajj                         # or countryPop; add --only 2025,2026 or --limit 5
+npm run verify:review                          # http://localhost:5180 — approve or reject each finding
+npm run verify:apply                           # apply what you approved, then: git diff src/data && npm test
+```
+
+It needs `GROQ_API_KEY` in `.env`, the same key Mizan uses.
+
+### What the model is and isn't trusted with
+
+The model only *points*: it names the passage that states the figure and the
+numbers in it. Everything else happens in code and is checked:
+
+- the model is **never shown the dashboard's value**, so it can't simply agree;
+- the quoted passage must appear **word for word** in the page that was fetched;
+- each number it names must appear word for word **in that passage**;
+- the value is **computed in code** from those numbers (directly, as a sum, or
+  as a percentage of a total), and only then compared with the dashboard's;
+- a number with misplaced separators is refused as garbled. GASTAT's own PDF
+  extracts "1,673,230" as "230,673,1" because of its right-to-left layout.
+
+Findings come out as **match**, **mismatch**, **unsupported** (the model's
+pointer didn't check out), **not found** or **couldn't reach**. Only a match can
+be approved. A mismatch means the figure on the page needs a person to look at
+it and correct it in `src/data/` before it is checked again.
+
+### What applying does
+
+For each approved figure it adds the field to that record's `verified` list
+and records which source it was checked against in `checkedAgainst`, adds the
+source to `checks` in `verification.js` with the date it was retrieved, re-pins
+the confirmed figures and rebuilds `assets/data/`. It never edits a value, it
+refuses to relabel a figure that is already confirmed, and it re-reads the data
+afterwards to make sure every approved figure came out confirmed against the
+right source.
+
+`checkedAgainst` is per field — `checkedAgainst: { pop: 'pew2025appB' }` — because
+figures in one dataset can be confirmed against different releases, as Hajj
+years are. Tooltips now date each confirmation from its own source's `on` date.
+
+### Adding a dataset
+
+Sources live in `scripts/verify/sources.mjs`: the unit, how close a match must
+be (the page rounds), the words that locate each record in a source, a hint on
+how the source lays figures out, and the sources to try in order. The hint must
+never contain the dashboard's value. Datasets whose records live somewhere
+`scripts/verify/edit.mjs` can't edit automatically are listed by `verify:apply`
+for applying by hand.
+
+Run files in `verify/runs/` are working files and are git-ignored.
 
 ## Layout
 
@@ -160,9 +268,10 @@ src/
   content/               prose: narrative, story scripts and their derived stats
   charts/                one module per chart, each exporting a draw function
   features/              interactive behaviour, one module per feature
-tests/                   seven suites: smoke, interaction, verification, navigation,
-                         story, entry-helper and discoverability
-scripts/                 pin-figures, build-data, build-images, build-metadata
+tests/                   nine suites: smoke, interaction, verification, navigation,
+                         story, entry-helper, discoverability, ask and verify
+scripts/                 pin-figures, build-data, build-images, build-metadata, and
+                         verify/ (the fact-check agent)
 archive/                 the original single-file build, superseded
 ```
 

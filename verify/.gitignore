@@ -1,0 +1,3 @@
+# Run files hold the agent's findings and your decisions until applied.
+# They are working files, not part of the site.
+runs/

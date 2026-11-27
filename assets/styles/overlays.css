@@ -11,3 +11,65 @@
 .lang-note{font-size:var(--t-xs);color:var(--muted);text-align:center;padding:8px 0 0;display:none;}
 html[lang=ar] .lang-note,html[lang=id] .lang-note,html[lang=ms] .lang-note{display:block;}
 
+
+/* Mizan, the AI analyst. The floating button sits above the back-to-top button, which owns the corner. */
+.ask-launch{display:inline-flex;align-items:center;gap:11px;position:fixed;right:20px;bottom:70px;z-index:61;background:var(--emerald);color:#fff;border:none;border-radius:100px;padding:9px 20px 9px 9px;cursor:pointer;text-align:left;box-shadow:0 10px 28px rgba(19,45,40,.28),0 0 0 4px rgba(31,122,99,.14);transition:background .15s,transform .15s;}
+.ask-launch:hover{background:var(--ink);transform:translateY(-1px);}
+.ask-launch[aria-expanded=true]{background:var(--ink);}
+.ask-launch-icon{display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.18);flex:none;}
+.ask-launch-text{display:flex;flex-direction:column;line-height:1.2;}
+.ask-launch-text b{font-size:var(--t-md);font-weight:700;display:inline-flex;align-items:center;gap:6px;}
+.ask-launch-text small{font-size:11.5px;opacity:.85;}
+/* One gentle pulse on arrival so the eye finds it; never repeats, never for reduced motion. */
+@keyframes askPulse{0%{box-shadow:0 10px 28px rgba(19,45,40,.28),0 0 0 4px rgba(31,122,99,.14);}50%{box-shadow:0 10px 28px rgba(19,45,40,.28),0 0 0 14px rgba(31,122,99,0);}100%{box-shadow:0 10px 28px rgba(19,45,40,.28),0 0 0 4px rgba(31,122,99,.14);}}
+@media (prefers-reduced-motion:no-preference){.ask-launch{animation:askPulse 1.6s ease-out 1.2s 2;}}
+/* The AI tag: gold on emerald, so "this is an agent" reads before the label does. */
+.ai-tag{display:inline-block;background:var(--gold-soft);color:var(--ink);border-radius:100px;padding:1px 7px;font-family:var(--sans);font-size:10.5px;font-weight:700;letter-spacing:.04em;line-height:1.5;vertical-align:middle;}
+.askbtn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--emerald);background:var(--emerald);color:#fff;border-radius:100px;padding:6px 13px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;}
+.askbtn:hover,.askbtn[aria-expanded=true]{background:var(--ink);border-color:var(--ink);}
+.ask-panel{position:fixed;right:20px;bottom:130px;z-index:75;width:min(400px,calc(100vw - 40px));max-height:min(620px,calc(100vh - 160px));display:flex;flex-direction:column;background:#fff;border:1px solid var(--hair);border-radius:16px;box-shadow:0 18px 50px rgba(19,45,40,.22);overflow:hidden;}
+.ask-head{display:flex;align-items:center;gap:10px;padding:14px 16px 8px;}
+.ask-avatar{display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:var(--emerald);color:#fff;flex:none;}
+.ask-id{flex:1;min-width:0;}
+.ask-head h2{font-family:var(--serif);font-weight:500;font-size:var(--t-xl);margin:0;display:flex;align-items:center;gap:8px;}
+.ask-head h2 .ai-tag{font-size:10px;}
+.ask-status{margin:2px 0 0;font-size:var(--t-xs);color:var(--muted);display:flex;align-items:center;gap:6px;}
+.ask-status i{width:7px;height:7px;border-radius:50%;background:var(--emerald);flex:none;}
+.ask-status.busy i{background:var(--gold);}
+@media (prefers-reduced-motion:no-preference){.ask-status.busy i{animation:askBlink 1s ease-in-out infinite;}}
+@keyframes askBlink{50%{opacity:.25;}}
+.ask-note{margin:0;padding:0 16px 10px;font-size:var(--t-xs);color:var(--muted);line-height:1.45;border-bottom:1px solid var(--hair);}
+.ask-log{flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:10px;min-height:60px;}
+.ask-msg{font-size:var(--t-sm);line-height:1.55;color:var(--ink-2);}
+.ask-msg p{margin:0;}
+.ask-msg p + p{margin-top:8px;}
+.ask-msg.user{align-self:flex-end;max-width:85%;background:var(--panel);color:var(--ink);padding:8px 12px;border-radius:12px 12px 2px 12px;}
+.ask-msg.bot{align-self:flex-start;max-width:100%;}
+.ask-who{display:block;font-size:11px;font-weight:700;color:var(--emerald);letter-spacing:.02em;margin-bottom:2px;}
+.ask-msg.pending{color:var(--muted);font-style:italic;}
+.ask-msg.error{color:var(--warn);}
+.ask-cite{cursor:help;margin-left:4px;}
+.ask-bare{margin-top:8px !important;padding:6px 10px;background:var(--warn-pale);color:var(--warn);border-radius:8px;font-size:var(--t-xs);}
+.ask-figs{margin-top:8px;font-size:var(--t-xs);}
+.ask-figs summary{cursor:pointer;color:var(--muted);font-weight:600;}
+.ask-figs ul{list-style:none;padding:0;margin:6px 0 0;display:flex;flex-direction:column;gap:7px;}
+.ask-figs li{display:grid;grid-template-columns:auto 1fr;gap:2px 6px;align-items:baseline;}
+.ask-figs li .vflag{margin-left:0;grid-row:span 3;align-self:start;}
+.ask-fl{color:var(--ink);font-weight:600;}
+.ask-fv,.ask-fline{color:var(--muted);}
+.ask-suggest{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 10px;}
+.ask-suggest .chip{font-size:var(--t-xs);}
+.ask-form{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--hair);background:var(--paper);}
+.ask-form textarea{flex:1;resize:none;font:inherit;font-size:var(--t-sm);border:1px solid var(--hair);border-radius:10px;padding:8px 10px;color:var(--ink);background:#fff;}
+.ask-form textarea:focus{outline:2px solid var(--emerald);outline-offset:1px;}
+.ask-form .btn{align-self:flex-end;}
+.ask-form .btn:disabled{opacity:.5;cursor:wait;}
+@media (max-width:600px){
+  .ask-panel{right:8px;left:8px;bottom:8px;width:auto;max-height:calc(100vh - 80px);}
+  .ask-launch{bottom:68px;right:14px;padding-right:16px;}
+  .ask-launch-text small{display:none;}
+}
+/* The nav button joins the floating one on wide screens; on narrow ones the nav
+   is already full, and the floating button is always in reach. */
+@media (max-width:900px){.askbtn{display:none;}}
+@media print{.ask-launch,.askbtn,.ask-panel{display:none !important;}}

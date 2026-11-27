@@ -15,7 +15,7 @@ import { captureDefaults, setLang, initLanguageSwitcher } from './core/i18n.js';
 import { initProvenance } from './features/provenance.js';
 import { initReferences } from './features/references.js';
 import { initCite } from './features/cite.js';
-import { initAudience, applyAudience } from './features/audience.js';
+import { initAudience, applyAudience, setAudience } from './features/audience.js';
 import { initKpiCounters } from './features/kpi.js';
 import { initMapPanel, setMainLayer, pinCountry } from './features/map-panel.js';
 import { initSearch } from './features/search.js';
@@ -31,8 +31,9 @@ import { initChangelogModal } from './features/modal.js';
 import { initNavMenu } from './features/nav-menu.js';
 import { initSectionNav, initBackToTop, initNavOffset } from './features/section-nav.js';
 import { initDownloads } from './features/downloads.js';
+import { initAsk } from './features/ask.js';
 
-import { NARROW } from './core/dom.js';
+import { NARROW, reduceMotion } from './core/dom.js';
 import { setYear, initYearSwitcher, drawSectorBars } from './charts/sector-bars.js';
 import { drawGrowthScatter } from './charts/growth-scatter.js';
 import { drawHeatmap } from './charts/heatmap.js';
@@ -66,6 +67,25 @@ function initResponsiveCharts(){
   const q = matchMedia(NARROW);
   const redraw = () => { drawSectorBars(); drawGrowthScatter(); drawTrajectory(); drawRankings(); drawImportsChart(); drawGapChart(); drawSukukChart(); };
   if(q.addEventListener) q.addEventListener('change', redraw);
+}
+
+/**
+ * The analyst asks for view changes; this is the one place they are carried
+ * out, through the same functions the page's own controls call.
+ */
+function applyAskView(v){
+  if(state.view === 'story') setView('dashboard');
+  if(v.audience) setAudience(v.audience);
+  if(v.layer) setMainLayer(v.layer);
+  if(v.compare){
+    const [a, b, c] = v.compare;
+    state.cmp = [a, b || state.cmp.find(x => x && x !== a) || '', c || ''];
+    renderCompare();
+  }
+  if(v.pin) pinCountry(v.pin);
+  const target = v.section || (v.compare ? 'compare' : (v.pin || v.layer) ? 'map-section' : null);
+  const el = target && document.getElementById(target);
+  if(el) el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
 }
 
 function wire(){
@@ -115,6 +135,10 @@ function wire(){
   initBackToTop();
   initActions();
   initResponsiveCharts();
+  initAsk({
+    getView: () => ({ layer: state.layer, pin: state.pin, aud: state.aud, cmp: state.cmp }),
+    applyView: applyAskView,
+  });
 }
 
 function boot(){
