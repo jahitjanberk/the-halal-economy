@@ -14,7 +14,7 @@
       },
       {
         "id": "assetsPerMuslim.Indonesia.perMuslim",
-        "value": 507.6271186440678,
+        "value": 501.255230125523,
         "confirmed": false,
         "check": "derived"
       },
@@ -56,7 +56,7 @@
       },
       {
         "id": "assetsPerMuslim.Türkiye.perMuslim",
-        "value": 2588.271604938272,
+        "value": 2495.8333333333335,
         "confirmed": false,
         "check": "derived"
       },
@@ -440,7 +440,7 @@
       },
       {
         "id": "countryPop.Ethiopia.pop",
-        "value": 38,
+        "value": 43,
         "confirmed": false,
         "check": "sgiePress"
       },
@@ -458,13 +458,13 @@
       },
       {
         "id": "countryPop.India.pop",
-        "value": 200,
+        "value": 213,
         "confirmed": false,
         "check": "sgiePress"
       },
       {
         "id": "countryPop.Indonesia.pop",
-        "value": 236,
+        "value": 239,
         "confirmed": false,
         "check": "sgiePress"
       },
@@ -572,7 +572,7 @@
       },
       {
         "id": "countryPop.Syria.pop",
-        "value": 19,
+        "value": 20,
         "confirmed": false,
         "check": "sgiePress"
       },
@@ -584,7 +584,7 @@
       },
       {
         "id": "countryPop.Türkiye.pop",
-        "value": 81,
+        "value": 84,
         "confirmed": false,
         "check": "sgiePress"
       },
@@ -614,7 +614,7 @@
       },
       {
         "id": "countryPop.Yemen.pop",
-        "value": 30,
+        "value": 36,
         "confirmed": false,
         "check": "sgiePress"
       },
@@ -1725,7 +1725,7 @@
       "verified": [
         "fin"
       ],
-      "pop": 236,
+      "pop": 239,
       "giei": 99.9,
       "rank": 3,
       "fin": 2,
@@ -1845,7 +1845,7 @@
       "verified": [
         "fin"
       ],
-      "pop": 81,
+      "pop": 84,
       "giei": 64,
       "rank": 9,
       "fin": 3.5,
@@ -1931,7 +1931,7 @@
     {
       "atlas": "India",
       "label": "India",
-      "pop": 200,
+      "pop": 213,
       "giei": null,
       "rank": null,
       "fin": null,
@@ -2059,7 +2059,7 @@
     {
       "atlas": "Ethiopia",
       "label": "Ethiopia",
-      "pop": 38,
+      "pop": 43,
       "lon": 39,
       "lat": 9,
       "region": "mena",
@@ -2105,7 +2105,7 @@
     {
       "atlas": "Yemen",
       "label": "Yemen",
-      "pop": 30,
+      "pop": 36,
       "lon": 48,
       "lat": 15,
       "region": "mena",
@@ -2196,7 +2196,7 @@
     {
       "atlas": "Syria",
       "label": "Syria",
-      "pop": 19,
+      "pop": 20,
       "lon": 38,
       "lat": 35,
       "region": "mena",
