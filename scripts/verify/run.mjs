@@ -34,7 +34,7 @@ console.log(`Checking ${dataset} against ${SOURCES[dataset].sources.length} sour
 const items = await checkDataset({
   dataset,
   cfg: SOURCES[dataset],
-  ask: groqJson({ apiKey, model }),
+  ask: groqJson({ apiKey, model, onWait: ms => console.log(`  …Groq's per-minute limit reached, waiting ${Math.round(ms / 1000)}s`) }),
   only: flag('only') ? flag('only').split(',').map(s => s.trim()) : null,
   limit: flag('limit') ? +flag('limit') : null,
   log: line => console.log(line),
