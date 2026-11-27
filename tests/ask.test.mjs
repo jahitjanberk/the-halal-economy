@@ -119,6 +119,33 @@ const ask = q => ({ messages: [{ role: 'user', content: q }], view: { aud: 'inve
 }
 
 {
+  /* An uncited number gets one chance to be cited or dropped. */
+  const model = scripted([
+    { content: '', tool_calls: [toolCall('a', 'find_figures', { dataset: 'sectors' })] },
+    { content: 'Travel grows fastest at 11.2% [[sectors.travel.cagr]], then cosmetics at 6.2% per year.' },
+    { content: 'Travel grows fastest at 11.2% [[sectors.travel.cagr]], then cosmetics at 6.2% [[sectors.cosm.cagr]].' },
+  ]);
+  const out = await answer(ask('Which sector is growing fastest?'), { callModel: model });
+  check('an answer with an uncited number is sent back once to cite it',
+    model.calls.length === 3 && /no citation: 6\.2%/.test(model.calls[2].messages[model.calls[2].messages.length - 1].content));
+  check('the rewritten answer cites every number', out.uncited.length === 0 && out.figures.length === 2);
+
+  const stubborn = scripted([
+    { content: '', tool_calls: [toolCall('a', 'find_figures', { dataset: 'sectors' })] },
+    { content: 'Travel is 11.2% [[sectors.travel.cagr]] and cosmetics 6.2%.' },
+  ]);
+  const out2 = await answer(ask('Which sector is growing fastest?'), { callModel: stubborn });
+  check('a number still uncited after the retry is reported, not hidden', out2.uncited.join() === '6.2%' && stubborn.calls.length === 3);
+}
+
+{
+  const { uncitedNumbers, plainSpaces } = await import(new URL('netlify/lib/analyst.mjs', ROOT).href);
+  check('years and cited numbers are not flagged', uncitedNumbers('Between 2024 and 2029 it grew 11.2% [[x.y.z]].').length === 0);
+  check('bare quantities are flagged', uncitedNumbers('about $1,530 billion and 236 million people, rank 3').join('|') === '$1,530 billion|236 million|3');
+  check('narrow no-break spaces become ordinary spaces', plainSpaces('about\u202f11.2%\u00a0and\u20092029') === 'about 11.2% and 2029');
+}
+
+{
   const t = checkCitations('Spend was $2.6T [[a]] , up [[b]].', new Set(['a']));
   check('stripping a citation leaves no stray space before punctuation', t.reply === 'Spend was $2.6T [[a]], up.', t.reply);
 
@@ -228,13 +255,17 @@ check('the analyst can switch the map layer', state.layer === 'fin' && d.querySe
 check('the analyst can set the comparison', state.cmp[0] === 'Indonesia' && state.cmp[1] === 'Qatar');
 check('the view change reaches the URL', /l=fin/.test(window.location.search) && /c=Indonesia%7CQatar/.test(window.location.search));
 
-nextReply = { body: { reply: '<img src=x onerror=alert(1)> plain [[made.up.id]]', figures: [] } };
+check('an answer with every number cited shows no warning', !last.querySelector('.ask-bare'));
+
+nextReply = { body: { reply: '<img src=x onerror=alert(1)> plain [[made.up.id]] and about\u202f6.2%', figures: [], uncited: ['6.2%'] } };
 $('askInput').value = 'second question';
 $('askForm').dispatchEvent(new window.Event('submit', { cancelable: true }));
 await settle();
 const evil = [...$('askLog').querySelectorAll('.ask-msg.bot')].pop();
 check('model text is escaped, never parsed as markup', !evil.querySelector('img') && evil.textContent.includes('<img src=x onerror=alert(1)>'));
 check('a citation with no figure behind it renders nothing', !/made\.up\.id/.test(evil.textContent));
+check('a number left uncited is called out under the answer', /No source badge on 6\.2%/.test((evil.querySelector('.ask-bare') || {}).textContent || ''));
+check('the panel shows an ordinary space where the model sent a narrow one', /about 6\.2%/.test(evil.textContent));
 check('earlier turns are sent back as context', posted[1].messages.length === 3 && posted[1].messages[1].role === 'assistant');
 
 nextReply = { status: 404, body: {} };

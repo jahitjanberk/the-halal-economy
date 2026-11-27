@@ -49,6 +49,7 @@ html[lang=ar] .lang-note,html[lang=id] .lang-note,html[lang=ms] .lang-note{displ
 .ask-msg.pending{color:var(--muted);font-style:italic;}
 .ask-msg.error{color:var(--warn);}
 .ask-cite{cursor:help;margin-left:4px;}
+.ask-bare{margin-top:8px !important;padding:6px 10px;background:var(--warn-pale);color:var(--warn);border-radius:8px;font-size:var(--t-xs);}
 .ask-figs{margin-top:8px;font-size:var(--t-xs);}
 .ask-figs summary{cursor:pointer;color:var(--muted);font-weight:600;}
 .ask-figs ul{list-style:none;padding:0;margin:6px 0 0;display:flex;flex-direction:column;gap:7px;}

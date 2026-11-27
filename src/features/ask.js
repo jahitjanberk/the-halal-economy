@@ -33,7 +33,7 @@ const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(
 /** One answer as HTML: escaped text, citations turned into badges. */
 export function renderAnswer(text, figures = []){
   const byId = new Map(figures.map(f => [f.id, f]));
-  return esc(text)
+  return esc(String(text).replace(/[\u00a0\u2007\u2009\u202f]/g, ' '))
     .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
     .replace(/\[\[([^\]\s]+)\]\]/g, (whole, id) => {
       const f = byId.get(id);
@@ -150,7 +150,10 @@ export function initAsk({ getView, applyView, fetchImpl } = {}){
 
       history.push({ role: 'assistant', content: data.reply });
       pending.className = 'ask-msg bot';
-      pending.innerHTML = `<span class="ask-who">Mizan</span><p>${renderAnswer(data.reply, data.figures)}</p>` + figureList(data.figures || []);
+      const bare = Array.isArray(data.uncited) && data.uncited.length
+        ? `<p class="ask-bare">No source badge on ${esc(data.uncited.join(', '))}. Check ${data.uncited.length > 1 ? 'these' : 'this'} on the dashboard before relying on ${data.uncited.length > 1 ? 'them' : 'it'}.</p>`
+        : '';
+      pending.innerHTML = `<span class="ask-who">Mizan</span><p>${renderAnswer(data.reply, data.figures)}</p>` + bare + figureList(data.figures || []);
       if(data.view && applyView) applyView(data.view);
     } catch {
       history.pop();

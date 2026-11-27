@@ -61,6 +61,31 @@ export function cleanMessages(messages){
 const CITE = /\[\[([^\]\s]+)\]\]/g;
 
 /**
+ * Models often put a narrow no-break space (U+202F) or similar before a number.
+ * The page's font has no glyph for it, so "about 11.2%" renders as "about11.2%".
+ */
+export const plainSpaces = t => String(t || '').replace(/[\u00a0\u2007\u2009\u202f]/g, ' ');
+
+/**
+ * Numbers in an answer with no citation straight after them. Years are not
+ * figures; anything else that reads as a quantity has to carry its [[id]].
+ */
+export function uncitedNumbers(text){
+  const t = plainSpaces(text);
+  const out = [];
+  const re = /(?<![\w.\[\]/-])(\$?\d[\d,]*(?:\.\d+)?)(\s?(?:%|per ?cent|trillion|billion|million|[TBMK]\b))?/g;
+  let m;
+  while((m = re.exec(t))){
+    const [whole, num, unit] = m;
+    if(!unit && /^(19|20)\d\d$/.test(num)) continue;              // a year
+    if(t.slice(m.index + whole.length, m.index + whole.length + 45).includes('[[')) continue;
+    if(/\[\[[^\]]*$/.test(t.slice(0, m.index))) continue;          // inside a citation id
+    out.push(whole.trim());
+  }
+  return [...new Set(out)];
+}
+
+/**
  * Keep citations to figures this request actually fetched; drop the rest.
  * Returns the cleaned text and the figures, in the order first cited.
  */
@@ -90,6 +115,7 @@ export async function answer(body, { callModel }){
   const fetched = new Set();
   let nextView = null;
   let toolCalls = 0;
+  let nudged = false;
 
   for(let round = 0; round < LIMITS.rounds; round++){
     const lastRound = round === LIMITS.rounds - 1;
@@ -97,12 +123,23 @@ export async function answer(body, { callModel }){
 
     const calls = (msg && msg.tool_calls) || [];
     if(!calls.length || lastRound){
-      const { reply, ids, dropped } = checkCitations(msg && msg.content, fetched);
+      const { reply, ids, dropped } = checkCitations(plainSpaces(msg && msg.content), fetched);
+      const uncited = uncitedNumbers(reply);
+
+      /* One chance to cite or drop any number it left bare. */
+      if(uncited.length && !nudged && round < LIMITS.rounds - 2){
+        nudged = true;
+        convo.push({ role: 'assistant', content: msg.content || '' });
+        convo.push({ role: 'user', content: `Your answer has numbers with no citation: ${uncited.join(', ')}. Every figure must come from a tool in this turn and carry its [[id]] straight after it. Look up any you need, then give the whole answer again, leaving out any figure you cannot cite.` });
+        continue;
+      }
+
       return {
         reply: reply || 'Sorry, I could not put an answer together. Try asking another way.',
         figures: ids.map(figureById).filter(Boolean).map(({ check, ...f }) => f),
         view: nextView,
         dropped,
+        uncited,
         toolCalls,
       };
     }
