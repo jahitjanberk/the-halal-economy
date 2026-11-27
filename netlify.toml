@@ -1,0 +1,7 @@
+# Only the [dev] block is read by `netlify dev`; the live site's build settings
+# stay as they are in the Netlify UI. Functions live in netlify/functions/,
+# Netlify's default, so nothing here is needed for deploys.
+[dev]
+  framework = "#static"
+  publish = "."
+  port = 8888

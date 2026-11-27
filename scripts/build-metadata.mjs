@@ -14,7 +14,7 @@
  */
 import { readFileSync, writeFileSync } from 'fs';
 import { sources } from '../src/data/sources.js';
-import { datasets, statusFor, VERIFIED_ON } from '../src/data/verification.js';
+import { datasets, statusFor, checks, checkedOn } from '../src/data/verification.js';
 import { countries } from '../src/data/countries.js';
 import { sectors } from '../src/data/sectors.js';
 
@@ -52,7 +52,7 @@ const dataset = {
     `The halal economy mapped sector by sector and country by country: ${sectors.length} consumer sectors, ` +
     `Islamic finance, trade, investment deals and certification across ${countries.length} countries. ` +
     `Compiled from published industry reporting. Every figure records its source and whether it has been ` +
-    `checked against that source — ${confirmed} of ${total} were verified as of ${VERIFIED_ON}.`,
+    `checked against that source — ${confirmed} of ${total} were verified as of ${checkedOn(Object.keys(checks))}.`,
   url: BASE,
   sameAs: 'https://github.com/jahitjanberk/the-halal-economy',
   isAccessibleForFree: true,

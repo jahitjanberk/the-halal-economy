@@ -6,16 +6,21 @@
   "type": "module",
   "scripts": {
     "start": "npx --yes serve . --listen 5173",
-    "test": "node tests/smoke.test.mjs && node tests/interactions.test.mjs && node tests/verification.test.mjs && node tests/navigation.test.mjs && node tests/story.test.mjs && node tests/entry-helper.test.mjs && node tests/discoverability.test.mjs",
+    "test": "node tests/smoke.test.mjs && node tests/interactions.test.mjs && node tests/verification.test.mjs && node tests/navigation.test.mjs && node tests/story.test.mjs && node tests/entry-helper.test.mjs && node tests/discoverability.test.mjs && node tests/ask.test.mjs && node tests/verify.test.mjs",
     "pin-figures": "node scripts/pin-figures.mjs",
     "images": "node scripts/build-images.mjs",
     "metadata": "node scripts/build-metadata.mjs",
-    "data": "node scripts/build-data.mjs"
+    "data": "node scripts/build-data.mjs",
+    "verify": "node --env-file-if-exists=.env scripts/verify/run.mjs",
+    "verify:review": "node scripts/verify/review.mjs",
+    "verify:apply": "node scripts/verify/apply.mjs",
+    "counts": "node scripts/update-counts.mjs"
   },
   "devDependencies": {
     "@resvg/resvg-js": "^2.6.2",
     "d3": "^7.9.0",
     "jsdom": "^30.0.1",
-    "topojson-client": "^3.1.0"
+    "topojson-client": "^3.1.0",
+    "unpdf": "^2.2.3"
   }
 }

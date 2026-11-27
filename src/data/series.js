@@ -13,7 +13,7 @@ export const finShareCountries = [{name:'Saudi Arabia',v:27},{name:'Iran',v:27},
 
 /* Trade and pilgrimage. Imports in USD billions, pilgrims in millions. */
 export const oicImports = [{y:2022,v:359},{y:2023,v:407.8},{y:2024,v:421.5,verified:true},{y:2028,v:608.4,proj:true,verified:true}];
-export const hajj = [{y:2012,v:3.16},{y:2019,v:2.49},{y:2020,v:0.01},{y:2021,v:0.06},{y:2022,v:0.93},{y:2023,v:1.85},{y:2024,v:1.83},{y:2025,v:1.67},{y:2026,v:1.71}];
+export const hajj = [{y:2012,v:3.16},{y:2019,v:2.49},{y:2020,v:0.01},{y:2021,v:0.06},{y:2022,v:0.93},{y:2023,v:1.85},{y:2024,v:1.83},{y:2025,verified:['v'],checkedAgainst:{v:'gastat2025'},v:1.67},{y:2026,verified:['v'],checkedAgainst:{v:'gastat2026press'},v:1.71}];
 
 /*
  * Sukuk issuance, USD billions, from IIFM's own annual report rather than the

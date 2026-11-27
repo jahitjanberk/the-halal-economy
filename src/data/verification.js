@@ -55,6 +55,16 @@ export const checks = {
     url: 'https://www.iifm.net/public/press-media/news-and-updates/record-breaking-international-sukuk-issuances-hit-us-656-billion/97',
     on: '2026-09-02',
   },
+  gastat2026press: {
+    label: 'GASTAT Hajj 2026 figures, as reported by Asharq Al-Awsat',
+    url: 'https://english.aawsat.com/node/5277497',
+    on: '2026-11-27',
+  },
+  gastat2025: {
+    label: 'GASTAT Hajj Statistics Publication 2025',
+    url: 'https://www.stats.gov.sa/documents/d/guest/hajj-statistics-publication-2025en-1-pdf',
+    on: '2026-11-27',
+  },
   derived: {
     label: 'arithmetic from those figures',
     url: null,
@@ -158,6 +168,20 @@ export function isVerified(record, field){
 }
 
 /**
+ * Which entry in `checks` a confirmed field was checked against.
+ *
+ * Usually the dataset's own `check` (or its `byField` override). A record can
+ * name its own per field — `checkedAgainst: { pop: 'pew2025' }` — when figures
+ * in one dataset were confirmed against different releases, as Hajj years are.
+ * scripts/verify/ writes these when it applies an approved check.
+ */
+export function checkFor(ds, rec, field){
+  return (rec && rec.checkedAgainst && rec.checkedAgainst[field])
+    || (ds.byField && ds.byField[field])
+    || ds.check;
+}
+
+/**
  * Count confirmed vs total figures across one or more datasets.
  *
  * Null fields are not figures — a country with no published GIEI score has
@@ -190,7 +214,7 @@ export function statusFor(keys){
         total++;
         if(isVerified(rec, f)){
           confirmed++;
-          sources.add((ds.byField && ds.byField[f]) || ds.check);
+          sources.add(checkFor(ds, rec, f));
         }
       }
     }
@@ -270,7 +294,7 @@ export function enumerateFigures(){
           id: `${key}.${slug(id(rec, i))}.${f}`,
           value: rec[f],
           confirmed: isVerified(rec, f),
-          check: (ds.byField && ds.byField[f]) || ds.check,
+          check: checkFor(ds, rec, f),
         });
       }
     });
@@ -326,20 +350,33 @@ export function verificationLine(keys, ids){
   return lineFrom(statusFor(keys));
 }
 
+/**
+ * "September 2026": when the most recent of these sources was checked, from
+ * each entry's own `on` date. Falls back to VERIFIED_ON.
+ */
+export function checkedOn(sourceKeys){
+  const dates = (sourceKeys || []).map(k => checks[k] && checks[k].on).filter(Boolean).sort();
+  if(!dates.length) return VERIFIED_ON;
+  const [y, m] = dates[dates.length - 1].split('-');
+  const month = ['January','February','March','April','May','June','July','August','September','October','November','December'][+m - 1];
+  return `${month} ${y}`;
+}
+
 function lineFrom({ confirmed, total, sources }){
   if(!total) return null;
 
   const against = describeSources(sources);
+  const on = checkedOn(sources);
 
   if(confirmed === total){
-    return { level: 'ok', text: `Confirmed against ${against}, ${VERIFIED_ON}.` };
+    return { level: 'ok', text: `Confirmed against ${against}, ${on}.` };
   }
   if(confirmed === 0){
     return { level: 'no', text: 'Unconfirmed — check before citing.' };
   }
   return {
     level: 'part',
-    text: `${confirmed} of ${total} figures confirmed against ${against}, ${VERIFIED_ON}. ` +
+    text: `${confirmed} of ${total} figures confirmed against ${against}, ${on}. ` +
           `The other ${total - confirmed} are unconfirmed — check before citing.`,
   };
 }
