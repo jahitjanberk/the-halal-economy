@@ -181,25 +181,52 @@ refused = '';
 try { decide({ ...run(), appliedAt: 'x' }, 'a', 'approved'); } catch(e){ refused = e.message; }
 check('an applied run is closed to changes', /already been applied/.test(refused));
 
+/* -------------------------------------------------------- planning apply --- */
+
+{
+  const { planApply } = await import(new URL('scripts/verify/apply.mjs', ROOT).href);
+  const item = (id, v, decision = 'approved') => ({ id, status: 'match', dashboardValue: v, decision });
+  const runs = [
+    { startedAt: '2026-11-27T18:17:00Z', items: [item('countryPop.A.pop', 38)] },
+    { startedAt: '2026-11-27T18:58:00Z', items: [item('countryPop.A.pop', 39), item('countryPop.B.pop', 5)] },
+    { startedAt: '2026-11-27T19:09:00Z', items: [item('countryPop.C.pop', 7)] },
+  ];
+  const now = { 'countryPop.A.pop': 39, 'countryPop.B.pop': 6, 'countryPop.C.pop': 7 };
+  const { todo, skipped } = planApply(runs, id => now[id]);
+  check('only the latest check of a figure is applied', todo.filter(t => t.item.id === 'countryPop.A.pop').length === 1 && todo.find(t => t.item.id === 'countryPop.A.pop').item.dashboardValue === 39);
+  check('an approval for a value the page no longer shows is skipped, with the reason', skipped.some(s => s.id === 'countryPop.B.pop' && /now shows 6/.test(s.why)));
+  check('superseded approvals are reported, not applied', skipped.some(s => s.id === 'countryPop.A.pop' && /later check/.test(s.why)));
+  check('a figure already confirmed is skipped', planApply([{ startedAt: 'x', items: [item('countryPop.D.pop', 1)] }], () => undefined).skipped.length === 1);
+}
+
 /* ----------------------------------------------------------------- edits --- */
 
 const countriesSrc = readFileSync(new URL('src/data/countries.js', ROOT), 'utf8');
-const after = E.markVerified(countriesSrc, { array: 'countries', ident: "label:'Indonesia'", field: 'pop', check: 'pew2025appB' });
-const line = s => s.split('\n').find(l => l.includes("label:'Indonesia'"));
+/* A country figure that is still unconfirmed, whichever that is by now. */
+const open = ['countryGiei', 'countryFinance', 'countryTrade', 'countryPop'].flatMap(ds => L.figuresToCheck(ds))[0];
+const oLabel = open.rec.label.replace(/'/g, "\\'"), oField = open.field;
+const oIdent = `label:'${oLabel}'`;
+const recText = src => E.records(src, 'countries').find(r => r.text.includes(oIdent)).text;
+const listOf = t => ((/verified:\[([^\]]*)\]/.exec(t) || [])[1] || '').split(',').map(x => x.trim().replace(/'/g, '')).filter(Boolean);
+const after = E.markVerified(countriesSrc, { array: 'countries', ident: oIdent, field: oField, check: 'pew2025appB' });
 check('marking a field keeps existing confirmations and records the source',
-  /verified:\['fin','pop'\],checkedAgainst:\{pop:'pew2025appB'\}/.test(line(after)));
+  listOf(recText(after)).join() === [...listOf(recText(countriesSrc)), oField].join() && recText(after).includes(`${oField}:'pew2025appB'`), recText(after));
 check('only that record\'s line changes', after.split('\n').filter((l, i) => l !== countriesSrc.split('\n')[i]).length === 1);
-check('no figure value changes', line(after).replace(/verified:\[[^\]]*\],checkedAgainst:\{[^}]*\},?/, '') === line(countriesSrc).replace(/verified:\[[^\]]*\],?/, ''));
+const strip = t => t.replace(/verified:\[[^\]]*\],?/, '').replace(/checkedAgainst:\{[^}]*\},?/, '');
+check('no figure value changes', strip(recText(after)) === strip(recText(countriesSrc)));
+
+/* …and one that is already confirmed must be refused. */
+const done = E.records(countriesSrc, 'countries').map(r => r.text).find(t => listOf(t).length);
 refused = '';
-try { E.markVerified(countriesSrc, { array: 'countries', ident: "label:'Indonesia'", field: 'fin', check: 'x' }); } catch(e){ refused = e.message; }
+try { E.markVerified(countriesSrc, { array: 'countries', ident: /label:'(?:[^'\\]|\\.)*'/.exec(done)[0], field: listOf(done)[0], check: 'x' }); } catch(e){ refused = e.message; }
 check('an already-confirmed figure is never relabelled', /already confirmed/.test(refused));
 
 const verSrc = readFileSync(new URL('src/data/verification.js', ROOT), 'utf8').replace(/\r?\n/g, '\r\n');
 const withCheck = E.addCheck(verSrc, 'testsrc', { label: 'Test', url: 'https://example.org', on: '2026-11-27' });
 check('adding a source keeps a Windows (CRLF) file\'s line endings', !/[^\r]\n/.test(withCheck) && /testsrc: \{\r\n/.test(withCheck));
 const crlfCountries = countriesSrc.replace(/\r?\n/g, '\r\n');
-const crlfAfter = E.markVerified(crlfCountries, { array: 'countries', ident: "label:'Bahrain'", field: 'pop', check: 'x' });
-check('marking a figure works on a CRLF file and keeps its endings', !/[^\r]\n/.test(crlfAfter) && /label:'Bahrain',verified:\[[^\]]*'pop'\]/.test(crlfAfter));
+const crlfAfter = E.markVerified(crlfCountries, { array: 'countries', ident: oIdent, field: oField, check: 'x' });
+check('marking a figure works on a CRLF file and keeps its endings', !/[^\r]\n/.test(crlfAfter) && listOf(recText(crlfAfter)).includes(oField));
 
 /* ------------------------------------------------- apply, end to end --- */
 

@@ -62,7 +62,9 @@ const { enumerateFigures } = await import(new URL('src/data/verification.js', RO
 
   const src = tools.getSource({ figure_id: 'sectors.food.v2024' });
   check('a confirmed figure names what it was checked against', src.status === 'confirmed' && src.checkedAgainst && src.checkedAgainst.url);
-  const pop = tools.getSource({ figure_id: 'countryPop.Indonesia.pop' });
+  /* Whatever is still unconfirmed when the test runs: figures get confirmed over time. */
+  const UNCONFIRMED = enumerateFigures().find(f => !f.confirmed && f.check !== 'derived').id;
+  const pop = tools.getSource({ figure_id: UNCONFIRMED });
   check('an unconfirmed figure says so and claims no check', pop.status === 'unconfirmed' && pop.checkedAgainst === null && /check before citing/.test(pop.line));
 
   const v = tools.setView({ layer: 'fin', compare: ['KSA', 'Qatar'], section: 'nowhere' });
@@ -228,10 +230,11 @@ check('opening it focuses the question box', d.activeElement === $('askInput'));
 check('suggested questions are offered before the first question', $('askSuggest').querySelectorAll('[data-q]').length === 3 && !$('askSuggest').hidden);
 
 const fig = id => tools.figureById(id);
+const OPEN_ID = enumerateFigures().find(f => !f.confirmed && f.check !== 'derived').id;
 const strip = ({ check, ...f }) => f;
 nextReply = { body: {
-  reply: 'Indonesia has about 236 million Muslims [[countryPop.Indonesia.pop]] against Malaysia\'s 12% share of assets [[finShareCountries.Malaysia.v]].',
-  figures: [strip(fig('countryPop.Indonesia.pop')), strip(fig('finShareCountries.Malaysia.v'))],
+  reply: `One figure [[${OPEN_ID}]] against Malaysia\'s 12% share of assets [[finShareCountries.Malaysia.v]].`,
+  figures: [strip(fig(OPEN_ID)), strip(fig('finShareCountries.Malaysia.v'))],
   view: { compare: ['Indonesia', 'Qatar'], layer: 'fin' },
 } };
 $('askInput').value = 'Indonesia vs Malaysia?';
@@ -245,7 +248,7 @@ check('the question is posted with the current view as context',
   posted[0] && posted[0].messages[0].content === 'Indonesia vs Malaysia?' && posted[0].view && posted[0].view.layer);
 check('each citation becomes a verification badge', last.querySelectorAll('.ask-cite').length === 2);
 check('a confirmed figure gets the confirmed badge', !!last.querySelector('.ask-cite.v-ok[data-fig="finShareCountries.Malaysia.v"]'));
-check('an unconfirmed figure gets the unconfirmed badge', !!last.querySelector('.ask-cite.v-no[data-fig="countryPop.Indonesia.pop"]'));
+check('an unconfirmed figure gets the unconfirmed badge', !!last.querySelector(`.ask-cite.v-no[data-fig="${OPEN_ID}"]`));
 check('no raw [[id]] reaches the reader', !/\[\[/.test(last.textContent));
 check('the figures used are listed under the answer', last.querySelectorAll('.ask-figs li').length === 2);
 
