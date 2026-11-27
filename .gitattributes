@@ -1,0 +1,10 @@
+# Keep LF line endings in every checkout, Windows included. The generators
+# (npm run data, metadata, counts, and verify:apply) write LF, and the tests
+# compare their output byte for byte with the files in the repo.
+* text=auto eol=lf
+
+*.png binary
+*.pdf binary
+*.ico binary
+*.woff binary
+*.woff2 binary

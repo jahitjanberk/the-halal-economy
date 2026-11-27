@@ -99,14 +99,16 @@ const block = [
 
 const file = new URL('../index.html', import.meta.url);
 let html = readFileSync(file, 'utf8');
+/* Write the block with the file's own line endings (a Windows checkout may be CRLF). */
+const EOL = html.includes('\r\n') ? '\r\n' : '\n';
 
 if(html.includes(START)){
   const from = html.indexOf(START);
   const to = html.indexOf(END) + END.length;
-  html = html.slice(0, from) + block + html.slice(to);
+  html = html.slice(0, from) + block.replace(/\r?\n/g, EOL) + html.slice(to);
 } else {
   /* First run: sit it just before </head>. */
-  html = html.replace('</head>', block + '\n</head>');
+  html = html.replace('</head>', block.replace(/\r?\n/g, EOL) + EOL + '</head>');
 }
 
 writeFileSync(file, html);
