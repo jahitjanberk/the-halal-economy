@@ -87,7 +87,12 @@ const popCfg = SOURCES.countryPop;
 const comp = L.judge({ answer: { found: true, quote: 'Indonesia 2020 273,520,000 10.5 86.7', method: 'percent_of', inputs: ['273,520,000', '86.7'] },
   pageText: pdfPage.text, figure: { value: 236 }, cfg: popCfg });
 check('a computed figure is worked out in code and shows its working',
-  comp.status === 'match' && comp.computed && comp.sourceValue === 237.142 && /273,520,000 × 86.7%/.test(comp.working));
+  comp.computed && comp.sourceValue === 237.142 && /273,520,000 × 86.7%/.test(comp.working));
+check('a figure matches only if the source rounds to it', comp.status === 'mismatch'
+  && L.judge({ answer: { found: true, quote: 'Indonesia 2020 273,520,000 10.5 86.7', method: 'percent_of', inputs: ['273,520,000', '86.7'] },
+    pageText: pdfPage.text, figure: { value: 237 }, cfg: popCfg }).status === 'match');
+check('rounding follows the decimals the dashboard shows',
+  L.roundsTo(1.673230, 1.67) && L.roundsTo(1.707301, 1.71) && !L.roundsTo(239.085, 236) && L.roundsTo(1.0952, 1.1) && !L.roundsTo(1.0952, 1.2) && L.roundsTo(21.723, 22) && !L.roundsTo(21.723, 21));
 
 /* ------------------------------------------------------------------ run --- */
 

@@ -172,6 +172,17 @@ export function groqJson({ apiKey, model = 'openai/gpt-oss-120b', fetchImpl = fe
 const UNIT_SIZE = { 'million pilgrims': 1e6, 'million Muslims': 1e6 };
 
 /**
+ * Does the source's value, rounded the way the dashboard writes its figure,
+ * give the dashboard's figure? 1,673,230 rounds to 1.67 (two decimals); 239.1
+ * million does not round to 236. A percentage allowance can't express this:
+ * on big numbers it is looser than any rounding could explain.
+ */
+export function roundsTo(sourceValue, shown){
+  const dp = (String(shown).split('.')[1] || '').length;
+  return Math.abs(sourceValue - shown) <= 0.5 * Math.pow(10, -dp) + 1e-9;
+}
+
+/**
  * Turn the model's pointer into a finding, checking each claim it makes.
  * Returns { status, reason, ... } where status is one of
  *   match | mismatch | not_found | unsupported
@@ -241,10 +252,11 @@ export function judge({ answer, pageText, figure, cfg }){
   const sourceValue = raw / size;
   const diff = figure.value === 0 ? Math.abs(sourceValue) : Math.abs(sourceValue - figure.value) / Math.abs(figure.value);
   const round = v => Math.round(v * 1000) / 1000;
+  const ok = roundsTo(sourceValue, figure.value);
 
   return {
-    status: diff <= cfg.tolerance ? 'match' : 'mismatch',
-    reason: diff <= cfg.tolerance
+    status: ok ? 'match' : 'mismatch',
+    reason: ok
       ? `the source gives ${round(sourceValue)} ${cfg.unit}; the dashboard has ${figure.value}`
       : `the source gives ${round(sourceValue)} ${cfg.unit}, but the dashboard has ${figure.value} (${(diff * 100).toFixed(1)}% apart)`,
     quote,
