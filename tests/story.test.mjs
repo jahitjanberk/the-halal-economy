@@ -70,6 +70,15 @@ check('no story step still carries a hardcoded figure string', () => {
   return stale.length === 0 || 'still hardcoded: ' + stale.join(', ');
 });
 
+check('no story prose states a country\'s exact Muslim population', () => {
+  /* Those figures live in src/data and get corrected; prose that repeats them goes stale. */
+  const bad = [];
+  for(const [key, s] of Object.entries(stories)){
+    s.steps.forEach((st, i) => { if(/\b(has|have|with) \d+(\.\d+)? million\b/.test(st.body)) bad.push(`${key} step ${i + 1}`); });
+  }
+  return bad.length === 0 || 'quotes a population: ' + bad.join(', ');
+});
+
 check('story figures track the data rather than duplicating it', () => {
   const spend = consumerSpend.find(d => d.y === 2024).v;
   const pilgrims = hajj.find(d => d.y === 2026).v;

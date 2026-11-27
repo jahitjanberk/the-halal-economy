@@ -8,7 +8,7 @@
     "figures": [
       {
         "id": "assetsPerMuslim.Bahrain.perMuslim",
-        "value": 174708.33333333337,
+        "value": 190590.90909090912,
         "confirmed": false,
         "check": "derived"
       },
@@ -20,7 +20,7 @@
       },
       {
         "id": "assetsPerMuslim.Iran.perMuslim",
-        "value": 19485.542168674703,
+        "value": 18378.409090909092,
         "confirmed": false,
         "check": "derived"
       },
@@ -32,13 +32,13 @@
       },
       {
         "id": "assetsPerMuslim.Malaysia.perMuslim",
-        "value": 34228.57142857143,
+        "value": 32672.727272727272,
         "confirmed": false,
         "check": "derived"
       },
       {
         "id": "assetsPerMuslim.Pakistan.perMuslim",
-        "value": 518.6147186147186,
+        "value": 527.7533039647577,
         "confirmed": false,
         "check": "derived"
       },
@@ -50,7 +50,7 @@
       },
       {
         "id": "assetsPerMuslim.Saudi-Arabia.perMuslim",
-        "value": 47567.64705882354,
+        "value": 55768.96551724139,
         "confirmed": false,
         "check": "derived"
       },
@@ -386,7 +386,7 @@
       },
       {
         "id": "countryPop.Afghanistan.pop",
-        "value": 38,
+        "value": 39,
         "confirmed": false,
         "check": "sgiePress"
       },
@@ -398,13 +398,13 @@
       },
       {
         "id": "countryPop.Australia.pop",
-        "value": 0.8,
+        "value": 0.9,
         "confirmed": false,
         "check": "sgiePress"
       },
       {
         "id": "countryPop.Bahrain.pop",
-        "value": 1.2,
+        "value": 1.1,
         "confirmed": false,
         "check": "sgiePress"
       },
@@ -428,13 +428,13 @@
       },
       {
         "id": "countryPop.China.pop",
-        "value": 25,
+        "value": 26,
         "confirmed": false,
         "check": "sgiePress"
       },
       {
         "id": "countryPop.Egypt.pop",
-        "value": 90,
+        "value": 104,
         "confirmed": false,
         "check": "sgiePress"
       },
@@ -470,19 +470,19 @@
       },
       {
         "id": "countryPop.Iran.pop",
-        "value": 83,
+        "value": 88,
         "confirmed": false,
         "check": "sgiePress"
       },
       {
         "id": "countryPop.Iraq.pop",
-        "value": 40,
+        "value": 42,
         "confirmed": false,
         "check": "sgiePress"
       },
       {
         "id": "countryPop.Jordan.pop",
-        "value": 10,
+        "value": 11,
         "confirmed": false,
         "check": "sgiePress"
       },
@@ -494,7 +494,7 @@
       },
       {
         "id": "countryPop.Malaysia.pop",
-        "value": 21,
+        "value": 22,
         "confirmed": false,
         "check": "sgiePress"
       },
@@ -506,19 +506,19 @@
       },
       {
         "id": "countryPop.Morocco.pop",
-        "value": 37,
+        "value": 36,
         "confirmed": false,
         "check": "sgiePress"
       },
       {
         "id": "countryPop.Niger.pop",
-        "value": 24,
+        "value": 23,
         "confirmed": false,
         "check": "sgiePress"
       },
       {
         "id": "countryPop.Nigeria.pop",
-        "value": 99,
+        "value": 120,
         "confirmed": false,
         "check": "sgiePress"
       },
@@ -530,7 +530,7 @@
       },
       {
         "id": "countryPop.Pakistan.pop",
-        "value": 231,
+        "value": 227,
         "confirmed": false,
         "check": "sgiePress"
       },
@@ -542,19 +542,19 @@
       },
       {
         "id": "countryPop.Russia.pop",
-        "value": 20,
+        "value": 12,
         "confirmed": false,
         "check": "sgiePress"
       },
       {
         "id": "countryPop.Saudi-Arabia.pop",
-        "value": 34,
+        "value": 29,
         "confirmed": false,
         "check": "sgiePress"
       },
       {
         "id": "countryPop.Senegal.pop",
-        "value": 17,
+        "value": 16,
         "confirmed": false,
         "check": "sgiePress"
       },
@@ -566,7 +566,7 @@
       },
       {
         "id": "countryPop.Sudan.pop",
-        "value": 42,
+        "value": 46,
         "confirmed": false,
         "check": "sgiePress"
       },
@@ -578,7 +578,7 @@
       },
       {
         "id": "countryPop.Tanzania.pop",
-        "value": 22,
+        "value": 18,
         "confirmed": false,
         "check": "sgiePress"
       },
@@ -608,7 +608,7 @@
       },
       {
         "id": "countryPop.Uzbekistan.pop",
-        "value": 30,
+        "value": 32,
         "confirmed": false,
         "check": "sgiePress"
       },
@@ -1682,7 +1682,7 @@
     {
       "atlas": "Malaysia",
       "label": "Malaysia",
-      "pop": 21,
+      "pop": 22,
       "giei": 165.1,
       "giei2526": 186.1,
       "rank": 1,
@@ -1706,7 +1706,7 @@
       "verified": [
         "bank"
       ],
-      "pop": 34,
+      "pop": 29,
       "giei": 100.9,
       "rank": 2,
       "fin": 27,
@@ -1766,7 +1766,7 @@
         "fin",
         "bank"
       ],
-      "pop": 1.2,
+      "pop": 1.1,
       "giei": 81.9,
       "rank": 5,
       "fin": 3.5,
@@ -1786,7 +1786,7 @@
       "verified": [
         "bank"
       ],
-      "pop": 10,
+      "pop": 11,
       "giei": 71.4,
       "rank": 6,
       "fin": null,
@@ -1826,7 +1826,7 @@
       "verified": [
         "fin"
       ],
-      "pop": 231,
+      "pop": 227,
       "giei": 64.1,
       "rank": 8,
       "fin": 2,
@@ -1915,7 +1915,7 @@
     {
       "atlas": "Iran",
       "label": "Iran",
-      "pop": 83,
+      "pop": 88,
       "giei": null,
       "rank": null,
       "fin": 27,
@@ -1963,7 +1963,7 @@
     {
       "atlas": "Nigeria",
       "label": "Nigeria",
-      "pop": 99,
+      "pop": 120,
       "giei": null,
       "rank": null,
       "fin": null,
@@ -1979,7 +1979,7 @@
     {
       "atlas": "Egypt",
       "label": "Egypt",
-      "pop": 90,
+      "pop": 104,
       "giei": null,
       "rank": null,
       "fin": null,
@@ -2013,7 +2013,7 @@
       "verified": [
         "bank"
       ],
-      "pop": 42,
+      "pop": 46,
       "bank": 100,
       "lon": 30,
       "lat": 15,
@@ -2029,7 +2029,7 @@
     {
       "atlas": "Iraq",
       "label": "Iraq",
-      "pop": 40,
+      "pop": 42,
       "lon": 44,
       "lat": 33,
       "region": "mena",
@@ -2044,7 +2044,7 @@
     {
       "atlas": "Afghanistan",
       "label": "Afghanistan",
-      "pop": 38,
+      "pop": 39,
       "lon": 66,
       "lat": 34,
       "region": "asia",
@@ -2074,7 +2074,7 @@
     {
       "atlas": "Morocco",
       "label": "Morocco",
-      "pop": 37,
+      "pop": 36,
       "lon": -6,
       "lat": 32,
       "region": "mena",
@@ -2090,7 +2090,7 @@
     {
       "atlas": "Uzbekistan",
       "label": "Uzbekistan",
-      "pop": 30,
+      "pop": 32,
       "lon": 64,
       "lat": 41,
       "region": "asia",
@@ -2120,7 +2120,7 @@
     {
       "atlas": "China",
       "label": "China",
-      "pop": 25,
+      "pop": 26,
       "lon": 104,
       "lat": 35,
       "region": "asia",
@@ -2135,7 +2135,7 @@
     {
       "atlas": "Niger",
       "label": "Niger",
-      "pop": 24,
+      "pop": 23,
       "lon": 9,
       "lat": 17,
       "region": "mena",
@@ -2150,7 +2150,7 @@
     {
       "atlas": "Tanzania",
       "label": "Tanzania",
-      "pop": 22,
+      "pop": 18,
       "lon": 35,
       "lat": -6,
       "region": "mena",
@@ -2165,7 +2165,7 @@
     {
       "atlas": "Russia",
       "label": "Russia",
-      "pop": 20,
+      "pop": 12,
       "lon": 60,
       "lat": 58,
       "region": "west",
@@ -2211,7 +2211,7 @@
     {
       "atlas": "Senegal",
       "label": "Senegal",
-      "pop": 17,
+      "pop": 16,
       "rank": 25,
       "lon": -14,
       "lat": 14,
@@ -2324,7 +2324,7 @@
     {
       "atlas": "Australia",
       "label": "Australia",
-      "pop": 0.8,
+      "pop": 0.9,
       "lon": 134,
       "lat": -25,
       "region": "asia",
