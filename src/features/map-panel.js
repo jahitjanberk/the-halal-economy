@@ -50,7 +50,7 @@ function sideFor(c){
 
 export function resetSide(){
   document.getElementById('side').innerHTML =
-    `<p class="flag">Pick a country</p><p class="hint">Hover to preview, click to pin, or Tab through countries with the keyboard. Try Indonesia against Malaysia: one has ten times the people, the other has the top-ranked ecosystem.</p>`;
+    `<p class="flag">Pick a country</p><p class="hint">Hover to preview, click to pin, or Tab through countries with the keyboard. Try Indonesia against Malaysia: one has more than ten times the people, the other has the top-ranked ecosystem.</p>`;
 }
 
 /** Pin a country by label (or atlas name). Pass null to clear. */

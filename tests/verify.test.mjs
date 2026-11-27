@@ -116,6 +116,15 @@ check('rounding follows the decimals the dashboard shows',
   let failed = '';
   try { await L.groqJson({ apiKey: 'x', fetchImpl: always, retries: 2, sleep: async () => {} })([]); } catch(e){ failed = e.message; }
   check('it gives up after a few retries and says why', /429/.test(failed));
+  let n = 0;
+  const flaky = async (url, init) => {
+    n++;
+    const body = JSON.parse(init.body);
+    if(body.response_format) return new Response('{"error":{"code":"json_validate_failed","message":"Failed to generate JSON"}}', { status: 400 });
+    return new Response(JSON.stringify({ choices: [{ message: { content: 'Here you go:\n```json\n{"found":true,"quote":"x"}\n```' } }] }), { status: 200 });
+  };
+  const got = await L.groqJson({ apiKey: 'x', fetchImpl: flaky, sleep: async () => {} })([]);
+  check('when Groq rejects the JSON, it asks once more and reads the JSON out of the reply', got.found === true && n === 2);
   check('Groq\'s retry-after header wins when present', L.retryDelay(new Response('', { status: 429, headers: { 'retry-after': '3' } }), 'try again in 9s') === 3000);
 }
 

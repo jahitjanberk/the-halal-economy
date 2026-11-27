@@ -157,6 +157,15 @@ ${parts.map((p, i) => `--- excerpt ${i + 1} ---\n${p}`).join('\n')}`,
 }
 
 /** Groq's chat endpoint in JSON mode. */
+/** The first JSON object in a reply, even with prose or a code fence around it. */
+export function parseJsonReply(text){
+  const t = String(text || '').trim();
+  try { return JSON.parse(t); } catch { /* look for an object inside */ }
+  const start = t.indexOf('{'), end = t.lastIndexOf('}');
+  if(start >= 0 && end > start) return JSON.parse(t.slice(start, end + 1));
+  throw new Error('the model did not reply with JSON');
+}
+
 /**
  * How long Groq asks us to wait after a 429, in ms: its retry-after header, or
  * the "try again in 7.5s" in the message. Free accounts are capped per minute,
@@ -173,12 +182,25 @@ export function retryDelay(res, body){
 export function groqJson({ apiKey, model = 'openai/gpt-oss-120b', fetchImpl = fetch, retries = 6, sleep = ms => new Promise(r => setTimeout(r, ms)), onWait = () => {} }){
   return async messages => {
     let res;
+    let strict = true, relaxed = false;
     for(let attempt = 0; ; attempt++){
       res = await fetchImpl('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
-        body: JSON.stringify({ model, messages, temperature: 0, max_tokens: 500, response_format: { type: 'json_object' } }),
+        /* gpt-oss thinks before it answers, and that counts against max_tokens:
+           too low a cap cuts the reply off before its JSON, which Groq then
+           rejects as json_validate_failed. */
+        body: JSON.stringify({ model, messages, temperature: 0, max_tokens: 2000, ...(strict ? { response_format: { type: 'json_object' } } : {}) }),
       });
+      if(res.status === 400 && strict){
+        const text = await res.text();
+        if(/json_validate_failed/.test(text) && !relaxed){
+          /* Once more without Groq's JSON check; the reply is parsed below. */
+          relaxed = true; strict = false; attempt--;
+          continue;
+        }
+        return Promise.reject(new Error(`Groq returned 400: ${text.slice(0, 200)}`));
+      }
       if(res.status !== 429 || attempt >= retries) break;
       const wait = Math.min(retryDelay(res, await res.text()), 65000);
       onWait(wait);
@@ -186,7 +208,7 @@ export function groqJson({ apiKey, model = 'openai/gpt-oss-120b', fetchImpl = fe
     }
     if(!res.ok) throw new Error(`Groq returned ${res.status}: ${(await res.text()).slice(0, 200)}`);
     const data = await res.json();
-    return JSON.parse(data.choices[0].message.content);
+    return parseJsonReply(data.choices[0].message.content);
   };
 }
 
