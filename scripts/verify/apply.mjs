@@ -22,20 +22,44 @@ import { figuresToCheck } from './lib.mjs';
 const ROOT = new URL('../../', import.meta.url);
 const read = f => readFileSync(new URL(f, ROOT), 'utf8');
 
-export function planApply(runs){
-  const todo = [];
-  for(const run of runs.filter(r => !r.appliedAt)){
+/**
+ * The approvals to apply, and the ones to skip with a reason.
+ *
+ *   current(id)  the figure's value now, or undefined if it is no longer
+ *                unconfirmed (already confirmed, or gone)
+ *
+ * Only the latest check of a figure counts, and only if the page still shows
+ * the value that was checked: an approval for 38 must not confirm a 39.
+ */
+export function planApply(runs, current = () => undefined){
+  const open = runs.filter(r => !r.appliedAt).sort((a, b) => a.startedAt.localeCompare(b.startedAt));
+  const latest = new Map();
+  for(const run of open){
+    for(const item of run.items){
+      if(item.decision === 'approved' && item.status !== 'match') throw new Error(`${item.id} is approved but is not a match.`);
+      latest.set(item.id, { run, item });
+    }
+  }
+  const todo = [], skipped = [];
+  for(const run of open){
     for(const item of run.items.filter(i => i.decision === 'approved')){
-      if(item.status !== 'match') throw new Error(`${item.id} is approved but is not a match.`);
+      const last = latest.get(item.id);
+      if(last.item !== item){ skipped.push({ id: item.id, why: 'a later check of this figure supersedes this one' }); continue; }
+      const now = current(item.id);
+      if(now === undefined){ skipped.push({ id: item.id, why: 'it is no longer an unconfirmed figure' }); continue; }
+      if(now !== item.dashboardValue){ skipped.push({ id: item.id, why: `the page now shows ${now}, but ${item.dashboardValue} was checked; run the check again` }); continue; }
       todo.push({ run, item, on: run.startedAt.slice(0, 10) });
     }
   }
-  return todo;
+  return { todo, skipped };
 }
 
 function main(){
   const runs = listRuns();
-  const todo = planApply(runs);
+  const values = new Map();
+  for(const ds of Object.keys(LOCATIONS)) for(const f of figuresToCheck(ds)) values.set(f.id, f.value);
+  const { todo, skipped } = planApply(runs, id => values.get(id));
+  for(const s of skipped) console.log(`  skipped ${s.id}: ${s.why}`);
   if(!todo.length){
     console.log('Nothing approved to apply. Review findings with `npm run verify:review`.');
     return;
