@@ -108,7 +108,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
   ${stat(780, confirmed + '/' + total, 'figures checked against a source')}
 
   <rect x="80" y="540" width="1040" height="1" fill="#D9E2DD"/>
-  <text x="80" y="580" font-family="${sans.family}" font-size="20" fill="#6E837D">Built on DinarStandard SGIE 2025/26, IFSB 2025 and GASTAT</text>
+  <text x="80" y="580" font-family="${sans.family}" font-size="20" fill="#6E837D">Built on DinarStandard SGIE 2025/26, IFSB 2025, GASTAT and Pew Research Center</text>
 </svg>`;
 
 const png = new Resvg(svg, {

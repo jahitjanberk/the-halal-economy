@@ -222,6 +222,9 @@ const settle = () => new Promise(r => setTimeout(r, 60));
 check('the page still boots with the analyst wired in', !errors.length, errors.join('; '));
 check('the buttons say plainly that this is an AI agent',
   /AI analyst/.test($('askOpen').textContent) && /AI analyst/.test($('askOpen').getAttribute('aria-label')) && /AI analyst/.test($('askNav').getAttribute('aria-label')));
+check('the panel says where questions go before anyone asks one',
+  /sent to\s*Groq/.test($('askPanel').querySelector('.ask-note').textContent) && /personal details/.test($('askPanel').querySelector('.ask-note').textContent)
+  && $('askPanel').querySelector('.ask-privacy a').getAttribute('rel').includes('noopener'));
 check('the panel starts closed', $('askPanel').hidden && $('askOpen').getAttribute('aria-expanded') === 'false');
 
 $('askOpen').click();
