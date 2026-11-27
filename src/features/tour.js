@@ -14,7 +14,7 @@ import { setView } from './view.js';
 import { lendFocus } from '../core/dialog.js';
 
 const tourSteps=[
-  {target:'#map-section',set:()=>{ setMainLayer('pop'); pinCountry('Indonesia'); },text:'<b>Start with demand.</b> This layer shows where Muslims live. Indonesia alone has 236 million — the world\'s largest Muslim population and its largest halal food market.'},
+  {target:'#map-section',set:()=>{ setMainLayer('pop'); pinCountry('Indonesia'); },text:'<b>Start with demand.</b> This layer shows where Muslims live. Indonesia alone is the world\'s largest Muslim population and its largest halal food market.'},
   {target:'#map-section',set:()=>{ setMainLayer('giei'); pinCountry('Malaysia'); },text:'<b>Now switch the lens to infrastructure.</b> Malaysia has a tenth of Indonesia\'s Muslims but has topped the ecosystem ranking for twelve years. Demand and capability live in different places.'},
   {target:'#sectors',set:()=>{ setYear(2029); },text:'<b>Six sectors, one anchor.</b> Food is nearly 60% of the $2.6 trillion. The bars show the 2029 forecast — travel, in gold, grows at 11% a year while food grows at 6%. Below, the heatmap shows who leads each sector.'},
   {target:'#growth',set:()=>{},text:'<b>Two curves, two speeds.</b> Consumer spend has risen steadily through a pandemic and inflation. Islamic finance assets, in gold, added a trillion dollars in one year and are forecast to reach $9.7T by 2029.'},
