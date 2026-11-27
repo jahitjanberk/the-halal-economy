@@ -89,7 +89,7 @@ a figure was checked against a named source that was actually retrieved, on a
 recorded date. Unchecked is the default — the point of the flag is to surface
 what nobody has looked at.
 
-As of November 2026, **72 of 226 figures are confirmed** (32%).
+As of November 2026, **110 of 226 figures are confirmed** (49%).
 
 ### How it fits together
 
@@ -141,7 +141,7 @@ only thing stopping an edited figure from carrying an old confirmation forward.
 | GIEI scores and ranks | 2 / 24 |
 | Islamic finance composition | 0 / 3 |
 | Hajj pilgrim counts | 2 / 9 |
-| Muslim population by country | 0 / 39 |
+| Muslim population by country | 38 / 39 |
 | Halal imports by country | 0 / 1 |
 | Certifier directory | 0 / 15 |
 

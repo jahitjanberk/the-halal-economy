@@ -65,6 +65,11 @@ export const checks = {
     url: 'https://www.stats.gov.sa/documents/d/guest/hajj-statistics-publication-2025en-1-pdf',
     on: '2026-11-27',
   },
+  pew2025appB: {
+    label: 'Pew Research Center, Religious Composition by Country 2010–2020 (Appendix B)',
+    url: 'https://www.pewresearch.org/wp-content/uploads/sites/20/2025/06/PR_2025.06.09_global-religious-change_appendix-b.pdf',
+    on: '2026-11-27',
+  },
   derived: {
     label: 'arithmetic from those figures',
     url: null,

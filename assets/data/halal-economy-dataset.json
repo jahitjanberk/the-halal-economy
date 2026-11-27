@@ -2,7 +2,7 @@
   "compiled": "2026-09-02",
   "verifiedOn": "September 2026",
   "verification": {
-    "confirmed": 72,
+    "confirmed": 110,
     "total": 211,
     "note": "A figure is \"confirmed\" when it was checked against a named source that was actually retrieved. It is not a claim that the figure is true.",
     "figures": [
@@ -387,32 +387,32 @@
       {
         "id": "countryPop.Afghanistan.pop",
         "value": 39,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Algeria.pop",
         "value": 43,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Australia.pop",
         "value": 0.9,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Bahrain.pop",
         "value": 1.1,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Bangladesh.pop",
         "value": 151,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Brazil.pop",
@@ -423,200 +423,200 @@
       {
         "id": "countryPop.Brunei.pop",
         "value": 0.4,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.China.pop",
         "value": 26,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Egypt.pop",
         "value": 104,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Ethiopia.pop",
         "value": 43,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.France.pop",
         "value": 6,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Germany.pop",
         "value": 5,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.India.pop",
         "value": 213,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Indonesia.pop",
         "value": 239,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Iran.pop",
         "value": 88,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Iraq.pop",
         "value": 42,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Jordan.pop",
         "value": 11,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Kuwait.pop",
         "value": 3.5,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Malaysia.pop",
         "value": 22,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Mali.pop",
         "value": 20,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Morocco.pop",
         "value": 36,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Niger.pop",
         "value": 23,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Nigeria.pop",
         "value": 120,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Oman.pop",
         "value": 4,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Pakistan.pop",
         "value": 227,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Qatar.pop",
         "value": 2,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Russia.pop",
         "value": 12,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Saudi-Arabia.pop",
         "value": 29,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Senegal.pop",
         "value": 16,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Singapore.pop",
         "value": 0.9,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Sudan.pop",
         "value": 46,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Syria.pop",
         "value": 20,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Tanzania.pop",
         "value": 18,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Türkiye.pop",
         "value": 84,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.United-Arab-Emirates.pop",
         "value": 7,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.United-Kingdom.pop",
         "value": 4,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.United-States.pop",
         "value": 4,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Uzbekistan.pop",
         "value": 32,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryPop.Yemen.pop",
         "value": 36,
-        "confirmed": false,
-        "check": "sgiePress"
+        "confirmed": true,
+        "check": "pew2025appB"
       },
       {
         "id": "countryTrade.Malaysia.imports",
@@ -1689,8 +1689,12 @@
       "verified": [
         "rank",
         "giei2526",
-        "fin"
+        "fin",
+        "pop"
       ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "fin": 12,
       "bank": 20.1,
       "imports": 30.6,
@@ -1704,8 +1708,12 @@
       "atlas": "Saudi Arabia",
       "label": "Saudi Arabia",
       "verified": [
-        "bank"
+        "bank",
+        "pop"
       ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 29,
       "giei": 100.9,
       "rank": 2,
@@ -1723,8 +1731,12 @@
       "atlas": "Indonesia",
       "label": "Indonesia",
       "verified": [
-        "fin"
+        "fin",
+        "pop"
       ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 239,
       "giei": 99.9,
       "rank": 3,
@@ -1743,8 +1755,12 @@
       "label": "United Arab Emirates",
       "verified": [
         "fin",
-        "bank"
+        "bank",
+        "pop"
       ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 7,
       "giei": 95.8,
       "rank": 4,
@@ -1764,8 +1780,12 @@
       "label": "Bahrain",
       "verified": [
         "fin",
-        "bank"
+        "bank",
+        "pop"
       ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 1.1,
       "giei": 81.9,
       "rank": 5,
@@ -1784,8 +1804,12 @@
       "atlas": "Jordan",
       "label": "Jordan",
       "verified": [
-        "bank"
+        "bank",
+        "pop"
       ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 11,
       "giei": 71.4,
       "rank": 6,
@@ -1804,8 +1828,12 @@
       "label": "Kuwait",
       "verified": [
         "fin",
-        "bank"
+        "bank",
+        "pop"
       ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 3.5,
       "giei": 67,
       "rank": 7,
@@ -1824,8 +1852,12 @@
       "atlas": "Pakistan",
       "label": "Pakistan",
       "verified": [
-        "fin"
+        "fin",
+        "pop"
       ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 227,
       "giei": 64.1,
       "rank": 8,
@@ -1843,8 +1875,12 @@
       "atlas": "Turkey",
       "label": "Türkiye",
       "verified": [
-        "fin"
+        "fin",
+        "pop"
       ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 84,
       "giei": 64,
       "rank": 9,
@@ -1863,8 +1899,12 @@
       "label": "Qatar",
       "verified": [
         "fin",
-        "bank"
+        "bank",
+        "pop"
       ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 2,
       "giei": 60.4,
       "rank": 10,
@@ -1882,6 +1922,12 @@
     {
       "atlas": "United Kingdom",
       "label": "United Kingdom",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 4,
       "giei": null,
       "rank": 14,
@@ -1898,6 +1944,12 @@
     {
       "atlas": "Singapore",
       "label": "Singapore",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 0.9,
       "giei": null,
       "rank": 15,
@@ -1915,6 +1967,12 @@
     {
       "atlas": "Iran",
       "label": "Iran",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 88,
       "giei": null,
       "rank": null,
@@ -1931,6 +1989,12 @@
     {
       "atlas": "India",
       "label": "India",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 213,
       "giei": null,
       "rank": null,
@@ -1947,6 +2011,12 @@
     {
       "atlas": "Bangladesh",
       "label": "Bangladesh",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 151,
       "giei": null,
       "rank": null,
@@ -1963,6 +2033,12 @@
     {
       "atlas": "Nigeria",
       "label": "Nigeria",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 120,
       "giei": null,
       "rank": null,
@@ -1979,6 +2055,12 @@
     {
       "atlas": "Egypt",
       "label": "Egypt",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 104,
       "giei": null,
       "rank": null,
@@ -1995,6 +2077,12 @@
     {
       "atlas": "Algeria",
       "label": "Algeria",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 43,
       "lon": 3,
       "lat": 28,
@@ -2011,8 +2099,12 @@
       "atlas": "Sudan",
       "label": "Sudan",
       "verified": [
-        "bank"
+        "bank",
+        "pop"
       ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 46,
       "bank": 100,
       "lon": 30,
@@ -2029,6 +2121,12 @@
     {
       "atlas": "Iraq",
       "label": "Iraq",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 42,
       "lon": 44,
       "lat": 33,
@@ -2044,6 +2142,12 @@
     {
       "atlas": "Afghanistan",
       "label": "Afghanistan",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 39,
       "lon": 66,
       "lat": 34,
@@ -2059,6 +2163,12 @@
     {
       "atlas": "Ethiopia",
       "label": "Ethiopia",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 43,
       "lon": 39,
       "lat": 9,
@@ -2074,6 +2184,12 @@
     {
       "atlas": "Morocco",
       "label": "Morocco",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 36,
       "lon": -6,
       "lat": 32,
@@ -2090,6 +2206,12 @@
     {
       "atlas": "Uzbekistan",
       "label": "Uzbekistan",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 32,
       "lon": 64,
       "lat": 41,
@@ -2105,6 +2227,12 @@
     {
       "atlas": "Yemen",
       "label": "Yemen",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 36,
       "lon": 48,
       "lat": 15,
@@ -2120,6 +2248,12 @@
     {
       "atlas": "China",
       "label": "China",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 26,
       "lon": 104,
       "lat": 35,
@@ -2135,6 +2269,12 @@
     {
       "atlas": "Niger",
       "label": "Niger",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 23,
       "lon": 9,
       "lat": 17,
@@ -2150,6 +2290,12 @@
     {
       "atlas": "Tanzania",
       "label": "Tanzania",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 18,
       "lon": 35,
       "lat": -6,
@@ -2165,6 +2311,12 @@
     {
       "atlas": "Russia",
       "label": "Russia",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 12,
       "lon": 60,
       "lat": 58,
@@ -2181,6 +2333,12 @@
     {
       "atlas": "Mali",
       "label": "Mali",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 20,
       "lon": -3,
       "lat": 17,
@@ -2196,6 +2354,12 @@
     {
       "atlas": "Syria",
       "label": "Syria",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 20,
       "lon": 38,
       "lat": 35,
@@ -2211,6 +2375,12 @@
     {
       "atlas": "Senegal",
       "label": "Senegal",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 16,
       "rank": 25,
       "lon": -14,
@@ -2228,8 +2398,12 @@
       "atlas": "Oman",
       "label": "Oman",
       "verified": [
-        "bank"
+        "bank",
+        "pop"
       ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 4,
       "bank": 16.6,
       "lon": 57,
@@ -2245,6 +2419,12 @@
     {
       "atlas": "Brunei",
       "label": "Brunei",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 0.4,
       "bank": 29.6,
       "lon": 114.7,
@@ -2262,6 +2442,12 @@
     {
       "atlas": "France",
       "label": "France",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 6,
       "lon": 2,
       "lat": 46,
@@ -2277,6 +2463,12 @@
     {
       "atlas": "Germany",
       "label": "Germany",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 5,
       "lon": 10,
       "lat": 51,
@@ -2292,6 +2484,12 @@
     {
       "atlas": "United States of America",
       "label": "United States",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 4,
       "lon": -98,
       "lat": 39,
@@ -2324,6 +2522,12 @@
     {
       "atlas": "Australia",
       "label": "Australia",
+      "verified": [
+        "pop"
+      ],
+      "checkedAgainst": {
+        "pop": "pew2025appB"
+      },
       "pop": 0.9,
       "lon": 134,
       "lat": -25,

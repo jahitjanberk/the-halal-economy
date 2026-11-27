@@ -80,6 +80,158 @@
     "value": 1
   },
   {
+    "id": "countryPop.Afghanistan.pop",
+    "value": 39
+  },
+  {
+    "id": "countryPop.Algeria.pop",
+    "value": 43
+  },
+  {
+    "id": "countryPop.Australia.pop",
+    "value": 0.9
+  },
+  {
+    "id": "countryPop.Bahrain.pop",
+    "value": 1.1
+  },
+  {
+    "id": "countryPop.Bangladesh.pop",
+    "value": 151
+  },
+  {
+    "id": "countryPop.Brunei.pop",
+    "value": 0.4
+  },
+  {
+    "id": "countryPop.China.pop",
+    "value": 26
+  },
+  {
+    "id": "countryPop.Egypt.pop",
+    "value": 104
+  },
+  {
+    "id": "countryPop.Ethiopia.pop",
+    "value": 43
+  },
+  {
+    "id": "countryPop.France.pop",
+    "value": 6
+  },
+  {
+    "id": "countryPop.Germany.pop",
+    "value": 5
+  },
+  {
+    "id": "countryPop.India.pop",
+    "value": 213
+  },
+  {
+    "id": "countryPop.Indonesia.pop",
+    "value": 239
+  },
+  {
+    "id": "countryPop.Iran.pop",
+    "value": 88
+  },
+  {
+    "id": "countryPop.Iraq.pop",
+    "value": 42
+  },
+  {
+    "id": "countryPop.Jordan.pop",
+    "value": 11
+  },
+  {
+    "id": "countryPop.Kuwait.pop",
+    "value": 3.5
+  },
+  {
+    "id": "countryPop.Malaysia.pop",
+    "value": 22
+  },
+  {
+    "id": "countryPop.Mali.pop",
+    "value": 20
+  },
+  {
+    "id": "countryPop.Morocco.pop",
+    "value": 36
+  },
+  {
+    "id": "countryPop.Niger.pop",
+    "value": 23
+  },
+  {
+    "id": "countryPop.Nigeria.pop",
+    "value": 120
+  },
+  {
+    "id": "countryPop.Oman.pop",
+    "value": 4
+  },
+  {
+    "id": "countryPop.Pakistan.pop",
+    "value": 227
+  },
+  {
+    "id": "countryPop.Qatar.pop",
+    "value": 2
+  },
+  {
+    "id": "countryPop.Russia.pop",
+    "value": 12
+  },
+  {
+    "id": "countryPop.Saudi-Arabia.pop",
+    "value": 29
+  },
+  {
+    "id": "countryPop.Senegal.pop",
+    "value": 16
+  },
+  {
+    "id": "countryPop.Singapore.pop",
+    "value": 0.9
+  },
+  {
+    "id": "countryPop.Sudan.pop",
+    "value": 46
+  },
+  {
+    "id": "countryPop.Syria.pop",
+    "value": 20
+  },
+  {
+    "id": "countryPop.Tanzania.pop",
+    "value": 18
+  },
+  {
+    "id": "countryPop.Türkiye.pop",
+    "value": 84
+  },
+  {
+    "id": "countryPop.United-Arab-Emirates.pop",
+    "value": 7
+  },
+  {
+    "id": "countryPop.United-Kingdom.pop",
+    "value": 4
+  },
+  {
+    "id": "countryPop.United-States.pop",
+    "value": 4
+  },
+  {
+    "id": "countryPop.Uzbekistan.pop",
+    "value": 32
+  },
+  {
+    "id": "countryPop.Yemen.pop",
+    "value": 36
+  },
+  {
     "id": "deals.2025/26/Global/All-Islamic-economy-sectors.n",
     "value": 346
   },
