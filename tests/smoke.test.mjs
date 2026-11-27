@@ -76,7 +76,7 @@ const checks = [
   ['layer hint set',           (d.getElementById('layerHint')?.textContent || '').length > 5],
   ['legend ramp painted',      (d.getElementById('ramp')?.getAttribute('style') || '').includes('linear-gradient')],
   ['KPI counters ran',         [...d.querySelectorAll('.kpi .num[data-count]')].every(e => /\d/.test(e.textContent))],
-  ['URL state written',        window.location.search.includes('v=dashboard')],
+  ['default view keeps a clean URL', window.location.search === ''],
 ];
 
 let failed = 0;

@@ -21,19 +21,25 @@ export const state = {
 let suppressURL = true;
 export function enableURLWrites(){ suppressURL = false; }
 
+/* What the page shows with no query string at all. Anything equal to these is
+   left out of the URL, so the default view stays a clean halal-economy.com/. */
+const DEFAULTS = JSON.parse(JSON.stringify(state));
+
 export function writeURL(){
   if(suppressURL) return;
   const p = new URLSearchParams();
-  p.set('v', state.view);
-  p.set('l', state.layer);
+  if(state.view !== DEFAULTS.view) p.set('v', state.view);
+  if(state.layer !== DEFAULTS.layer) p.set('l', state.layer);
   if(state.pin) p.set('pin', state.pin);
-  p.set('y', state.year);
-  p.set('a', state.aud);
-  if(state.lang !== 'en') p.set('lang', state.lang);
+  if(state.year !== DEFAULTS.year) p.set('y', state.year);
+  if(state.aud !== DEFAULTS.aud) p.set('a', state.aud);
+  if(state.lang !== DEFAULTS.lang) p.set('lang', state.lang);
   if(state.view === 'story'){ p.set('s', state.story); p.set('p', state.step); }
   if(state.cb) p.set('cb', '1');
-  p.set('c', state.cmp.filter(Boolean).join('|'));
-  history.replaceState(null, '', location.pathname + '?' + p.toString() + location.hash);
+  const cmp = state.cmp.filter(Boolean).join('|');
+  if(cmp !== DEFAULTS.cmp.filter(Boolean).join('|')) p.set('c', cmp);
+  const q = p.toString();
+  history.replaceState(null, '', location.pathname + (q ? '?' + q : '') + location.hash);
 }
 
 export function readURL(){
